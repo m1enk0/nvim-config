@@ -17,7 +17,10 @@ return {
 	 },
 	 help_tags = {
 	    theme = "dropdown"
-	 }
+	 },
+	 oldfiles = {
+	    theme = "dropdown"
+	 },
       },
       path_display = { "smart" },
    }

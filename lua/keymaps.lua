@@ -23,14 +23,13 @@ map("n", "<S-A-d>", ":t.<cr>", opts)
 local telescope = require("telescope.builtin")
 map("n", "<leader>ff", telescope.find_files, opts)
 map("n", "<leader>fg", telescope.live_grep, opts)
-map("n", "<leader>fb", telescope.buffers, opts)
+map("n", "<A-e>", telescope.oldfiles, opts)
 map("n", "<leader>fh", telescope.help_tags, opts)
 map("n", "<leader>fc", telescope.command_history, opts)
 map("n", "<leader>fm", telescope.keymaps, opts)
+map("n", "<leader>fr", telescope.resume, opts)
+map("n", "<leader>fl", telescope.git_status, opts)
 -- map('n', '<A-e>', ':lua require("telescope").extensions.recent_files.pick()<cr>', opts)
-
--- Neotree
---map('n', '<A-q>', ':NvimTreeOpen<cr>', opts)
 
 -- Harpoon
 map("n", "<leader>h", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', opts)
@@ -46,7 +45,10 @@ map("n", "<A-t>", ':lua require("harpoon.ui").nav_file(6)<cr>', opts)
 map("n", "<C-A-d>", ":Gitsigns next_hunk<cr>", opts)
 map("n", "<C-A-u>", ":Gitsigns prev_hunk<cr>", opts)
 map("n", "<A-z>", ":Gitsigns reset_hunk<cr>", opts)
+map("n", "<leader>s", ":Gitsigns preview_hunk<cr>", opts)
 
 -- null-ls
 map("n", "<leader>lf", ":lua vim.lsp.buf.format()<cr>", opts)
 
+-- Terminal
+map("t", "<Esc>", "<C-\\><C-n>", opts)

@@ -5,7 +5,6 @@ vim.cmd('set relativenumber')
 vim.cmd('set shada=')
 vim.cmd('set undofile')
 
-vim.cmd('colorscheme catppuccin-frappe')
 vim.cmd('highlight LineNr guibg=NONE')
 vim.cmd('hi Visual guibg=#3165CF gui=none')
 vim.cmd('hi Normal guibg=NONE ctermbg=NONE')

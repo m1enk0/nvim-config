@@ -1,11 +1,10 @@
 return {
-   "jiaoshijie/undotree",
-   dependencies = "nvim-lua/plenary.nvim",
-   config = true,
+   'mbbill/undotree',
    keys = { -- load the plugin only when using it's keybinding:
-      { "<leader>u", "<cmd>lua require('undotree').toggle()<cr>" },
+      { "<leader>u", ":UndotreeShow | UndotreeFocus<cr>" },
    },
-   config = function() 
-      require('undotree').setup()
+   config = function()
+      vim.cmd('let g:undotree_DiffAutoOpen = 0')
+      vim.cmd('let g:undotree_WindowLayout = 2')
    end
 }
