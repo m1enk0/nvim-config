@@ -3,7 +3,7 @@ return {
    version = "*",
    config = true,
    keys = {
-      {"<leader>t", ":ToggleTerm<cr>"}
+      {"<A-y>", ":ToggleTerm<cr>"},
    },
    config = function()
       vim.cmd("let &shell = has('win32') ? 'powershell' : 'pwsh'")
@@ -13,6 +13,11 @@ return {
       vim.cmd("set shellquote=")
       vim.cmd("set shellxquote=")
 
-      require('toggleterm').setup{ size = 22 }
+      require('toggleterm').setup { 
+	 size = 20,
+	 direction = 'float',
+	 start_in_insert = true,
+	 persist_mode = false,
+      }
    end
 }

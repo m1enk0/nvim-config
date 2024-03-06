@@ -17,7 +17,7 @@ map("v", "<S-A-k>", ":m '<-2<CR>gv=gv", opts)
 
 -- Duplicate lines
 map("n", "<S-A-d>", ":t.<cr>", opts)
---map('v', '<S-A-d>', ':t.<cr>', opts)
+map('v', '<S-A-d>', '""ygv`><Esc>""pgv', opts)
 
 -- Telescope
 local telescope = require("telescope.builtin")
@@ -52,3 +52,4 @@ map("n", "<leader>lf", ":lua vim.lsp.buf.format()<cr>", opts)
 
 -- Terminal
 map("t", "<Esc>", "<C-\\><C-n>", opts)
+map("t", "<A-y>", "<C-\\><C-n>:ToggleTerm<cr>", opts)
