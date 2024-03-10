@@ -24,7 +24,7 @@ map("n", "<leader>L", ":Lazy<cr>", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
-if ok then 
+if ok then
     map("n", "<leader>ff", telescope.find_files, opts)
     map("n", "<leader>fg", telescope.live_grep, opts)
     map("n", "<A-e>", telescope.oldfiles, opts)
@@ -66,7 +66,7 @@ map('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
 map('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
 map('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
 map('n','<leader>ah','<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-map('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+map('n','<A-CR>','<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 --map('n','<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', opts)
 map('n','<leader>ar','<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 map('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>', opts)
