@@ -22,7 +22,9 @@ return {
 	    local util = require'lspconfig/util'
 	    lspconfig.thriftls.setup {}
 	    lspconfig.lua_ls.setup {}
-	    lspconfig.jdtls.setup {}
+	    lspconfig.jdtls.setup {
+		autostart = false
+	    }
 	    lspconfig.gopls.setup {
 		cmd = { "gopls" },
 		filetypes = { "go", "gomod", "gowork", "gotmpl" },
