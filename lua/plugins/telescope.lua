@@ -3,6 +3,10 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
 	require("telescope").setup {
+	    defaults = {
+		path_display = { "truncate" },
+		file_ignore_patterns = { ".git", "target" },
+	    },
 	    pickers = {
 		find_files = {
 		    theme = "dropdown"
@@ -24,9 +28,17 @@ return {
 		},
 		git_status = {
 		    theme = "ivy"
+		},
+		lsp_references= {
+		    theme = "dropdown"
+		},
+		lsp_definitions= {
+		    theme = "dropdown"
+		},
+		lsp_implementations = {
+		    theme = "dropdown"
 		}
 	    },
-	    path_display = { "smart" },
 	}
 	vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "#262626" })
 	vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = "#262626" })
