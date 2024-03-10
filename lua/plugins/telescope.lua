@@ -27,7 +27,15 @@ return {
 		    theme = "dropdown"
 		},
 		git_status = {
-		    theme = "ivy"
+		    theme = "ivy",
+		    mappings = {
+			i = {
+			    ["<C-l>"] = "close",
+			},
+			n = {
+			    ["<C-l>"] = "close",
+			}
+		    }
 		},
 		lsp_references= {
 		    theme = "dropdown"

@@ -4,6 +4,10 @@ local map = vim.keymap.set
 
 map("n", "<A-BS>", ":on<cr>", opts)
 map("n", "<A-q>", ":Ex<cr>", opts)
+map('n','<leader><leader>',':so<cr>', { silent = false })
+
+-- Git
+map('n','<A-C-a>',':!git add %<cr>', { silent = false })
 
 -- Moving lines
 map("n", "<S-A-j>", ":silent! m .+1<CR>==", opts)
@@ -69,5 +73,5 @@ map('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>', opts)
 map('n','<leader>ao','<cmd>lua vim.lsp.buf.outgoing_calls()<CR>', opts)
 map('n','<leader>ls',':LspStart<cr>', opts)
 map('n','<leader>lr',':LspRestart<cr>', opts)
+map('n', '<leader>rn', '<cmd>luavim.lsp.buf.rename()<CR>', opts)
 
-map('n','<leader><leader>',':so<cr>', { silent = false })

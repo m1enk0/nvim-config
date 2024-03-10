@@ -1,5 +1,4 @@
 vim.cmd([[
-    set noswapfile
     hi Visual guibg=#3165CF gui=none
     hi Normal guibg=NONE ctermbg=NONE
 
