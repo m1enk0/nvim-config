@@ -1,4 +1,9 @@
 vim.cmd([[
+    set shada=
+    set pumheight=10
+    set pumblend=20
+
+
     hi Visual guibg=#3165CF gui=none
     hi Normal guibg=NONE ctermbg=NONE
 
