@@ -33,6 +33,7 @@ if ok then
     map("n", "<leader>fm", telescope.keymaps, opts)
     map("n", "<leader>fr", telescope.resume, opts)
     map("n", "<C-l>", telescope.git_status, opts)
+    map("n", "<leader>fw", ":Telescope current_buffer_fuzzy_find fuzzy=false case_mode=ignore_case<cr>", opts)
 end
 
 -- Harpoon
@@ -55,24 +56,11 @@ map("n", "<leader>s", ":Gitsigns preview_hunk<cr>", opts)
 map("t", "<Esc>", "<C-\\><C-n>", opts)
 map("t", "<A-y>", "<C-\\><C-n>:ToggleTerm<cr>", opts)
 
---map('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
---map('n','gd',':Telescope lsp_definitions<cr>', opts)
---map("n", "gd", "<Plug>(coc-definition)", {silent = true})
---map("n", "gd", require("definition-or-references").definition_or_references, opts)
---map("n", "<S-A-f>", ":lua vim.lsp.buf.format()<cr>", {})
---map('n','gr',':Telescope lsp_references<cr>', opts)
---map('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
---map('n','gi',':Telescope lsp_implementations<cr>', opts)
---map('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
---map('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
---map('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
---map('n','<leader>ah','<cmd>lua vim.lsp.buf.hover()<CR>', opts)
---map('n','<A-CR>','<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
---map('n','<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', opts)
---map('n','<leader>ar','<cmd>lua vim.lsp.buf.rename()<CR>', opts)
---map('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>', opts)
---map('n','<leader>ao','<cmd>lua vim.lsp.buf.outgoing_calls()<CR>', opts)
---map('n','<leader>ls',':LspStart<cr>', opts)
---map('n','<leader>lr',':LspRestart<cr>', opts)
---map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "json",
+    callback = function()
+	map("v", "<leader>f", ":CocCommand formatJson.selected --indent=4<cr>", { buffer = true})
+	map("n", "<leader>fa", ":CocCommand formatJson --indent=4<cr>", { buffer = true })
+	map("n", "<leader>f", "<Nop>")
+    end,
+})
