@@ -4,7 +4,6 @@ local map = vim.keymap.set
 
 map("n", "<A-BS>", ":on<cr>", opts)
 map("n", "<A-q>", ":Ex<cr>", opts)
-map('n','<leader><leader>',':so<cr>', { silent = false })
 
 -- Git
 map('n','<A-C-a>',':!git add %<cr>', { silent = false })
