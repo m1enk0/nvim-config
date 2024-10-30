@@ -12,11 +12,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-    import = "plugins" 
+    import = "plugins"
 }
 local settings = {
-    change_detection = { 
-	enabled = false 
-    } 
+    change_detection = {
+        enabled = false
+    }
 }
 require("lazy").setup(plugins, settings)

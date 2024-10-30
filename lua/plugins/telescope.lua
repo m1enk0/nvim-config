@@ -1,3 +1,20 @@
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "TelescopeResults",
+    callback = function(ctx)
+        vim.api.nvim_buf_call(ctx.buf, function()
+            vim.fn.matchadd("TelescopeParent", "\t\t.*$")
+            vim.api.nvim_set_hl(0, "TelescopeParent", { link = "Comment" })
+        end)
+    end,
+})
+
+local function filenameFirst(_, path)
+    local tail = vim.fs.basename(path)
+    local parent = vim.fs.dirname(path)
+    if parent == "." then return tail end
+    return string.format("%s\t\t%s", tail, parent)
+end
+
 return {
     {
         'nvim-telescope/telescope.nvim',
@@ -9,12 +26,15 @@ return {
                     mappings = {
                         i = { ["<esc>"] = "close" }
                     },
-                    path_display = { "truncate" },
+                    path_display = filenameFirst,
                     file_ignore_patterns = { ".git", "target" },
                 },
                 pickers = {
                     find_files = {
-                        theme = "dropdown"
+                        theme = "dropdown",
+                        find_files = {
+                            path_display = filenameFirst,
+                        }
                     },
                     command_history = {
                         theme = "dropdown"
@@ -53,13 +73,6 @@ return {
                     }
                 }
             }
-            vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "#262626" })
-            vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = "#262626" })
-            vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#424242", bg = "#262626" })
-            vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#424242", bg = "#262626" })
-            vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = "#262626" })
-            vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = "#262626" })
-            vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = "#262626" })
         end
     }
 }

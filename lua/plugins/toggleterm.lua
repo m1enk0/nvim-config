@@ -15,7 +15,7 @@ return {
 
         require('toggleterm').setup {
             size = 20,
-            direction = 'float',
+            direction = 'horizontal',
             start_in_insert = true,
             persist_mode = false,
         }

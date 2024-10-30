@@ -5,3 +5,4 @@ require("bootstrap_lazy")
 
 require("keymaps")
 require("options")
+require("styles")
