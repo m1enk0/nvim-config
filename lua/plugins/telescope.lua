@@ -12,6 +12,13 @@ local function filenameFirst(_, path)
     local tail = vim.fs.basename(path)
     local parent = vim.fs.dirname(path)
     if parent == "." then return tail end
+    local lim = 71
+    if string.len(parent) + string.len(tail) > lim then
+        if string.len(tail) > lim then
+            return ".." .. string.sub(tail, -lim)
+        end
+        parent = ".." .. string.sub(parent, -(lim - string.len(tail)))
+    end
     return string.format("%s\t\t%s", tail, parent)
 end
 
@@ -23,24 +30,32 @@ return {
         config = function()
             require("telescope").setup {
                 defaults = {
+                    cache_picker = {
+                        num_pickers = 1000,
+                        limit_entries = 1
+                    },
                     mappings = {
-                        i = { ["<esc>"] = "close" }
+                        i = {
+                            ["<esc>"] = "close",
+                            ["<C-f>"] = "to_fuzzy_refine",
+                            ["<C-Down>"] = "cycle_history_next",
+                            ["<C-Up>"] = "cycle_history_prev"
+                        }
                     },
                     path_display = filenameFirst,
-                    file_ignore_patterns = { ".git", "target" },
+                    file_ignore_patterns = { ".git", "target", "^build\\" },
                 },
                 pickers = {
                     find_files = {
                         theme = "dropdown",
-                        find_files = {
-                            path_display = filenameFirst,
-                        }
+                        no_ignore = true,
                     },
                     command_history = {
                         theme = "dropdown"
                     },
                     live_grep = {
-                        theme = "dropdown"
+                        theme = "dropdown",
+                        no_ignore = true
                     },
                     buffers = {
                         theme = "ivy"
@@ -49,9 +64,12 @@ return {
                         theme = "dropdown"
                     },
                     oldfiles = {
-                        theme = "dropdown"
+                        sort_mru = true,
+                        theme = "dropdown",
+                        previewer = false
                     },
                     git_status = {
+                        path_display = filenameFirst,
                         theme = "ivy",
                         mappings = {
                             i = {

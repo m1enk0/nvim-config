@@ -1,7 +1,7 @@
 return {
     'neoclide/coc.nvim',
     config = function()
-	vim.cmd[[
+        vim.cmd [[
 	    " Some servers have issues with backup files, see #649
 	    set nobackup
 	    set nowritebackup
@@ -154,5 +154,5 @@ return {
 	    " Resume latest coc list
 	    nnoremap <silent><nowait> <space>cp  :<C-u>CocListResume<CR>
 	]]
-	end
+    end
 }

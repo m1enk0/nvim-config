@@ -2,11 +2,23 @@ local opts = { noremap = true, silent = true }
 -- Shorten function name
 local map = vim.keymap.set
 
+local function getVisualSelection()
+    vim.cmd('noau normal! "vy"')
+    local text = vim.fn.getreg('v')
+    text = string.gsub(text, "\n", "")
+    if #text > 0 then return text else return '' end
+end
+
+local function mapTelescopeNV(shortcut, telescopeFun)
+    map("v", shortcut, function() telescopeFun({ default_text = getVisualSelection() }) end, opts)
+    map("n", shortcut, telescopeFun, opts)
+end
+
 map("n", "<A-BS>", ":on<cr>", opts)
 map("n", "<A-q>", ":Ex<cr>", opts)
 
 -- Git
-map('n','<A-C-a>',':!git add %<cr>', { silent = false })
+map('n', '<A-C-a>', ':!git add %<cr>', { silent = false })
 
 -- Moving lines
 map("n", "<S-A-j>", ":silent! m .+1<CR>==", opts)
@@ -24,20 +36,21 @@ map("n", "<leader>L", ":Lazy<cr>", opts)
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
 if ok then
-    map("n", "<leader>ff", telescope.find_files, opts)
-    map("n", "<leader>fg", telescope.live_grep, opts)
+    mapTelescopeNV("<leader>ff", telescope.find_files)
+    mapTelescopeNV("<leader>fg", telescope.live_grep)
+    mapTelescopeNV("<leader>fh", telescope.help_tags)
+    mapTelescopeNV("<leader>fp", telescope.pickers)
     map("n", "<A-e>", telescope.oldfiles, opts)
-    map("n", "<leader>fh", telescope.help_tags, opts)
-    map("n", "<leader>fc", telescope.command_history, opts)
-    map("n", "<leader>fm", telescope.keymaps, opts)
     map("n", "<leader>fr", telescope.resume, opts)
     map("n", "<C-l>", telescope.git_status, opts)
+    map("n", "<leader>ks", telescope.git_stash, opts)
+    map("n", "<leader>kb", telescope.git_branches, opts)
     map("n", "<leader>fw", ":Telescope current_buffer_fuzzy_find fuzzy=false case_mode=ignore_case<cr>", opts)
 end
 
 -- Harpoon
-map("n", "<leader>h", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', opts)
-map("n", "<leader>n", ':lua require("harpoon.mark").add_file()<cr>', opts)
+map("n", "<A-h>", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', opts)
+map("n", "<A-n>", ':lua require("harpoon.mark").add_file()<cr>', opts)
 map("n", "<A-a>", ':lua require("harpoon.ui").nav_file(1)<cr>', opts)
 map("n", "<A-s>", ':lua require("harpoon.ui").nav_file(2)<cr>', opts)
 map("n", "<A-d>", ':lua require("harpoon.ui").nav_file(3)<cr>', opts)
@@ -58,8 +71,8 @@ map("t", "<A-y>", "<C-\\><C-n>:ToggleTerm<cr>", opts)
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "json",
     callback = function()
-	map("v", "<leader>f", ":CocCommand formatJson.selected --indent=4<cr>", { buffer = true})
-	map("n", "<leader>fa", ":CocCommand formatJson --indent=4<cr>", { buffer = true })
-	map("n", "<leader>f", "<Nop>")
+        map("v", "<leader>f", ":CocCommand formatJson.selected --indent=4<cr>", { buffer = true })
+        map("n", "<leader>fa", ":CocCommand formatJson --indent=4<cr>", { buffer = true })
+        map("n", "<leader>f", "<Nop>")
     end,
 })
