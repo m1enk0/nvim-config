@@ -14,24 +14,24 @@ local function mapTelescopeNV(shortcut, telescopeFun)
     map("n", shortcut, telescopeFun, opts)
 end
 
-map("n", "<A-BS>", ":on<cr>", opts)
-map("n", "<A-q>", ":Ex<cr>", opts)
+map("n", "<A-BS>", "<cmd>on<cr>", opts)
+map("n", "<A-q>", "<cmd>Ex<cr>", opts)
 
 -- Git
-map('n', '<A-C-a>', ':!git add %<cr>', { silent = false })
+map('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
 
 -- Moving lines
-map("n", "<S-A-j>", ":silent! m .+1<CR>==", opts)
-map("n", "<S-A-k>", ":silent! m .-2<CR>==", opts)
-map("v", "<S-A-j>", ":<C-u>silent! '<,'>m '>+1<CR>gv", opts)
-map("v", "<S-A-k>", ":<C-u>silent! '<,'>m '<-2<CR>gv", opts)
+map("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", opts)
+map("n", "<S-A-k>", "<cmd>silent! m .-2<CR>==", opts)
+map("v", "<S-A-j>", "<cmd><C-u>silent! '<,'>m '>+1<CR>gv", opts)
+map("v", "<S-A-k>", "<cmd><C-u>silent! '<,'>m '<-2<CR>gv", opts)
 
 -- Duplicate lines
-map("n", "<S-A-d>", ":t.<cr>", opts)
+map("n", "<S-A-d>", "<cmd>t.<cr>", opts)
 map("v", '<S-A-d>', "y'>p'[V']", opts)
 
 -- Lazy
-map("n", "<leader>L", ":Lazy<cr>", opts)
+map("n", "<leader>L", "<cmd>Lazy<cr>", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
@@ -45,34 +45,45 @@ if ok then
     map("n", "<C-l>", telescope.git_status, opts)
     map("n", "<leader>ks", telescope.git_stash, opts)
     map("n", "<leader>kb", telescope.git_branches, opts)
-    map("n", "<leader>fw", ":Telescope current_buffer_fuzzy_find fuzzy=false case_mode=ignore_case<cr>", opts)
+    map("n", "<leader>fw", "<cmd>Telescope current_buffer_fuzzy_find fuzzy=false case_mode=ignore_case<cr>", opts)
 end
 
 -- Harpoon
-map("n", "<A-h>", ':lua require("harpoon.ui").toggle_quick_menu()<cr>', opts)
-map("n", "<A-n>", ':lua require("harpoon.mark").add_file()<cr>', opts)
-map("n", "<A-a>", ':lua require("harpoon.ui").nav_file(1)<cr>', opts)
-map("n", "<A-s>", ':lua require("harpoon.ui").nav_file(2)<cr>', opts)
-map("n", "<A-d>", ':lua require("harpoon.ui").nav_file(3)<cr>', opts)
-map("n", "<A-f>", ':lua require("harpoon.ui").nav_file(4)<cr>', opts)
-map("n", "<A-g>", ':lua require("harpoon.ui").nav_file(5)<cr>', opts)
-map("n", "<A-t>", ':lua require("harpoon.ui").nav_file(6)<cr>', opts)
+map("n", "<A-h>", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>', opts)
+map("n", "<A-n>", '<cmd>lua require("harpoon.mark").add_file()<cr>', opts)
+map("n", "<A-a>", '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', opts)
+map("n", "<A-s>", '<cmd>lua require("harpoon.ui").nav_file(2)<cr>', opts)
+map("n", "<A-d>", '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', opts)
+map("n", "<A-f>", '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', opts)
+map("n", "<A-g>", '<cmd>lua require("harpoon.ui").nav_file(5)<cr>', opts)
+map("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', opts)
 
 -- Gitsings
-map("n", "<C-A-d>", ":Gitsigns next_hunk<cr>", opts)
-map("n", "<C-A-u>", ":Gitsigns prev_hunk<cr>", opts)
-map("n", "<A-z>", ":Gitsigns reset_hunk<cr>", opts)
-map("n", "<leader>s", ":Gitsigns preview_hunk<cr>", opts)
+map("n", "<C-A-d>", "<cmd>Gitsigns next_hunk<cr>", opts)
+map("n", "<C-A-u>", "<cmd>Gitsigns prev_hunk<cr>", opts)
+map("n", "<A-z>", "<cmd>Gitsigns reset_hunk<cr>", opts)
+map("n", "<leader>s", "<cmd>Gitsigns preview_hunk<cr>", opts)
 
 -- Terminal
 map("t", "<Esc>", "<C-\\><C-n>", opts)
-map("t", "<A-y>", "<C-\\><C-n>:ToggleTerm<cr>", opts)
+map("t", "<A-y>", "<C-\\><C-n><cmd>ToggleTerm<cr>", opts)
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "json",
     callback = function()
-        map("v", "<leader>f", ":CocCommand formatJson.selected --indent=4<cr>", { buffer = true })
-        map("n", "<leader>fa", ":CocCommand formatJson --indent=4<cr>", { buffer = true })
+        map("v", "<leader>f", "<cmd>CocCommand formatJson.selected --indent=4<cr>", { buffer = true })
+        map("n", "<leader>fa", "<cmd>CocCommand formatJson --indent=4<cr>", { buffer = true })
         map("n", "<leader>f", "<Nop>")
-    end,
+    end
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "qf",
+    callback = function()
+        map("n", "<cr>", "<cr><cmd>copen<cr>", { buffer = true })
+        map("n", "q", "<cmd>cclose<cr>", { buffer = true })
+        map("n", "<esc>", "<cmd>cclose<cr>", { buffer = true })
+        map("n", "x", "<cmd>.Reject<cr>", { buffer = true })
+        map("v", "x", ":Reject<cr>", { buffer = true })
+    end
 })

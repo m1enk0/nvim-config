@@ -1,7 +1,7 @@
 return {
     'mbbill/undotree',
     keys = { -- load the plugin only when using it's keybinding:
-        { "<leader>u", ":UndotreeToggle | UndotreeFocus<cr>" },
+        { "<leader>u", "<cmd>UndotreeToggle | UndotreeFocus<cr>" },
     },
     config = function()
         vim.cmd('let g:undotree_DiffAutoOpen = 0')
