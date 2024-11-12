@@ -19,12 +19,13 @@ map("n", "<A-q>", "<cmd>Ex<cr>", opts)
 
 -- Git
 map('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
+map('n', '<leader>G', '<cmd>Git<cr>', opts)
 
 -- Moving lines
 map("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", opts)
 map("n", "<S-A-k>", "<cmd>silent! m .-2<CR>==", opts)
-map("v", "<S-A-j>", "<cmd><C-u>silent! '<,'>m '>+1<CR>gv", opts)
-map("v", "<S-A-k>", "<cmd><C-u>silent! '<,'>m '<-2<CR>gv", opts)
+map("v", "<S-A-j>", ":<C-u>silent! '<,'>m '>+1<CR>gv", opts)
+map("v", "<S-A-k>", ":<C-u>silent! '<,'>m '<-2<CR>gv", opts)
 
 -- Duplicate lines
 map("n", "<S-A-d>", "<cmd>t.<cr>", opts)

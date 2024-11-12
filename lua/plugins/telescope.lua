@@ -23,75 +23,73 @@ local function filenameFirst(_, path)
 end
 
 return {
-     {
-         'nvim-telescope/telescope.nvim',
-         tag = '0.1.5',
-         dependencies = { 'nvim-lua/plenary.nvim' },
-         event = "VeryLazy",
-         config = function()
-             require("telescope").setup {
-                 defaults = {
-                     cache_picker = {
-                         num_pickers = 150,
-                         limit_entries = 150
-                     },
+     'nvim-telescope/telescope.nvim',
+     tag = '0.1.5',
+     dependencies = { 'nvim-lua/plenary.nvim' },
+     event = "VeryLazy",
+     config = function()
+         require("telescope").setup {
+             defaults = {
+                 cache_picker = {
+                     num_pickers = 150,
+                     limit_entries = 150
+                 },
+                 mappings = {
+                     i = {
+                         ["<esc>"] = "close",
+                         ["<C-f>"] = "to_fuzzy_refine",
+                         ["<C-Down>"] = "cycle_history_next",
+                         ["<C-Up>"] = "cycle_history_prev"
+                     }
+                 },
+                 path_display = filenameFirst,
+                 file_ignore_patterns = { "^.git\\", "target", "^build\\", "^bin\\" },
+             },
+             pickers = {
+                 find_files = {
+                     theme = "dropdown",
+                     no_ignore = true,
+                 },
+                 command_history = {
+                     theme = "dropdown"
+                 },
+                 live_grep = {
+                     theme = "dropdown",
+                     no_ignore = true
+                 },
+                 buffers = {
+                     theme = "ivy"
+                 },
+                 help_tags = {
+                     theme = "dropdown"
+                 },
+                 oldfiles = {
+                     sort_mru = true,
+                     theme = "dropdown",
+                     previewer = false
+                 },
+                 git_status = {
+                     path_display = filenameFirst,
+                     -- theme = "ivy",
                      mappings = {
                          i = {
-                             ["<esc>"] = "close",
-                             ["<C-f>"] = "to_fuzzy_refine",
-                             ["<C-Down>"] = "cycle_history_next",
-                             ["<C-Up>"] = "cycle_history_prev"
+                             ["<C-l>"] = "close",
+                         },
+                         n = {
+                             ["<C-l>"] = "close",
                          }
-                     },
-                     path_display = filenameFirst,
-                     file_ignore_patterns = { "^.git\\", "target", "^build\\" },
-                 },
-                 pickers = {
-                     find_files = {
-                         theme = "dropdown",
-                         no_ignore = true,
-                     },
-                     command_history = {
-                         theme = "dropdown"
-                     },
-                     live_grep = {
-                         theme = "dropdown",
-                         no_ignore = true
-                     },
-                     buffers = {
-                         theme = "ivy"
-                     },
-                     help_tags = {
-                         theme = "dropdown"
-                     },
-                     oldfiles = {
-                         sort_mru = true,
-                         theme = "dropdown",
-                         previewer = false
-                     },
-                     git_status = {
-                         path_display = filenameFirst,
-                         theme = "ivy",
-                         mappings = {
-                             i = {
-                                 ["<C-l>"] = "close",
-                             },
-                             n = {
-                                 ["<C-l>"] = "close",
-                             }
-                         }
-                     },
-                     lsp_references = {
-                         theme = "dropdown"
-                     },
-                     lsp_definitions = {
-                         theme = "dropdown"
-                     },
-                     lsp_implementations = {
-                         theme = "dropdown"
                      }
+                 },
+                 lsp_references = {
+                     theme = "dropdown"
+                 },
+                 lsp_definitions = {
+                     theme = "dropdown"
+                 },
+                 lsp_implementations = {
+                     theme = "dropdown"
                  }
              }
-         end
-     }
+         }
+     end
 }

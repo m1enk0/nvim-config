@@ -2,12 +2,15 @@ vim.cmd([[
     set shada=
     set pumheight=10
     set pumblend=20
-
+    set colorcolumn=120
 
     hi Visual guibg=#3165CF gui=none
     hi Normal guibg=NONE ctermbg=NONE
 
     au TextYankPost * silent! lua vim.highlight.on_yank { higroup="VisualMode", timeout=400 }
+
+    set autoread
+    autocmd FocusGained, BufEnter * checktime
 ]])
 
 function SetProjectViminfo()
