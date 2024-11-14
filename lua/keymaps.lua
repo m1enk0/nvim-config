@@ -19,7 +19,7 @@ map("n", "<A-q>", "<cmd>Ex<cr>", opts)
 
 -- Git
 map('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
-map('n', '<leader>G', '<cmd>Git<cr>', opts)
+map('n', '<leader>G', '<cmd>vertical Git<cr>', opts)
 
 -- Moving lines
 map("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", opts)
@@ -33,6 +33,12 @@ map("v", '<S-A-d>', "y'>p'[V']", opts)
 
 -- Lazy
 map("n", "<leader>L", "<cmd>Lazy<cr>", opts)
+
+--Windows nav
+map("n", "<A-C-j>", "<C-w>j", opts)
+map("n", "<A-C-k>", "<C-w>k", opts)
+map("n", "<A-C-l>", "<C-w>l", opts)
+map("n", "<A-C-h>", "<C-w>h", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
