@@ -16,6 +16,8 @@ end
 
 map("n", "<A-BS>", "<cmd>on<cr>", opts)
 map("n", "<A-q>", "<cmd>Ex<cr>", opts)
+map("i", "<Cr>", "<Cr><C-g>u", opts)
+map("i", "<Space>", "<Space><C-g>u", opts)
 
 -- Git
 map('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
@@ -34,11 +36,13 @@ map("v", '<S-A-d>', "y'>p'[V']", opts)
 -- Lazy
 map("n", "<leader>L", "<cmd>Lazy<cr>", opts)
 
---Windows nav
+-- Window nav
 map("n", "<A-C-j>", "<C-w>j", opts)
 map("n", "<A-C-k>", "<C-w>k", opts)
 map("n", "<A-C-l>", "<C-w>l", opts)
 map("n", "<A-C-h>", "<C-w>h", opts)
+map("n", "<A-C-i>", "<cmd>vertical resize +5<cr>", opts)
+map("n", "<A-C-o>", "<cmd>vertical resize -5<cr>", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
@@ -48,11 +52,15 @@ if ok then
     mapTelescopeNV("<leader>fh", telescope.help_tags)
     mapTelescopeNV("<leader>fp", telescope.pickers)
     map("n", "<A-e>", telescope.oldfiles, opts)
+    -- map("n", "<A-e>", telescope.buffers, opts)
     map("n", "<leader>fr", telescope.resume, opts)
     map("n", "<C-l>", telescope.git_status, opts)
     map("n", "<leader>ks", telescope.git_stash, opts)
     map("n", "<leader>kb", telescope.git_branches, opts)
     map("n", "<leader>fw", "<cmd>Telescope current_buffer_fuzzy_find fuzzy=false case_mode=ignore_case<cr>", opts)
+
+    map("n", "<leader>FF", function() telescope.find_files({ cwd = vim.fn.fnamemodify(vim.fn.bufname(), ":p:h") }) end, opts)
+    map("n", "<leader>FG", function() telescope.live_grep({ cwd = vim.fn.fnamemodify(vim.fn.bufname(), ":p:h") }) end, opts)
 end
 
 -- Harpoon
@@ -89,8 +97,26 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function()
         map("n", "<cr>", "<cr><cmd>copen<cr>", { buffer = true })
         map("n", "q", "<cmd>cclose<cr>", { buffer = true })
+        map("n", "<A-CR>", "<cr><cmd>cclose<cr>", { buffer = true })
         map("n", "<esc>", "<cmd>cclose<cr>", { buffer = true })
         map("n", "x", "<cmd>.Reject<cr>", { buffer = true })
         map("v", "x", ":Reject<cr>", { buffer = true })
     end
 })
+
+-- LSP
+map("n", "gr", telescope.lsp_references, opts)
+map("n", "gi", telescope.lsp_implementations, opts)
+
+map("n", "gd", vim.lsp.buf.definition, opts)
+map("n", "]]", vim.diagnostic.goto_next, opts)
+map("n", "[[", vim.diagnostic.goto_prev, opts)
+map("n", "<A-CR>", vim.lsp.buf.code_action, opts)
+map("v", "<A-CR>", vim.lsp.buf.code_action, opts)
+map("n", "<S-A-f>", vim.lsp.buf.format, opts)
+map("v", "<S-A-f>", vim.lsp.buf.format, opts)
+map("n", "<C-p>", vim.lsp.buf.signature_help, opts)
+map("n", "<A-r>", vim.lsp.buf.rename, opts)
+map("n", "<leader>ah", vim.lsp.buf.hover, opts)
+map("n", "<leader>ls", "<cmd>LspStart<cr>", opts)
+map("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
