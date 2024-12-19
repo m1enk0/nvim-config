@@ -29,13 +29,20 @@ end
 return {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.8',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        'nvim-tree/nvim-web-devicons',
+        'nvim-telescope/telescope-ui-select.nvim'
+    },
     event = "VeryLazy",
     config = function()
         local builtin = require('telescope.builtin')
         require("telescope").setup {
             defaults = {
+                entry_prefix = " ",
+                selection_caret = " ",
                 prompt_prefix = "",
+
                 cache_picker = {
                     ignore_empty_prompt = true,
                     num_pickers = 150,
@@ -47,12 +54,12 @@ return {
                         ["<C-f>"] = "to_fuzzy_refine",
                         ["<C-Down>"] = "cycle_history_next",
                         ["<C-Up>"] = "cycle_history_prev",
-                        ["<C-h>"] = function(prompt_bufnr)
+                        ["<A-e>"] = function(prompt_bufnr)
                             local text = get_current_picker_prompt(prompt_bufnr)
                             require("telescope.actions").close(prompt_bufnr)
                             builtin.find_files { default_text = text }
                         end,
-                        ["<C-l>"] = function(prompt_bufnr)
+                        ["<A-l>"] = function(prompt_bufnr)
                             local text = get_current_picker_prompt(prompt_bufnr)
                             require("telescope.actions").close(prompt_bufnr)
                             builtin.live_grep { default_text = text }
@@ -123,8 +130,18 @@ return {
                 lsp_implementations = {
                     cache_picker = false,
                     theme = "dropdown"
+                },
+                current_buffer_fuzzy_find = {
+                    previewer = false
                 }
-            }
+            },
+            extensions = {
+                ["ui-select"] = {
+                    require("telescope.themes").get_dropdown({}),
+                    cache_picker = false,
+                }
+            },
         }
+        require("telescope").load_extension("ui-select")
     end
 }

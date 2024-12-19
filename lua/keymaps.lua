@@ -21,7 +21,7 @@ map("i", "<Space>", "<Space><C-g>u", opts)
 
 -- Git
 map('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
-map('n', '<leader>G', '<cmd>vertical Git<cr>', opts)
+map('n', '<leader>kk', '<cmd>vertical Git<cr>', opts)
 
 -- Moving lines
 map("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", opts)
@@ -43,6 +43,10 @@ map("n", "<A-C-l>", "<C-w>l", opts)
 map("n", "<A-C-h>", "<C-w>h", opts)
 map("n", "<A-C-i>", "<cmd>vertical resize +5<cr>", opts)
 map("n", "<A-C-o>", "<cmd>vertical resize -5<cr>", opts)
+
+-- Qf nav
+map("n", "]}", "<cr><cmd>cnext<cr>", opts)
+map("n", "[{", "<cr><cmd>cprev<cr>", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
@@ -120,3 +124,5 @@ map("n", "<A-r>", vim.lsp.buf.rename, opts)
 map("n", "<leader>ah", vim.lsp.buf.hover, opts)
 map("n", "<leader>ls", "<cmd>LspStart<cr>", opts)
 map("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
+
+map("n", "-", require("oil").open, opts)

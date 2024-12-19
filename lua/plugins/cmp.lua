@@ -50,7 +50,7 @@ return {
                 root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
                 settings = {
                     gopls = {
-                        -- semanticTokens = true,
+                        usePlaceholders = false,
                         staticcheck = true,
                         completeUnimported = true,
                         analyses = {
@@ -77,17 +77,36 @@ return {
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
             "saadparwaiz1/cmp_luasnip",
+            "onsails/lspkind.nvim"
         },
         config = function()
             local cmp = require('cmp')
+            local lspkind = require('lspkind')
             cmp.setup({
+                formatting = {
+                    fields = { "kind", "abbr", "menu" },
+                    format = function(entry, vim_item)
+                        local kind = vim_item.kind
+                        vim_item.kind = lspkind.presets.default[vim_item.kind]
+                        -- vim_item.abbr = "" .. vim_item.abbr
+                        local item = entry:get_completion_item()
+                        if item.detail then vim_item.menu = item.detail else vim_item.menu = kind end
+                        return vim_item
+                    end
+                },
+                window = {
+                    documentation = false,
+                    completion = {
+                        col_offset = -2,
+                    }
+                },
                 completion = {
                     completeopt = 'menu,menuone,noinsert',
                     keyword_length = 1,
                     debounce = 7
                 },
                 performance = {
-                    throttle_time = 30, -- Lower throttle time
+                    throttle_time = 20, -- Lower throttle time
                     debounce = 7, -- Lower debounce
                     fetching_timeout = 200, -- Timeout for fetching
                 },
@@ -101,12 +120,6 @@ return {
                         cmp.config.compare.kind
                     },
                 },
-                formatting = {
-                    -- format = function(entry, vim_item)
-                    --     vim_item.kind = "[" .. vim_item.kind .. "]"
-                    --     return vim_item
-                    -- end
-                },
                 snippet = {
                     expand = function(args)
                         require('luasnip').lsp_expand(args.body)
@@ -116,6 +129,8 @@ return {
                     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-f>'] = cmp.mapping.scroll_docs(4),
                     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+                    ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { "c" }),
+                    ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { "c" }),
                     ['<Tab>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true },
                     ['<C-e>'] = cmp.mapping.abort(),
                     ['<CR>'] = cmp.mapping(function(fallback)

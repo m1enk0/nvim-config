@@ -2,7 +2,7 @@ vim.cmd([[
     hi Pmenu guibg=#262626 ctermbg=NONE
     hi PmenuSel guibg=#085D96
     hi CmpItemAbbrMatch guifg=#CEDFF2 gui=NONE
-    " hi CmpItemAbbrMatch guifg=#D6B981 gui=NONE " yellow
+    hi CmpItemAbbrMatchFuzzy guifg=#CEDFF2 gui=NONE
     hi CmpItemAbbr guifg=#8697BA
 
     hi Visual guibg=#2A56AD gui=NONE
@@ -15,6 +15,9 @@ vim.cmd([[
     hi StatusLine guifg=#7F8FB0
 
     hi ColorColumn guibg=#2C2F38
+
+    hi NormalFloat guibg=NONE
+    hi FloatBorder guifg=#42424a guibg=NONE 
 ]])
 
 -- Telescope
@@ -43,7 +46,9 @@ local dim_blue = "#6897BB"
 vim.api.nvim_set_hl(0, "@attribute", { fg = dim_yellow })
 vim.api.nvim_set_hl(0, "@function", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@module", { fg = topaz_yellow })
-vim.api.nvim_set_hl(0, "@function.method", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@function.method", { fg = topaz_yellow })
+vim.api.nvim_set_hl(0, "@function.method.call", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@class_field", { fg = purple })
 vim.api.nvim_set_hl(0, "@property", { fg = purple })
 vim.api.nvim_set_hl(0, "@variable.member", { fg = purple })
 vim.api.nvim_set_hl(0, "@variable.parameter", { fg = white })

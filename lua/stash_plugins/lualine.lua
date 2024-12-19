@@ -1,6 +1,10 @@
 return {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    event = "VeryLazy",
+    dependencies = {
+        'nvim-tree/nvim-web-devicons',
+        'arkav/lualine-lsp-progress'
+    },
     opts = {
         options = {
             icons_enabled = true,
@@ -14,21 +18,21 @@ return {
                 winbar = {},
             },
             ignore_focus = {},
-            always_divide_middle = true,
-            globalstatus = false,
-            refresh = {
-                statusline = 1000,
-                tabline = 1000,
-                winbar = 1000,
-            }
+            -- always_divide_middle = true,
+            globalstatus = true,
+            -- refresh = {
+            --     statusline = 1000,
+            --     tabline = 1000,
+            --     winbar = 1000,
+            -- }
         },
         sections = {
             lualine_a = {
-                { 'mode', separator = { left = '', right = '' }, right_padding = 2 },
+                { 'mode', separator = { left = '', right = '' }, right_padding = 2 },
             },
             lualine_b = { 'branch', 'diff', 'diagnostics' },
             lualine_c = { 'filename' },
-            lualine_x = { 'encoding', 'fileformat', 'filetype' },
+            lualine_x = { 'lsp_progress', 'encoding', 'fileformat', 'filetype' },
             lualine_y = { 'progress' },
             lualine_z = {
                 { 'location', separator = { left = '', right = '' }, left_padding = 2 },

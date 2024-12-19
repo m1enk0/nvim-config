@@ -1,9 +1,6 @@
 vim.cmd([[
     " try
-    " set noendofline binary
-    set nofixendofline
     command! Scratch execute 'enew' | setlocal buftype=nofile bufhidden=hide noswapfile
-    let g:netrw_fastbrowse = 2
     set fileformat=dos
     " try
 
@@ -20,6 +17,7 @@ vim.cmd([[
     augroup HighlightWordUnderCursor
         autocmd!
         autocmd CursorMoved * call HighlightIfMultipleMatches()
+        " autocmd CursorHold  * call HighlightIfMultipleMatches()
     augroup END
     function! HighlightIfMultipleMatches()
         let word = expand('<cword>')
@@ -32,6 +30,21 @@ vim.cmd([[
         catch /./
         endtry
     endfunction
+
+    function! s:ZoomToggle() abort
+        if exists('t:zoomed') && t:zoomed
+            execute t:zoom_winrestcmd
+            let t:zoomed = 0
+        else
+            let t:zoom_winrestcmd = winrestcmd()
+            resize
+            vertical resize
+            let t:zoomed = 1
+        endif
+    endfunction
+
+    command! ZoomToggle call s:ZoomToggle()
+    nnoremap <silent> <leader><BS> :ZoomToggle<CR>
 ]])
 
 vim.opt.tabstop = 4
@@ -43,32 +56,32 @@ vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 
 vim.opt.title = true
-vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} — %t]]
+vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
 
--- function SetProjectViminfo()
---     -- Get the full path of the current directory
---     local project_path = vim.fn.getcwd()
---     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t') -- Get project folder name
---
---     -- Generate a hash of the project path to ensure uniqueness
---     local project_hash = vim.fn.sha256(project_path)
---     local viminfo_dir = vim.fn.expand("~/.local/share/nvim/viminfo/")
---     local viminfo_file = viminfo_dir .. project_name .. project_hash .. ".viminfo"
---
---     -- Create the viminfo directory if it doesn't exist
---     if vim.fn.isdirectory(viminfo_dir) == 0 then
---         vim.fn.mkdir(viminfo_dir, "p")
---     end
---
---     -- Set the viminfofile and load the viminfo data for the current project
---     vim.o.viminfofile = viminfo_file
---     vim.cmd("silent! rviminfo " .. viminfo_file) --
---
---     vim.fn.getjumplist()                         -- bug workaround
--- end
---
--- vim.cmd([[
---     autocmd VimEnter * lua SetProjectViminfo()
---     autocmd DirChanged * lua SetProjectViminfo()
---     autocmd VimLeavePre * silent! wviminfo!
--- ]])
+function SetProjectViminfo()
+    -- Get the full path of the current directory
+    local project_path = vim.fn.getcwd()
+    local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t') -- Get project folder name
+
+    -- Generate a hash of the project path to ensure uniqueness
+    local project_hash = vim.fn.sha256(project_path)
+    local viminfo_dir = vim.fn.expand("~/.local/share/nvim/viminfo/")
+    local viminfo_file = viminfo_dir .. project_name .. project_hash .. ".viminfo"
+
+    -- Create the viminfo directory if it doesn't exist
+    if vim.fn.isdirectory(viminfo_dir) == 0 then
+        vim.fn.mkdir(viminfo_dir, "p")
+    end
+
+    -- Set the viminfofile and load the viminfo data for the current project
+    vim.o.viminfofile = viminfo_file
+    vim.cmd("silent! rviminfo " .. viminfo_file)
+
+    vim.fn.getjumplist()                         -- bug workaround
+end
+
+vim.cmd([[
+    autocmd VimEnter * lua SetProjectViminfo()
+    autocmd DirChanged * lua SetProjectViminfo()
+    autocmd VimLeavePre * silent! wviminfo!
+]])
