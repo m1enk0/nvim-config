@@ -15,6 +15,9 @@ local plugins = {
     import = "plugins"
 }
 local settings = {
+    checker = {
+        enabled = false
+    },
     defaults = {
         lazy = true,
     },

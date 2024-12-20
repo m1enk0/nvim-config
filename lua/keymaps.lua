@@ -45,8 +45,13 @@ map("n", "<A-C-i>", "<cmd>vertical resize +5<cr>", opts)
 map("n", "<A-C-o>", "<cmd>vertical resize -5<cr>", opts)
 
 -- Qf nav
-map("n", "]}", "<cr><cmd>cnext<cr>", opts)
-map("n", "[{", "<cr><cmd>cprev<cr>", opts)
+map("n", "]}", "<cmd>cnext<cr>", opts)
+map("n", "[{", "<cmd>cprev<cr>", opts)
+
+-- Tab nav 
+map("n", "<leader>J", "<cmd>tabprev<cr>", opts)
+map("n", "<leader>K", "<cmd>tabnext<cr>", opts)
+map("n", "<leader>tc", "<cmd>tabc<cr>", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
