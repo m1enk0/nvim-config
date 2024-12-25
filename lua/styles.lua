@@ -16,8 +16,10 @@ vim.cmd([[
 
     hi ColorColumn guibg=#2C2F38
 
-    hi NormalFloat guibg=NONE
-    hi FloatBorder guifg=#42424a guibg=NONE 
+    hi NormalFloat guibg=#262626
+    hi FloatBorder guifg=#42424a guibg=#262626
+
+    hi TabLineSel guifg=white
 ]])
 
 -- Telescope

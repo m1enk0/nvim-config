@@ -22,6 +22,7 @@ map("i", "<Space>", "<Space><C-g>u", opts)
 -- Git
 map('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
 map('n', '<leader>kk', '<cmd>vertical Git<cr>', opts)
+map('n', '<leader>kq', '<cmd>Git difftool<cr>', opts)
 
 -- Moving lines
 map("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", opts)
@@ -49,9 +50,11 @@ map("n", "]}", "<cmd>cnext<cr>", opts)
 map("n", "[{", "<cmd>cprev<cr>", opts)
 
 -- Tab nav 
-map("n", "<leader>J", "<cmd>tabprev<cr>", opts)
-map("n", "<leader>K", "<cmd>tabnext<cr>", opts)
-map("n", "<leader>tc", "<cmd>tabc<cr>", opts)
+map("n", "<S-A-h>", "<cmd>tabprev<cr>", opts)
+map("n", "<S-A-l>", "<cmd>tabnext<cr>", opts)
+map("n", "<leader>tq", "<cmd>tabclose<cr>", opts)
+map("n", "<leader>tn", "<cmd>execute 'tabedit +'.line('.').' %'<cr>", opts)
+map("n", "<leader>to", "<cmd>tabonly<cr>", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")

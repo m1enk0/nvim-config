@@ -1,7 +1,9 @@
 vim.cmd([[
     " try
     command! Scratch execute 'enew' | setlocal buftype=nofile bufhidden=hide noswapfile
-    set fileformat=dos
+    set nofixeol
+    set fillchars=diff:⠀
+    set laststatus=3
     " try
 
     set shada=
@@ -13,23 +15,9 @@ vim.cmd([[
     set autoread
     autocmd FocusGained, BufEnter * checktime
 
-    highlight WordUnderCursor guibg=#3B4252
-    augroup HighlightWordUnderCursor
-        autocmd!
-        autocmd CursorMoved * call HighlightIfMultipleMatches()
-        " autocmd CursorHold  * call HighlightIfMultipleMatches()
-    augroup END
-    function! HighlightIfMultipleMatches()
-        let word = expand('<cword>')
-        try
-            if len(filter(getline(getpos('w0')[1], getpos('w$')[1]), 'v:val =~ "\\<" . word . "\\>"')) > 1
-                exec 'match WordUnderCursor /\V\<' . word . '\>/'
-            else
-                exec 'match none'
-            endif
-        catch /./
-        endtry
-    endfunction
+    hi WordUnderCursor guibg=#3B4252
+    nnoremap <leader>3 <CMD>exec 'match WordUnderCursor /\V\<' . expand('<cword>') . '\>/'<cr>
+    nnoremap <Esc> <Esc><cmd>exec 'match none'<cr>
 
     function! s:ZoomToggle() abort
         if exists('t:zoomed') && t:zoomed
