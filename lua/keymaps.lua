@@ -1,6 +1,5 @@
-local opts = { noremap = true, silent = true }
--- Shorten function name
 local map = vim.keymap.set
+local opts = { noremap = true, silent = true }
 
 local function getVisualSelection()
     vim.cmd('noau normal! "vy"')
@@ -12,6 +11,11 @@ end
 local function mapTelescopeNV(shortcut, telescopeFun)
     map("v", shortcut, function() telescopeFun({ default_text = getVisualSelection() }) end, opts)
     map("n", shortcut, telescopeFun, opts)
+end
+
+local function current_dir()
+    local dir = require("oil").get_current_dir()
+    if dir == nil then return vim.fn.fnamemodify(vim.fn.bufname(), ":p:h") else return dir end
 end
 
 map("n", "<A-BS>", "<cmd>on<cr>", opts)
@@ -46,8 +50,8 @@ map("n", "<A-C-i>", "<cmd>vertical resize +5<cr>", opts)
 map("n", "<A-C-o>", "<cmd>vertical resize -5<cr>", opts)
 
 -- Qf nav
-map("n", "]}", "<cmd>cnext<cr>", opts)
-map("n", "[{", "<cmd>cprev<cr>", opts)
+map("n", "<S-A-o>", "<cmd>cnext<cr>", opts)
+map("n", "<S-A-u>", "<cmd>cprev<cr>", opts)
 
 -- Tab nav 
 map("n", "<S-A-h>", "<cmd>tabprev<cr>", opts)
@@ -71,8 +75,8 @@ if ok then
     map("n", "<leader>kb", telescope.git_branches, opts)
     map("n", "<leader>fw", "<cmd>Telescope current_buffer_fuzzy_find fuzzy=false case_mode=ignore_case<cr>", opts)
 
-    map("n", "<leader>FF", function() telescope.find_files({ cwd = vim.fn.fnamemodify(vim.fn.bufname(), ":p:h") }) end, opts)
-    map("n", "<leader>FG", function() telescope.live_grep({ cwd = vim.fn.fnamemodify(vim.fn.bufname(), ":p:h") }) end, opts)
+    map("n", "<leader>FF", function() telescope.find_files({ cwd = current_dir() }) end, opts)
+    map("n", "<leader>FG", function() telescope.live_grep({ cwd = current_dir() }) end, opts)
 end
 
 -- Harpoon

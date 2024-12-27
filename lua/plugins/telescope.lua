@@ -39,6 +39,8 @@ return {
         local builtin = require('telescope.builtin')
         require("telescope").setup {
             defaults = {
+                sorting_strategy = "ascending",
+                file_sorter = require('telescope.sorters').get_fuzzy_file,
                 entry_prefix = " ",
                 selection_caret = " ",
                 prompt_prefix = "",
@@ -95,7 +97,7 @@ return {
                 },
                 oldfiles = {
                     cache_picker = false,
-                    sort_mru = true,
+                    sort_lastused = true,
                     theme = "dropdown",
                     previewer = false,
                     wrap_results = true,
