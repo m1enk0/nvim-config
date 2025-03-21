@@ -1,8 +1,3 @@
-local function no_kind(entry, vim_item)
-    vim_item.kind = ""
-    return vim_item
-end
-
 return {
     {
         "williamboman/mason.nvim",
@@ -76,7 +71,8 @@ return {
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
             "saadparwaiz1/cmp_luasnip",
-            "onsails/lspkind.nvim"
+            "onsails/lspkind.nvim",
+            "lukas-reineke/cmp-under-comparator",
         },
         config = function()
             local cmp = require('cmp')
@@ -86,37 +82,62 @@ return {
                     fields = { "kind", "abbr", "menu" },
                     format = function(entry, vim_item)
                         local kind = vim_item.kind
-                        vim_item.kind = lspkind.presets.default[vim_item.kind]
-                        -- vim_item.abbr = "" .. vim_item.abbr
+                        vim_item.kind = lspkind.presets.codicons[vim_item.kind]
                         local item = entry:get_completion_item()
-                        if item.detail then vim_item.menu = item.detail else vim_item.menu = kind end
+
+                        local menu;
+                        if item.detail then
+                            if vim_item.menu and vim_item.menu:len() >= 1 then
+                                menu = vim_item.menu .. " " .. item.detail
+                            else
+                                menu = item.detail
+                            end
+                        else
+                            menu = kind
+                        end
+                        local menu_lim = 70
+                        local menu_len = menu:len()
+                        if menu_len > menu_lim then
+                            menu = menu:sub(1, menu_lim / 2) .. "••" .. menu:sub(menu_len - (menu_lim / 2), menu_len)
+                        end
+
+                        vim_item.menu = menu
                         return vim_item
                     end
                 },
                 window = {
                     documentation = false,
-                    completion = {
-                        col_offset = -2,
-                    }
+                    completion = cmp.config.window.bordered({
+                        border = "rounded",
+                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
+                        -- col_offset = -3
+                    })
                 },
                 completion = {
                     completeopt = 'menu,menuone,noinsert',
-                    keyword_length = 1,
-                    debounce = 7
+                    debounce = 1,
                 },
                 performance = {
-                    throttle_time = 20, -- Lower throttle time
-                    debounce = 7, -- Lower debounce
-                    fetching_timeout = 200, -- Timeout for fetching
+                    throttle_time = 15,
+                    debounce = 1,
+                    fetching_timeout = 200,
                 },
                 preselect = false,
                 sorting = {
+                    priority_weight = 1.0,
                     comparators = {
+                        -- compare.score_offset, -- not good at all
                         cmp.config.compare.offset,
-                        cmp.config.compare.exact,
-                        cmp.config.compare.score,
+                        cmp.config.compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
                         cmp.config.compare.recently_used,
-                        cmp.config.compare.kind
+                        require "cmp-under-comparator".under,
+                        cmp.config.compare.locality,
+                        cmp.config.compare.exact,
+                        cmp.config.compare.kind,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
+                        cmp.config.compare.scope,
+                        -- compare.sort_text,
                     },
                 },
                 snippet = {
@@ -124,9 +145,9 @@ return {
                         require('luasnip').lsp_expand(args.body)
                     end
                 },
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                mapping = {
+                    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+                    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
                     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
                     ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { "c" }),
                     ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { "c" }),
@@ -136,24 +157,27 @@ return {
                         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-g>u', true, true, true), 'n', true)
                         cmp.mapping.confirm({ select = true })(fallback)
                     end, { 'i', 's' })
-                }),
-                sources = cmp.config.sources({
-                    { name = 'nvim_lsp' }, { name = 'luasnip' }
-                }, {
-                    { name = 'buffer' }, { name = 'path' }
-                })
+                },
+                sources = {
+                    { name = "nvim_lsp", priority = 20 },
+                    { name = 'luasnip', priority = 7 },
+                    { name = "buffer", priority = 5, keyword_length = 5, max_item_count = 10 },
+                    { name = "path", priority = 4 },
+                },
             })
             cmp.setup.cmdline({ '/', '?' }, {
+                window = { completion = cmp.config.window.bordered({ border = 'none' }) },
                 completion = { completeopt = 'menu,menuone,noselect' },
-                formatting = { format = no_kind },
+                formatting = { fields = { 'abbr' } },
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = {
                     { name = 'buffer' }
                 }
             })
             cmp.setup.cmdline(':', {
+                window = { completion = cmp.config.window.bordered({ border = 'none' }) },
                 completion = { completeopt = 'menu,menuone,noselect' },
-                formatting = { format = no_kind },
+                formatting = { fields = { 'abbr' } },
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = cmp.config.sources({
                     { name = 'path' }

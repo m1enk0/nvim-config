@@ -9,7 +9,17 @@ local function getVisualSelection()
 end
 
 local function mapTelescopeNV(shortcut, telescopeFun)
-    map("v", shortcut, function() telescopeFun({ default_text = getVisualSelection() }) end, opts)
+    local actions = require("telescope.actions")
+    map("v", shortcut, function() telescopeFun({
+        default_text = getVisualSelection(),
+        attach_mappings  = function(_)
+            actions.close:replace(function(prompt_bufnr)
+                vim.api.nvim_buf_delete(prompt_bufnr, { force = true })
+                vim.cmd("norm gv")
+            end)
+            return true
+        end
+    }) end, opts)
     map("n", shortcut, telescopeFun, opts)
 end
 
@@ -19,7 +29,8 @@ local function current_dir()
 end
 
 map("n", "<A-BS>", "<cmd>on<cr>", opts)
-map("n", "<A-q>", "<cmd>Ex<cr>", opts)
+
+-- Split actions for undo
 map("i", "<Cr>", "<Cr><C-g>u", opts)
 map("i", "<Space>", "<Space><C-g>u", opts)
 
@@ -48,6 +59,8 @@ map("n", "<A-C-l>", "<C-w>l", opts)
 map("n", "<A-C-h>", "<C-w>h", opts)
 map("n", "<A-C-i>", "<cmd>vertical resize +5<cr>", opts)
 map("n", "<A-C-o>", "<cmd>vertical resize -5<cr>", opts)
+map("n", "<A-C-e>", "<cmd>horizontal resize +2<cr>", opts)
+map("n", "<A-C-w>", "<cmd>horizontal resize -2<cr>", opts)
 
 -- Qf nav
 map("n", "<S-A-o>", "<cmd>cnext<cr>", opts)
@@ -59,6 +72,7 @@ map("n", "<S-A-l>", "<cmd>tabnext<cr>", opts)
 map("n", "<leader>tq", "<cmd>tabclose<cr>", opts)
 map("n", "<leader>tn", "<cmd>execute 'tabedit +'.line('.').' %'<cr>", opts)
 map("n", "<leader>to", "<cmd>tabonly<cr>", opts)
+map("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", opts)
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope.builtin")
@@ -68,7 +82,6 @@ if ok then
     mapTelescopeNV("<leader>fh", telescope.help_tags)
     mapTelescopeNV("<leader>fp", telescope.pickers)
     map("n", "<A-e>", telescope.oldfiles, opts)
-    -- map("n", "<A-e>", telescope.buffers, opts)
     map("n", "<leader>fr", telescope.resume, opts)
     map("n", "<C-l>", telescope.git_status, opts)
     map("n", "<leader>ks", telescope.git_stash, opts)
@@ -122,7 +135,8 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- LSP
 map("n", "gr", telescope.lsp_references, opts)
-map("n", "gi", telescope.lsp_implementations, opts)
+map("n", "<A-p>", telescope.lsp_document_symbols, opts)
+map("n", "<leader>gi", telescope.lsp_implementations, opts)
 
 map("n", "gd", vim.lsp.buf.definition, opts)
 map("n", "]]", vim.diagnostic.goto_next, opts)
@@ -132,6 +146,7 @@ map("v", "<A-CR>", vim.lsp.buf.code_action, opts)
 map("n", "<S-A-f>", vim.lsp.buf.format, opts)
 map("v", "<S-A-f>", vim.lsp.buf.format, opts)
 map("n", "<C-p>", vim.lsp.buf.signature_help, opts)
+map("i", "<C-p>", vim.lsp.buf.signature_help, opts)
 map("n", "<A-r>", vim.lsp.buf.rename, opts)
 map("n", "<leader>ah", vim.lsp.buf.hover, opts)
 map("n", "<leader>ls", "<cmd>LspStart<cr>", opts)

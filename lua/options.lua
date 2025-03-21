@@ -1,6 +1,6 @@
 vim.cmd([[
     " try
-    command! Scratch execute 'enew' | setlocal buftype=nofile bufhidden=hide noswapfile
+    command! -nargs=* Scratch execute 'lua OpenInScratch(vim.fn.expand("<args>"))'
     set nofixeol
     set fillchars=diff:⠀
     set laststatus=3
@@ -33,6 +33,8 @@ vim.cmd([[
 
     command! ZoomToggle call s:ZoomToggle()
     nnoremap <silent> <leader><BS> :ZoomToggle<CR>
+
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o "disable auto comment next line
 ]])
 
 vim.opt.tabstop = 4
@@ -43,8 +45,18 @@ vim.opt.smartindent = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.o.viminfo = "'1000,<10000,s1000"
+vim.opt.splitright = true
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
+
+function OpenInScratch(param)
+    local scratch_buf = vim.api.nvim_create_buf(false, true)
+    if vim.fn.filereadable(param) == 1 then
+        local content = vim.fn.readfile(param)vim.fn.readfile(param)
+        vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, content)
+    end
+    vim.api.nvim_set_current_buf(scratch_buf)
+end
 
 function SetProjectViminfo()
     local project_path = vim.fn.getcwd()

@@ -1,9 +1,14 @@
 vim.cmd([[ 
-    hi Pmenu guibg=#262626 ctermbg=NONE
-    hi PmenuSel guibg=#085D96
-    hi CmpItemAbbrMatch guifg=#CEDFF2 gui=NONE
-    hi CmpItemAbbrMatchFuzzy guifg=#CEDFF2 gui=NONE
-    hi CmpItemAbbr guifg=#8697BA
+    hi Pmenu guibg=NONE guifg=#42424a ctermbg=NONE
+    " hi PmenuSel guibg=#085D96
+    hi PmenuSel guibg=#113A5C
+    hi PmenuSbar guibg=#333333
+    hi PmenuThumb guibg=#4A4A4A
+
+    hi CmpItemAbbrMatch guifg=#6897BB gui=NONE
+    hi CmpItemAbbrMatchFuzzy guifg=#6897BB gui=NONE
+    " hi CmpItemAbbr guifg=#8697BA
+    hi CmpItemMenu  guifg=#747982
 
     hi Visual guibg=#2A56AD gui=NONE
     hi Search guibg=#4A5369 guifg=NONE gui=NONE
@@ -11,15 +16,17 @@ vim.cmd([[
     hi Normal guibg=NONE ctermbg=NONE
     hi NormalNC guibg=NONE ctermbg=NONE
 
-    hi StatusLineNC guifg=#566178
-    hi StatusLine guifg=#7F8FB0
+    " hi StatusLineNC guifg=#566178
+    hi StatusLine guibg=#2B2B2B
 
-    hi ColorColumn guibg=#2C2F38
+    hi ColorColumn guibg=#292929
 
-    hi NormalFloat guibg=#262626
-    hi FloatBorder guifg=#42424a guibg=#262626
+    hi NormalFloat guibg=#292929
+    hi FloatBorder guifg=#42424a guibg=#2B2B2B
 
     hi TabLineSel guifg=white
+
+    highlight CursorLine guibg=#2B2B2B
 ]])
 
 -- Telescope
@@ -27,16 +34,16 @@ local ok, telescope = pcall(require, "telescope")
 if ok then
     vim.api.nvim_set_hl(0, "Directory", { link = "Comment" })
 
-    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "#262626" })
-    vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = "#262626" })
-    vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#424242", bg = "#262626" })
-    vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#424242", bg = "#262626" })
-    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = "#262626" })
-    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = "#262626" })
-    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = "#262626" })
+    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = "NONE" })
+    vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#424242", bg = "NONE" })
+    vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#424242", bg = "NONE" })
+    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = "NONE" })
+    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = "NONE" })
+    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = "NONE" })
     vim.api.nvim_set_hl(0, "TelescopeSelection", { fg = "white", bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
-    vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = "#D6B981", bg = "#39404F", bold = false })
+    vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
 end
 
 -- Treesitter
@@ -52,10 +59,11 @@ vim.api.nvim_set_hl(0, "@function", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@module", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@function.method", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@function.method.call", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@function.builtin", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@class_field", { fg = purple })
 vim.api.nvim_set_hl(0, "@property", { fg = purple })
 vim.api.nvim_set_hl(0, "@variable.member", { fg = purple })
-vim.api.nvim_set_hl(0, "@variable.parameter", { fg = white })
+vim.api.nvim_set_hl(0, "@variable.parameter", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@string", { fg = dark_green })
 vim.api.nvim_set_hl(0, "@constant", { fg = purple, italic = true })
 vim.api.nvim_set_hl(0, "@constant.builtin", { fg = carrot_red })
@@ -79,3 +87,4 @@ vim.api.nvim_set_hl(0, "@number", { fg = dim_blue })
 -- language specific
 vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })
 vim.api.nvim_set_hl(0, "@boolean.yaml", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.type.operator.cpp", { fg = carrot_red })
