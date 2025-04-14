@@ -21,7 +21,8 @@ return {
             size = 15,
             direction = 'horizontal',
             start_in_insert = true,
-            persist_mode = false,
+            auto_scroll = false
+            -- persist_mode = false,
         }
     end
 }

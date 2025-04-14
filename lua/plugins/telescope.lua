@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-local function filenameFirst(_, path)
+function filenameFirst(_, path)
     local tail = vim.fs.basename(path)
     local parent = vim.fs.dirname(path)
     if parent == "." then return tail end
@@ -32,7 +32,8 @@ return {
     dependencies = {
         'nvim-lua/plenary.nvim',
         'nvim-tree/nvim-web-devicons',
-        'nvim-telescope/telescope-ui-select.nvim'
+        'nvim-telescope/telescope-ui-select.nvim',
+        'nvim-telescope/telescope-fzf-native.nvim'
     },
     event = "VeryLazy",
     config = function()
@@ -40,11 +41,10 @@ return {
         require("telescope").setup {
             defaults = {
                 sorting_strategy = "ascending",
-                file_sorter = require('telescope.sorters').get_fuzzy_file,
+                -- file_sorter = require('telescope.sorters').get_fuzzy_file
                 entry_prefix = " ",
                 selection_caret = " ",
                 prompt_prefix = "",
-
                 cache_picker = {
                     ignore_empty_prompt = true,
                     num_pickers = 150,
@@ -105,7 +105,7 @@ return {
                 git_status = {
                     cache_picker = false,
                     path_display = filenameFirst,
-                    -- theme = "ivy",
+                    wrap_results = true,
                     mappings = {
                         i = {
                             ["<C-l>"] = "close",
@@ -141,9 +141,20 @@ return {
                 ["ui-select"] = {
                     require("telescope.themes").get_dropdown({}),
                     cache_picker = false,
+                },
+                fzf = {
+                    fuzzy = true,
+                    override_generic_sorter = true,
+                    override_file_sorter = true,
+                    case_mode = "smart_case",
+                },
+                recent_files = {
+                    max_entries = 1000
                 }
             },
         }
         require("telescope").load_extension("ui-select")
+        require("telescope").load_extension("fzf")
+        require("telescope").load_extension("recent_files")
     end
 }

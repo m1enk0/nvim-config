@@ -81,7 +81,7 @@ if ok then
     mapTelescopeNV("<leader>fg", telescope.live_grep)
     mapTelescopeNV("<leader>fh", telescope.help_tags)
     mapTelescopeNV("<leader>fp", telescope.pickers)
-    map("n", "<A-e>", telescope.oldfiles, opts)
+    map("n", "<A-e>", "<cmd>Telescope recent_files<cr>", opts)
     map("n", "<leader>fr", telescope.resume, opts)
     map("n", "<C-l>", telescope.git_status, opts)
     map("n", "<leader>ks", telescope.git_stash, opts)
@@ -105,8 +105,10 @@ map("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', opts)
 -- Gitsings
 map("n", "<C-A-d>", "<cmd>Gitsigns next_hunk<cr>", opts)
 map("n", "<C-A-u>", "<cmd>Gitsigns prev_hunk<cr>", opts)
+map("n", "<S-A-n>", "<cmd>Gitsigns next_hunk<cr>", opts)
+map("n", "<S-A-p>", "<cmd>Gitsigns prev_hunk<cr>", opts)
 map("n", "<A-z>", "<cmd>Gitsigns reset_hunk<cr>", opts)
-map("n", "<leader>s", "<cmd>Gitsigns preview_hunk<cr>", opts)
+map("n", "<leader>ss", "<cmd>Gitsigns preview_hunk<cr>", opts)
 
 -- Terminal
 map("t", "<Esc>", "<C-\\><C-n>", opts)
@@ -153,3 +155,18 @@ map("n", "<leader>ls", "<cmd>LspStart<cr>", opts)
 map("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
 
 map("n", "-", require("oil").open, opts)
+
+-- Settings
+map("n", "<leader>sw", "<cmd>set wrap!<cr>", opts)
+
+-- Alacritty specific mappings
+map("n", "<C-Left>", "<C-w>h", opts)
+map("n", "<C-Down>", "<C-w>j", opts)
+map("n", "<C-Up>", "<C-w>k", opts)
+map("n", "<C-Right>", "<C-w>l", opts)
+map("n", "<C-A-Right>", "<cmd>vertical resize +5<cr>", opts)
+map("n", "<C-A-Left>", "<cmd>vertical resize -5<cr>", opts)
+map("n", "<C-A-Up>", "<cmd>horizontal resize +2<cr>", opts)
+map("n", "<C-A-Down>", "<cmd>horizontal resize -2<cr>", opts)
+
+map("n", "<leader>ip", "<cmd>echo expand('%:p')<cr>", opts)

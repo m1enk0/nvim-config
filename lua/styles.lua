@@ -10,37 +10,38 @@ vim.cmd([[
     " hi CmpItemAbbr guifg=#8697BA
     hi CmpItemMenu  guifg=#747982
 
-    hi Visual guibg=#2A56AD gui=NONE
+    hi Visual guibg=#214283 gui=NONE
     hi Search guibg=#4A5369 guifg=NONE gui=NONE
 
     hi Normal guibg=NONE ctermbg=NONE
     hi NormalNC guibg=NONE ctermbg=NONE
 
     " hi StatusLineNC guifg=#566178
-    hi StatusLine guibg=#2B2B2B
+    hi StatusLine guibg=#323232
 
-    hi ColorColumn guibg=#292929
+    hi ColorColumn guibg=#2E2E2E
 
     hi NormalFloat guibg=#292929
     hi FloatBorder guifg=#42424a guibg=#2B2B2B
 
     hi TabLineSel guifg=white
 
-    highlight CursorLine guibg=#2B2B2B
+    highlight CursorLine guibg=#323232
 ]])
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope")
 if ok then
+    local telescope_bg = "#2E2E2E"
     vim.api.nvim_set_hl(0, "Directory", { link = "Comment" })
 
-    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "NONE" })
-    vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#424242", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#424242", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = "NONE" })
+    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#424242", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#424242", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = telescope_bg })
     vim.api.nvim_set_hl(0, "TelescopeSelection", { fg = "white", bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
@@ -54,6 +55,7 @@ local carrot_red = "#CC7832"
 local purple = "#9876AA"
 local topaz_yellow = "#FFC66D"
 local dim_blue = "#6897BB"
+local comment = "#808080"
 vim.api.nvim_set_hl(0, "@attribute", { fg = dim_yellow })
 vim.api.nvim_set_hl(0, "@function", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@module", { fg = topaz_yellow })
@@ -83,6 +85,7 @@ vim.api.nvim_set_hl(0, "@operator", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@variable", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@number", { fg = dim_blue })
+vim.api.nvim_set_hl(0, "@comment", { fg = comment })
 
 -- language specific
 vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })
