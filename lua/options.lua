@@ -1,14 +1,14 @@
 vim.cmd([[
     " try
-    command! -nargs=* Scratch execute 'lua OpenInScratch(vim.fn.expand("<args>"))'
     set nofixeol
     set fillchars=diff:⠀
-    set laststatus=3
     " try
 
-    set shada=
     set pumheight=10
     set colorcolumn=140
+
+    command! -nargs=* Scratch execute 'lua OpenInScratch(vim.fn.expand("<args>"))'
+    set laststatus=3
 
     au TextYankPost * silent! lua vim.highlight.on_yank { higroup="VisualMode", timeout=250 }
 
@@ -35,6 +35,8 @@ vim.cmd([[
     nnoremap <silent> <leader><BS> :ZoomToggle<CR>
 
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o "disable auto comment next line
+
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "autojump to last position in the file
 ]])
 
 vim.opt.tabstop = 4
@@ -45,9 +47,11 @@ vim.opt.smartindent = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 -- vim.o.viminfo = "'1000,<10000,s1000"
+-- vim.o.viminfo = "'25,\"50"
 vim.opt.splitright = true
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
+-- vim.opt.shada = ""
 
 function OpenInScratch(param)
     local scratch_buf = vim.api.nvim_create_buf(false, true)
@@ -58,28 +62,27 @@ function OpenInScratch(param)
     vim.api.nvim_set_current_buf(scratch_buf)
 end
 
--- function SetProjectViminfo()
---     local project_path = vim.fn.getcwd()
---     local viminfo_dir = vim.fn.expand("~/.local/share/nvim/viminfo/")
---     local viminfo_file = viminfo_dir .. vim.fn.fnamemodify(project_path, ':t') .. "_" .. vim.fn.sha256(project_path) .. ".viminfo"
---     if vim.fn.isdirectory(viminfo_dir) == 0 then
---         vim.fn.mkdir(viminfo_dir, "p", 0700) -- Set permissions to owner-only
---     end
---     vim.o.viminfofile = viminfo_file
---     vim.cmd("silent! rviminfo " .. vim.fn.fnameescape(viminfo_file))
---     vim.fn.getjumplist() -- Workaround for jump list bug
--- end
+function SetProjectViminfo()
+    local project_path = vim.fn.getcwd()
+    local viminfo_dir = vim.fn.expand("~/.local/share/nvim/viminfo/")
+    local viminfo_file = viminfo_dir .. vim.fn.fnamemodify(project_path, ':t') .. "_" .. vim.fn.sha256(project_path) .. ".viminfo"
+    if vim.fn.isdirectory(viminfo_dir) == 0 then
+        vim.fn.mkdir(viminfo_dir, "p", 0700) -- Set permissions to owner-only
+    end
+    vim.o.viminfofile = viminfo_file
+    vim.cmd("silent! rviminfo " .. vim.fn.fnameescape(viminfo_file))
+    vim.fn.getjumplist() -- Workaround for jump list bug
+end
 
-
--- -- Add protection against accidental deletion
--- vim.api.nvim_create_autocmd("VimLeavePre", {
---     callback = function()
---         vim.cmd("silent! wviminfo! " .. vim.fn.fnameescape(viminfo_file))
---     end,
---     group = vim.api.nvim_create_augroup("PersistentViminfo", {clear = false})
--- })
--- -- Set up autocommands
--- vim.api.nvim_create_autocmd({"VimEnter", "DirChanged"}, {
---     callback = SetProjectViminfo,
---     group = vim.api.nvim_create_augroup("ProjectViminfo", {clear = true})
--- })
+-- Add protection against accidental deletion
+vim.api.nvim_create_autocmd("VimLeavePre", {
+    callback = function()
+        vim.cmd("silent! wviminfo! " .. vim.fn.fnameescape(viminfo_file))
+    end,
+    group = vim.api.nvim_create_augroup("PersistentViminfo", {clear = false})
+})
+-- Set up autocommands
+vim.api.nvim_create_autocmd({"VimEnter", "DirChanged"}, {
+    callback = SetProjectViminfo,
+    group = vim.api.nvim_create_augroup("ProjectViminfo", {clear = true})
+})

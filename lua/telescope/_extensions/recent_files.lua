@@ -12,14 +12,9 @@ local dropdown = require('telescope.themes').get_dropdown()
 
 local function recent_files_picker(opts)
     opts = opts or {}
-    local function filter_existing_files(files)
-        return vim.tbl_filter(function(file)
-            return vim.fn.filereadable(file) == 1
-        end, files)
-    end
 
-    local existing_files = filter_existing_files(recent_files.get_recent_files())
-    recent_files.update_files(existing_files) -- Update the stored list
+    recent_files.sync_files()
+    local results = recent_files.get_recent_files_with_timestamps()
 
     -- Merge our defaults with user options
     local picker_opts = vim.tbl_deep_extend('force', {
@@ -32,25 +27,49 @@ local function recent_files_picker(opts)
     local conf = require('telescope.config').values
     local actions = require('telescope.actions')
     local action_state = require('telescope.actions.state')
+    local sorters = require('telescope.sorters')
+    local generic_sorter = conf.generic_sorter(picker_opts)
+
+    local min_timestamp, max_timestamp = math.huge, -math.huge
+    for _, entry in ipairs(results) do
+        if entry.timestamp < min_timestamp then
+            min_timestamp = entry.timestamp
+        end
+        if entry.timestamp > max_timestamp then
+            max_timestamp = entry.timestamp
+        end
+    end
+
+    local original_scoring = generic_sorter.scoring_function
+    generic_sorter.scoring_function = function(self, prompt, line, entry)
+        local original_score = original_scoring(self, prompt, line, entry) or 0
+        local score = original_score
+        if original_score > 0 and prompt:len() > 0 then
+            local norm_timestamp = (entry.timestamp - min_timestamp) / (max_timestamp - min_timestamp)
+            score = score * 0.99 - norm_timestamp * 0.01
+        end
+        return score
+    end
 
     pickers.new(picker_opts, {
         finder = finders.new_table({
-            results = recent_files.get_recent_files(),
+            results = results,
             entry_maker = function(entry)
                 local icon, icon_color = '', ''
                 if devicons then
-                    local filename = vim.fn.fnamemodify(entry, ':t')
-                    local extension = vim.fn.fnamemodify(entry, ':e')
+                    local filename = vim.fn.fnamemodify(entry.path, ':t')
+                    local extension = vim.fn.fnamemodify(entry.path, ':e')
                     icon, icon_color = devicons.get_icon_color(filename, extension, { default = true })
                 end
                 return {
-                    value = entry,
-                    display = string.format('%s %s', icon ~= '' and icon or ' ', filenameFirst(_, entry)),
-                    ordinal = entry,
+                    value = entry.path,
+                    display = string.format('%s %s', icon ~= '' and icon or ' ', filenameFirst(_, entry.path)),
+                    ordinal = entry.path,
+                    timestamp = entry.timestamp
                 }
             end
         }),
-        sorter = conf.generic_sorter(picker_opts),
+        sorter = generic_sorter,
         attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
