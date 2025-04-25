@@ -33,7 +33,7 @@ return {
         'nvim-lua/plenary.nvim',
         'nvim-tree/nvim-web-devicons',
         'nvim-telescope/telescope-ui-select.nvim',
-        'nvim-telescope/telescope-fzf-native.nvim'
+        'natecraddock/telescope-zf-native.nvim'
     },
     event = "VeryLazy",
     config = function()
@@ -41,7 +41,6 @@ return {
         require("telescope").setup {
             defaults = {
                 sorting_strategy = "ascending",
-                -- file_sorter = require('telescope.sorters').get_fuzzy_file
                 entry_prefix = " ",
                 selection_caret = " ",
                 prompt_prefix = "",
@@ -140,21 +139,22 @@ return {
             extensions = {
                 ["ui-select"] = {
                     require("telescope.themes").get_dropdown({}),
-                    cache_picker = false,
+                    cache_picker = false
                 },
-                fzf = {
-                    fuzzy = true,
-                    override_generic_sorter = true,
-                    override_file_sorter = true,
-                    case_mode = "smart_case",
+                ["zf-native"] = {
+                    file = {
+                        enable = true,
+                        match_filename = true,
+                        smart_case = true,
+                    }
                 },
                 recent_files = {
-                    max_entries = 1000
+                    max_entries = 400
                 }
             },
         }
         require("telescope").load_extension("ui-select")
-        require("telescope").load_extension("fzf")
+        require("telescope").load_extension("zf-native")
         require("telescope").load_extension("recent_files")
     end
 }

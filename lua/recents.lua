@@ -3,7 +3,7 @@ local M = {}
 -- Configuration defaults
 local config = {
   session_file = vim.fn.stdpath('data') .. '/recent_files2/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t') .. "_" .. vim.fn.sha256(vim.fn.getcwd()),
-  max_entries = 1000,
+  max_entries = 400,
 }
 
 -- Setup function to override defaults
@@ -79,6 +79,20 @@ function M.sync_files()
     save_recent_files()
 end
 
+function M.delete_entry(filepath)
+    if not filepath or filepath == '' then return false end
+    local found = false
+    recent_files = vim.tbl_filter(function(entry)
+        if entry.path == filepath then
+            found = true
+            return false
+        end
+        return true
+    end, recent_files)
+    if found then save_recent_files() end
+    return found
+end
+
 local group = vim.api.nvim_create_augroup('RecentFilesTracker', { clear = true })
 vim.api.nvim_create_autocmd('BufEnter', {
     group = group,
@@ -90,7 +104,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end,
 })
 
--- Initialize the module
 load_recent_files()
 
 return M

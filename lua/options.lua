@@ -56,7 +56,7 @@ vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
 function OpenInScratch(param)
     local scratch_buf = vim.api.nvim_create_buf(false, true)
     if vim.fn.filereadable(param) == 1 then
-        local content = vim.fn.readfile(param)vim.fn.readfile(param)
+        local content = vim.fn.readfile(param)
         vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, content)
     end
     vim.api.nvim_set_current_buf(scratch_buf)

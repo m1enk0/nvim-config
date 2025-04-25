@@ -26,7 +26,9 @@ vim.cmd([[
 
     hi TabLineSel guifg=white
 
-    highlight CursorLine guibg=#323232
+    hi CursorLine guibg=#323232
+
+    hi SpellBad gui=underline cterm=underline
 ]])
 
 -- Telescope

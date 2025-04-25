@@ -24,10 +24,10 @@ return {
     },
     {
         "neovim/nvim-lspconfig",
+        version = "v1.8.0", -- above versions require nvim v10+
         event = "VeryLazy",
         config = function()
             local lspconfig = require 'lspconfig'
-            -- local util = require 'lspconfig/util'
             local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
             lspconfig.util.default_config = vim.tbl_deep_extend("force", lspconfig.util.default_config, {
                 capabilities = capabilities
@@ -60,6 +60,8 @@ return {
             lspconfig.golangci_lint_ls.setup {
                 filetypes = { 'go', 'gomod' }
             }
+            lspconfig.yamlls.setup {}
+            lspconfig.jsonls.setup {}
         end
     },
     {
@@ -110,7 +112,7 @@ return {
                     completion = cmp.config.window.bordered({
                         border = "rounded",
                         winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
-                        -- col_offset = -3
+                        col_offset = -3
                     })
                 },
                 completion = {

@@ -70,7 +70,7 @@ map("n", "<S-A-u>", "<cmd>cprev<cr>", opts)
 map("n", "<S-A-h>", "<cmd>tabprev<cr>", opts)
 map("n", "<S-A-l>", "<cmd>tabnext<cr>", opts)
 map("n", "<leader>tq", "<cmd>tabclose<cr>", opts)
-map("n", "<leader>tn", "<cmd>execute 'tabedit +'.line('.').' %'<cr>", opts)
+map("n", "<leader>tn", "<cmd>tab split<cr>", opts)
 map("n", "<leader>to", "<cmd>tabonly<cr>", opts)
 map("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", opts)
 
@@ -80,7 +80,7 @@ if ok then
     mapTelescopeNV("<leader>ff", telescope.find_files)
     mapTelescopeNV("<leader>fg", telescope.live_grep)
     mapTelescopeNV("<leader>fh", telescope.help_tags)
-    mapTelescopeNV("<leader>fp", telescope.pickers)
+    map("n", "<leader>fp", telescope.pickers)
     map("n", "<A-e>", "<cmd>Telescope recent_files<cr>", opts)
     map("n", "<leader>fr", telescope.resume, opts)
     map("n", "<C-l>", telescope.git_status, opts)
@@ -155,9 +155,11 @@ map("n", "<leader>ls", "<cmd>LspStart<cr>", opts)
 map("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
 
 map("n", "-", require("oil").open, opts)
+map("v", "<leader>fj", "!jq<cr>", opts)
 
 -- Settings
 map("n", "<leader>sw", "<cmd>set wrap!<cr>", opts)
+map("n", "<leader>sp", "<cmd>silent! setlocal spell! spelloptions=camel spelllang=ru_yo,en_us<cr>", opts)
 
 -- Alacritty specific mappings
 map("n", "<C-Left>", "<C-w>h", opts)
@@ -169,4 +171,16 @@ map("n", "<C-A-Left>", "<cmd>vertical resize -5<cr>", opts)
 map("n", "<C-A-Up>", "<cmd>horizontal resize +2<cr>", opts)
 map("n", "<C-A-Down>", "<cmd>horizontal resize -2<cr>", opts)
 
-map("n", "<leader>ip", "<cmd>echo expand('%:p')<cr>", opts)
+map("n", "<leader>ip", "<cmd>echo expand('%:P')<cr>", opts)
+map("n", "<leader>iP", "<cmd>echo expand('%:p')<cr>", opts)
+
+vim.api.nvim_create_user_command('ExecuteToSplit', function()
+    local cmd = vim.fn.getreg('"'):gsub('[\r\n]', ' ')
+    local output = vim.fn.system(cmd)
+    local scratch_buf = vim.api.nvim_create_buf(false, true)
+    local lines = vim.split(cmd .. "\n\n" .. output, '\n')
+    vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, lines)
+    vim.cmd('vsplit')
+    vim.api.nvim_set_current_buf(scratch_buf)
+end, {})
+map('v', '<leader>E', 'y:ExecuteToSplit<CR>', opts)
