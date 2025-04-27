@@ -15,7 +15,7 @@ local function mapTelescopeNV(shortcut, telescopeFun)
         attach_mappings  = function(_)
             actions.close:replace(function(prompt_bufnr)
                 vim.api.nvim_buf_delete(prompt_bufnr, { force = true })
-                vim.cmd("norm gv")
+                vim.cmd("norm! gvl") -- 'l' is a fix one char trimming on gv
             end)
             return true
         end
@@ -81,6 +81,7 @@ if ok then
     mapTelescopeNV("<leader>fg", telescope.live_grep)
     mapTelescopeNV("<leader>fh", telescope.help_tags)
     MAP_KEY("n", "<leader>fp", telescope.pickers)
+    MAP_KEY("n", "<leader>fd", "<cmd>Telescope fd find_command=fd,-t=d<cr>")
     MAP_KEY("n", "<A-e>", "<cmd>Telescope recent_files<cr>", MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>fr", telescope.resume, MAP_KEY_OPTS)
     MAP_KEY("n", "<C-l>", telescope.git_status, MAP_KEY_OPTS)

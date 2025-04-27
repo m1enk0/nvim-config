@@ -6,6 +6,10 @@ return {
             'jay-babu/mason-nvim-dap.nvim',
         },
         cmd = { 'DapContinue', 'DapToggleBreakpoint' },
+        config = function()
+            MAP_KEY("n", "<C-_>", "<cmd>DapToggleBreakpoint<cr>", MAP_KEY_OPTS)
+            MAP_KEY("n", "<C-n>", "<cmd>DapContinue<cr>", MAP_KEY_OPTS)
+        end
     },
     {
         'rcarriga/nvim-dap-ui',
@@ -33,9 +37,6 @@ return {
             dap.listeners.before.event_exited['dapui_config'] = function()
                 dapui.close()
             end
-
-            MAP_KEY("n", "<C-_>", "<cmd>DapToggleBreakpoint<cr>", MAP_KEY_OPTS)
-            MAP_KEY("n", "<C-n>", "<cmd>DapContinue<cr>", MAP_KEY_OPTS)
             MAP_KEY("n", "<C-u>", "<cmd>lua require('dapui').toggle()<cr>", MAP_KEY_OPTS)
             MAP_KEY("n", "<A-/>", "<cmd>lua require('dapui').eval()<cr>", MAP_KEY_OPTS)
         end
