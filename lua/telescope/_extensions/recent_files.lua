@@ -45,7 +45,7 @@ local function recent_files_picker(opts)
     local actions = require('telescope.actions')
     local action_state = require('telescope.actions.state')
     local sorters = require('telescope.sorters')
-    local generic_sorter = conf.generic_sorter(picker_opts)
+    local file_sorter = conf.file_sorter(picker_opts)
 
     local min_timestamp, max_timestamp = math.huge, -math.huge
     for _, entry in ipairs(results) do
@@ -57,13 +57,14 @@ local function recent_files_picker(opts)
         end
     end
 
-    local original_scoring = generic_sorter.scoring_function
-    generic_sorter.scoring_function = function(self, prompt, line, entry)
+    local original_scoring = file_sorter.scoring_function
+    file_sorter.scoring_function = function(self, prompt, line, entry)
         local original_score = original_scoring(self, prompt, line, entry) or 0
         local score = original_score
         if original_score > 0 and prompt:len() > 0 then
             local norm_timestamp = (entry.timestamp - min_timestamp) / (max_timestamp - min_timestamp)
-            score = score - norm_timestamp * 0.01
+            local reminder = score - score * 0.4
+            score = score - reminder + reminder * (1 - norm_timestamp)
         end
         return score
     end
@@ -73,7 +74,7 @@ local function recent_files_picker(opts)
             results = results,
             entry_maker = entry_maker
         }),
-        sorter = generic_sorter,
+        sorter = file_sorter,
         attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
