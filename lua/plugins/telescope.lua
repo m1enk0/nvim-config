@@ -141,13 +141,6 @@ return {
                     require("telescope.themes").get_dropdown({}),
                     cache_picker = false
                 },
-                ["zf-native"] = {
-                    file = {
-                        enable = true,
-                        match_filename = true,
-                        smart_case = true,
-                    }
-                },
                 recent_files = {
                     max_entries = 400
                 }
