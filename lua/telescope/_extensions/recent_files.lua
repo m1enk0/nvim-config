@@ -8,15 +8,28 @@ end
 
 local function entry_maker(entry)
     local icon, icon_color = '', ''
-    if devicons then
-        local filename = vim.fn.fnamemodify(entry.path, ':t')
-        local extension = vim.fn.fnamemodify(entry.path, ':e')
+    local filename = vim.fn.fnamemodify(entry.path, ':t')
 
+    if devicons then
+        local extension = vim.fn.fnamemodify(entry.path, ':e')
         icon, icon_color = devicons.get_icon_color(filename, extension, { default = true })
     end
+
+    local hl_group = ''
+    if icon_color and icon_color ~= '' then
+        hl_group = 'TelescopeDevicons_' .. icon_color:gsub('#', '')
+        if vim.fn.hlID(hl_group) == 0 then
+            vim.api.nvim_set_hl(0, hl_group, { fg = icon_color })
+        end
+    end
+
     return {
         value = entry.path,
-        display = string.format('%s %s', icon ~= '' and icon or ' ', filenameFirst(_, entry.path)),
+        display = function()
+            local displayer = require('telescope.pickers.entry_display')
+                .create({ separator = ' ', items = { { width = 1 }, { remaining = true } } })
+            return displayer({ { icon, hl_group }, filenameFirst(_, entry.path) })
+        end,
         ordinal = entry.path,
         timestamp = entry.timestamp
     }
@@ -59,12 +72,12 @@ local function recent_files_picker(opts)
 
     local original_scoring = file_sorter.scoring_function
     file_sorter.scoring_function = function(self, prompt, line, entry)
-        local original_score = original_scoring(self, prompt, line, entry) or 0
+        local original_score = original_scoring(self, prompt, line, entry) or 1
         local score = original_score
         if original_score > 0 and prompt:len() > 0 then
             local norm_timestamp = (entry.timestamp - min_timestamp) / (max_timestamp - min_timestamp)
-            local reminder = score - score * 0.4
-            score = score - reminder + reminder * (1 - norm_timestamp)
+            local reminder = original_score - original_score * 0.8
+            score = original_score - reminder + reminder * (1 - norm_timestamp)
         end
         return score
     end

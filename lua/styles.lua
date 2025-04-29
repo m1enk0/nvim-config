@@ -58,6 +58,8 @@ local purple = "#9876AA"
 local topaz_yellow = "#FFC66D"
 local dim_blue = "#6897BB"
 local comment = "#808080"
+local bright_green = "#629755"
+local error_red = "#BF616A"
 vim.api.nvim_set_hl(0, "@attribute", { fg = dim_yellow })
 vim.api.nvim_set_hl(0, "@function", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@module", { fg = topaz_yellow })
@@ -88,8 +90,16 @@ vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@variable", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@number", { fg = dim_blue })
 vim.api.nvim_set_hl(0, "@comment", { fg = comment })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = error_red })
 
 -- language specific
 vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })
 vim.api.nvim_set_hl(0, "@boolean.yaml", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@lsp.type.operator.cpp", { fg = carrot_red })
+vim.api.nvim_set_hl(0, "@function.groovy", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.typemod.annotation.importDeclaration.java", { fg = dim_yellow })
+vim.api.nvim_set_hl(0, "@lsp.type.method.java", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.type.namespace.java", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.typemod.method.static.java", { italic = true })
+vim.api.nvim_set_hl(0, "@comment.documentation.java", { fg = bright_green, italic = true })
+vim.api.nvim_set_hl(0, "@lsp.typemod.method.declaration.java", { fg = topaz_yellow, italic = false })
