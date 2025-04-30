@@ -9,6 +9,9 @@ return {
                 foldcolumn = "1",
                 number = false,
                 relativenumber = false
+            },
+            view_options = {
+                show_hidden = true,
             }
         })
     end

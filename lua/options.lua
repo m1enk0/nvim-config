@@ -72,15 +72,16 @@ function SetProjectViminfo()
     vim.o.viminfofile = viminfo_file
     vim.cmd("silent! rviminfo " .. vim.fn.fnameescape(viminfo_file))
     vim.fn.getjumplist() -- Workaround for jump list bug
+
+    -- Add protection against accidental deletion
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+            vim.cmd("silent! wviminfo! " .. vim.fn.fnameescape(viminfo_file))
+        end,
+        group = vim.api.nvim_create_augroup("PersistentViminfo", {clear = false})
+    })
 end
 
--- Add protection against accidental deletion
-vim.api.nvim_create_autocmd("VimLeavePre", {
-    callback = function()
-        vim.cmd("silent! wviminfo! " .. vim.fn.fnameescape(viminfo_file))
-    end,
-    group = vim.api.nvim_create_augroup("PersistentViminfo", {clear = false})
-})
 -- Set up autocommands
 vim.api.nvim_create_autocmd({"VimEnter", "DirChanged"}, {
     callback = SetProjectViminfo,
