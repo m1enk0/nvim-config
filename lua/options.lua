@@ -2,6 +2,7 @@ vim.cmd([[
     " try
     set nofixeol
     set fillchars=diff:⠀
+    set shm+=I
     " try
 
     set pumheight=10
@@ -46,12 +47,12 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
--- vim.o.viminfo = "'1000,<10000,s1000"
+vim.o.viminfo = "'1000,<10000,s1000"
 -- vim.o.viminfo = "'25,\"50"
 vim.opt.splitright = true
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
--- vim.opt.shada = ""
+vim.g.undotree_DiffCommand = "FC"
 
 function OpenInScratch(param)
     local scratch_buf = vim.api.nvim_create_buf(false, true)

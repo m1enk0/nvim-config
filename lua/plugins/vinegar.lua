@@ -10,9 +10,9 @@ return {
                 number = false,
                 relativenumber = false
             },
-            view_options = {
-                show_hidden = true,
-            }
+            -- view_options = {
+            --     show_hidden = true,
+            -- }
         })
     end
 }

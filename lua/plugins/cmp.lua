@@ -109,11 +109,9 @@ return {
                 },
                 window = {
                     documentation = false,
-                    completion = cmp.config.window.bordered({
-                        border = "rounded",
-                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
-                        col_offset = -3
-                    })
+                    completion = {
+                        col_offset = -2,
+                    }
                 },
                 completion = {
                     completeopt = 'menu,menuone,noinsert',

@@ -104,6 +104,21 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end,
 })
 
+vim.api.nvim_create_autocmd('UIEnter', {
+    pattern = '*',
+    callback = function()
+        if vim.bo.buftype == 'nofile' or vim.fn.argc() > 0 then
+            return
+        end
+        M.sync_files()
+        local most_recent = recent_files[1]
+        if #recent_files > 0 then
+            vim.schedule(function() vim.cmd('edit ' .. vim.fn.fnameescape(most_recent.path)) end)
+        end
+    end,
+    nested = true
+})
+
 load_recent_files()
 
 return M

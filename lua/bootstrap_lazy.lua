@@ -37,6 +37,7 @@ local settings = {
             disable_events = { "VimEnter", "BufReadPre" }
         }
     },
-    reset_packpath = true -- reset the package path to improve startup time
+    reset_packpath = true, -- reset the package path to improve startup time
+    rocks = { enabled = false }
 }
 require("lazy").setup(plugins, settings)

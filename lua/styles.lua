@@ -1,14 +1,14 @@
 vim.cmd([[ 
-    hi Pmenu guibg=NONE guifg=#42424a ctermbg=NONE
+    hi Pmenu guibg=#3B3D3F guifg=#BBBBBB ctermbg=NONE
     " hi PmenuSel guibg=#085D96
     hi PmenuSel guibg=#113A5C
     hi PmenuSbar guibg=#333333
     hi PmenuThumb guibg=#4A4A4A
 
-    hi CmpItemAbbrMatch guifg=#6897BB gui=NONE
-    hi CmpItemAbbrMatchFuzzy guifg=#6897BB gui=NONE
+    hi CmpItemAbbrMatch guifg=#5490F5 gui=NONE
+    hi CmpItemAbbrMatchFuzzy guifg=#5490F5 gui=NONE
     " hi CmpItemAbbr guifg=#8697BA
-    hi CmpItemMenu  guifg=#747982
+    hi CmpItemMenu guifg=#747982
 
     hi Visual guibg=#214283 gui=NONE
     hi Search guibg=#4A5369 guifg=NONE gui=NONE
