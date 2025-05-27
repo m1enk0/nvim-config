@@ -1,9 +1,9 @@
 return {
     'akinsho/toggleterm.nvim',
-    version = "*",
     keys = {
         { "<A-y>", "<cmd>ToggleTerm<cr>" },
     },
+    cmd = { "TermNew" },
     config = function()
         vim.cmd([[
             let &shell = 'pwsh --nologo'

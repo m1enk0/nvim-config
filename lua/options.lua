@@ -3,6 +3,8 @@ vim.cmd([[
     set nofixeol
     set fillchars=diff:⠀
     set shm+=I
+    set shada=!,'10000,<50,s10,h,f1
+    " set shada=!,'100,<50,s10,h
     " try
 
     set pumheight=10
@@ -16,7 +18,7 @@ vim.cmd([[
     set autoread
     autocmd FocusGained, BufEnter * checktime
 
-    hi WordUnderCursor guibg=#3B4252
+    hi WordUnderCursor guibg=#355655
     nnoremap <leader>3 <CMD>exec 'match WordUnderCursor /\V\<' . expand('<cword>') . '\>/'<cr>
     nnoremap <Esc> <Esc><cmd>exec 'match none'<cr>
 
@@ -47,9 +49,8 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
-vim.o.viminfo = "'1000,<10000,s1000"
+-- vim.o.viminfo = "'1000,<10000,s1000"
 -- vim.o.viminfo = "'25,\"50"
-vim.opt.splitright = true
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
 vim.g.undotree_DiffCommand = "FC"

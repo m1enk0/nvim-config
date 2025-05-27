@@ -91,6 +91,7 @@ if ok then
 
     MAP_KEY("n", "<leader>FF", function() telescope.find_files({ cwd = current_dir() }) end, MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>FG", function() telescope.live_grep({ cwd = current_dir() }) end, MAP_KEY_OPTS)
+    MAP_KEY("n", "<leader>gd", function() require('telescope.builtin').live_grep({ default_text = vim.fn.expand("<cword>") .. [[.*\{]] }) end, MAP_KEY_OPTS)
 end
 
 -- Harpoon

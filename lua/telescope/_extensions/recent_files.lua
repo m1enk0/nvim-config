@@ -76,7 +76,7 @@ local function recent_files_picker(opts)
         local score = original_score
         if original_score > 0 and prompt:len() > 0 then
             local norm_timestamp = (entry.timestamp - min_timestamp) / (max_timestamp - min_timestamp)
-            local reminder = original_score - original_score * 0.8
+            local reminder = original_score - original_score * 0.4 
             score = original_score - reminder + reminder * (1 - norm_timestamp)
         end
         return score

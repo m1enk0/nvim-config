@@ -3,9 +3,9 @@ return {
     ft = "java",
     config = function()
         local jdtls = require('jdtls')
-        local on_attach = function(client, bufnr)
-            require("lazyvim.plugins.lsp.keymaps").on_attach(client, bufnr)
-        end
+        -- local on_attach = function(client, bufnr)
+        --     require("lazyvim.plugins.lsp.keymaps").on_attach(client, bufnr)
+        -- end
 
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
         local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -16,7 +16,8 @@ return {
             },
             cmd = {
                 -- 💀
-                'java', -- or '/path/to/java17_or_newer/bin/java'
+                -- 'java', -- or '/path/to/java17_or_newer/bin/java'
+                'C:/Program Files/Java/jdk-21/bin/java', -- or '/path/to/java17_or_newer/bin/java'
                 -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
                 '-Declipse.application=org.eclipse.jdt.ls.core.id1',
@@ -24,6 +25,7 @@ return {
                 '-Declipse.product=org.eclipse.jdt.ls.core.product',
                 '-Dlog.protocol=true',
                 '-Dlog.level=ALL',
+                '-javaagent:C:/Users/Andrey/AppData/Local/nvim-data/mason/packages/jdtls/lombok.jar',
                 '-Xmx1g',
                 '--add-modules=ALL-SYSTEM',
                 '--add-opens', 'java.base/java.util=ALL-UNNAMED',
@@ -31,7 +33,7 @@ return {
 
                 -- 💀
                 '-jar',
-                'C:/Users/Andrey/AppData/Local/nvim-data/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.700.v20231214-2017.jar',
+                'C:/Users/Andrey/AppData/Local/nvim-data/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.7.0.v20250331-1702.jar',
                 -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
                 -- Must point to the                                                     Change this to
                 -- eclipse.jdt.ls installation                                           the actual version
@@ -48,7 +50,7 @@ return {
                 -- See `data directory configuration` section in the README
                 '-data', workspace_dir
             },
-            on_attach = on_attach,
+            -- on_attach = on_attach,
             capabilities = capabilities,
             root_dir = vim.fs.dirname(
                 vim.fs.find({ ".gradlew", ".git", "mvnw", "pom.xml", "build.gradle" }, { upward = true })[1]

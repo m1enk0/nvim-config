@@ -17,4 +17,4 @@ end
 
 vim.api.nvim_create_user_command('ExecuteToSplit', ExecuteToSplit, {})
 
-MAP_KEY('v', '<leader>E', 'y:ExecuteToSplit<CR>', MAP_KEY_OPTS)
+MAP_KEY('v', '<leader>ee', 'y:ExecuteToSplit<CR>', MAP_KEY_OPTS)

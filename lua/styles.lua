@@ -11,7 +11,7 @@ vim.cmd([[
     hi CmpItemMenu guifg=#747982
 
     hi Visual guibg=#214283 gui=NONE
-    hi Search guibg=#4A5369 guifg=NONE gui=NONE
+    hi Search guibg=#3B4252 guifg=NONE gui=NONE
 
     hi Normal guibg=NONE ctermbg=NONE
     hi NormalNC guibg=NONE ctermbg=NONE
@@ -29,6 +29,13 @@ vim.cmd([[
     hi CursorLine guibg=#323232
 
     hi SpellBad gui=underline cterm=underline
+
+    hi LineNr guibg=#313335 guifg=#606366
+    hi CursorLineNr guibg=#313335 guifg=#A4A3A3
+    hi SignColumn guibg=#313335
+
+    hi clear CurSearch
+    hi link CurSearch Search
 ]])
 
 -- Telescope
@@ -103,3 +110,4 @@ vim.api.nvim_set_hl(0, "@lsp.type.namespace.java", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@lsp.typemod.method.static.java", { italic = true })
 vim.api.nvim_set_hl(0, "@comment.documentation.java", { fg = bright_green, italic = true })
 vim.api.nvim_set_hl(0, "@lsp.typemod.method.declaration.java", { fg = topaz_yellow, italic = false })
+vim.api.nvim_set_hl(0, "@lsp.type.modifier.java", { link = "@keyword" })

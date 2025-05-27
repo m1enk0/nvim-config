@@ -114,6 +114,9 @@ vim.api.nvim_create_autocmd('UIEnter', {
         local most_recent = recent_files[1]
         if #recent_files > 0 then
             vim.schedule(function() vim.cmd('edit ' .. vim.fn.fnameescape(most_recent.path)) end)
+            if #recent_files > 1 then
+                vim.schedule(function() vim.cmd('let @# = ' .. vim.fn.string(recent_files[2].path)) end)
+            end
         end
     end,
     nested = true
