@@ -2,7 +2,7 @@ local M = {}
 
 -- Configuration defaults
 local config = {
-  session_file = vim.fn.stdpath('data') .. '/recent_files2/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t') .. "_" .. vim.fn.sha256(vim.fn.getcwd()),
+  session_file = vim.fn.stdpath('data') .. '/recent_files/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t') .. "_" .. vim.fn.sha256(vim.fn.getcwd()),
   max_entries = 400,
 }
 
@@ -13,7 +13,15 @@ end
 
 local recent_files = {}
 
+local function ensure_directory_exists()
+    local dir = vim.fn.fnamemodify(config.session_file, ':h')
+    if vim.fn.isdirectory(dir) == 0 then
+        vim.fn.mkdir(dir, 'p')
+    end
+end
+
 local function load_recent_files()
+    ensure_directory_exists()
     local ok, content = pcall(function()
         return vim.fn.readfile(config.session_file)
     end)

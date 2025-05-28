@@ -57,7 +57,6 @@ local function recent_files_picker(opts)
     local conf = require('telescope.config').values
     local actions = require('telescope.actions')
     local action_state = require('telescope.actions.state')
-    local sorters = require('telescope.sorters')
     local file_sorter = conf.file_sorter(picker_opts)
 
     local min_timestamp, max_timestamp = math.huge, -math.huge
@@ -76,7 +75,7 @@ local function recent_files_picker(opts)
         local score = original_score
         if original_score > 0 and prompt:len() > 0 then
             local norm_timestamp = (entry.timestamp - min_timestamp) / (max_timestamp - min_timestamp)
-            local reminder = original_score - original_score * 0.4 
+            local reminder = original_score - original_score * 0.7
             score = original_score - reminder + reminder * (1 - norm_timestamp)
         end
         return score
