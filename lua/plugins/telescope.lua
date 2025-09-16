@@ -81,7 +81,10 @@ return {
                 },
                 live_grep = {
                     theme = "dropdown",
-                    no_ignore = true
+                    no_ignore = true,
+                    layout_config = {
+                        width = 0.7,
+                    }
                 },
                 buffers = {
                     cache_picker = false,

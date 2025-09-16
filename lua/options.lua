@@ -39,7 +39,7 @@ vim.cmd([[
 
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o "disable auto comment next line
 
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "autojump to last position in the file
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "autojump to last position in the file
 ]])
 
 vim.opt.tabstop = 4
@@ -49,11 +49,13 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
+vim.opt.textwidth = 0
 -- vim.o.viminfo = "'1000,<10000,s1000"
 -- vim.o.viminfo = "'25,\"50"
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
 vim.g.undotree_DiffCommand = "FC"
+vim.g.editorconfig = false
 
 function OpenInScratch(param)
     local scratch_buf = vim.api.nvim_create_buf(false, true)
@@ -88,4 +90,15 @@ end
 vim.api.nvim_create_autocmd({"VimEnter", "DirChanged"}, {
     callback = SetProjectViminfo,
     group = vim.api.nvim_create_augroup("ProjectViminfo", {clear = true})
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "DirChanged" }, {
+    pattern = "oil://*",
+    callback = function()
+        local oil = require("oil")
+        local cwd = oil.get_current_dir()
+        if cwd then
+            vim.wo.winbar = "Oil: " .. cwd -- show only folder name
+        end
+    end,
 })

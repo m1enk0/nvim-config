@@ -8,7 +8,7 @@ vim.cmd([[
     hi CmpItemAbbrMatch guifg=#5490F5 gui=NONE
     hi CmpItemAbbrMatchFuzzy guifg=#5490F5 gui=NONE
     " hi CmpItemAbbr guifg=#8697BA
-    hi CmpItemMenu guifg=#747982
+    hi CmpItemMenu guifg=#72737A
 
     hi Visual guibg=#214283 gui=NONE
     hi Search guibg=#3B4252 guifg=NONE gui=NONE
@@ -36,6 +36,9 @@ vim.cmd([[
 
     hi clear CurSearch
     hi link CurSearch Search
+
+    hi BlinkCmpLabelMatch guifg=#5490F5 gui=NONE
+    hi PmenuKind guibg=NONE
 ]])
 
 -- Telescope

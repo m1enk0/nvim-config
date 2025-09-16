@@ -5,11 +5,14 @@ return {
     },
     cmd = { "TermNew" },
     config = function()
-        vim.cmd([[
-            let &shell = 'pwsh --nologo'
-            let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-            set shellquote= shellxquote=
-        ]])
+        local is_windows = vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1
+        if is_windows then
+            vim.cmd([[
+                let &shell = 'pwsh --nologo'
+                let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+                set shellquote= shellxquote=
+            ]])
+        end
 
         require('toggleterm').setup {
             highlights = {
@@ -20,7 +23,7 @@ return {
             },
             size = 15,
             direction = 'horizontal',
-            start_in_insert = true,
+            start_in_insert = false,
             auto_scroll = false
             -- persist_mode = false,
         }

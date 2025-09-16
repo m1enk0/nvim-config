@@ -4,6 +4,7 @@ local M = {}
 local config = {
   session_file = vim.fn.stdpath('data') .. '/recent_files/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t') .. "_" .. vim.fn.sha256(vim.fn.getcwd()),
   max_entries = 400,
+  excludes = { "COMMIT_EDITMSG" }
 }
 
 -- Setup function to override defaults
@@ -49,6 +50,15 @@ local function is_file(path)
   return stat and stat.type == 'file'
 end
 
+local function is_excluded(path)
+    for _, pattern in ipairs(config.excludes or {}) do
+        if path:match(pattern) then
+            return true
+        end
+    end
+    return false
+end
+
 local function filter_existing_files(files)
     return vim.tbl_filter(function(file)
         return vim.fn.filereadable(file.path) == 1
@@ -58,6 +68,7 @@ end
 function M.add_file(filepath)
     if not filepath or filepath == '' then return end
     if not is_file(filepath) then return end
+    if is_excluded(filepath) then return end
 
     filepath = filepath:gsub("\\", "/"):gsub("^%l", string.upper)
     local timestamp = os.time()
@@ -123,7 +134,13 @@ vim.api.nvim_create_autocmd('UIEnter', {
         if #recent_files > 0 then
             vim.schedule(function() vim.cmd('edit ' .. vim.fn.fnameescape(most_recent.path)) end)
             if #recent_files > 1 then
-                vim.schedule(function() vim.cmd('let @# = ' .. vim.fn.string(recent_files[2].path)) end)
+                vim.schedule(function()
+                    local second_path = recent_files[2].path
+                    if second_path and vim.fn.filereadable(second_path) == 1 then
+                        vim.cmd('badd ' .. vim.fn.fnameescape(second_path))
+                        vim.fn.setreg('#', second_path)
+                    end
+                end)
             end
         end
     end,

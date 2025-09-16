@@ -36,6 +36,7 @@ MAP_KEY("i", "<Space>", "<Space><C-g>u", MAP_KEY_OPTS)
 
 -- Git
 MAP_KEY('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
+MAP_KEY('n', '<S-A-a>', '<cmd>!git add %<cr>', { silent = false })
 MAP_KEY('n', '<leader>kk', '<cmd>vertical Git<cr>', MAP_KEY_OPTS)
 MAP_KEY('n', '<leader>kq', '<cmd>Git difftool<cr>', MAP_KEY_OPTS)
 
@@ -107,8 +108,8 @@ MAP_KEY("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', MAP_KEY_
 -- Gitsings
 MAP_KEY("n", "<C-A-d>", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<C-A-u>", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<S-A-n>", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<S-A-p>", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>kd", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<S-A-u>", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<A-z>", "<cmd>Gitsigns reset_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ss", "<cmd>Gitsigns preview_hunk<cr>", MAP_KEY_OPTS)
 
@@ -138,7 +139,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- LSP
-MAP_KEY("n", "gr", telescope.lsp_references, MAP_KEY_OPTS)
+MAP_KEY("n", "grr", telescope.lsp_references, MAP_KEY_OPTS)
 MAP_KEY("n", "<A-p>", telescope.lsp_document_symbols, MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>gi", telescope.lsp_implementations, MAP_KEY_OPTS)
 
