@@ -66,7 +66,12 @@ return {
         -- fuzzy = { implementation = "prefer_rust_with_warning" },
 
         cmdline = {
-            keymap = { preset = 'super-tab' },
+            keymap = {
+                preset = 'super-tab',
+                ['<C-Right>'] = { 'accept', 'fallback' },
+                ['<A-Enter>'] = { 'accept_and_enter', 'fallback' },
+                ['<C-c>'] = { 'hide', 'fallback' }
+            },
             completion = {
                 menu = { auto_show = true },
                 list = { selection = { preselect = true, auto_insert = false } }

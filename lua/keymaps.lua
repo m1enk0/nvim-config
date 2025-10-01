@@ -38,6 +38,7 @@ MAP_KEY("i", "<Space>", "<Space><C-g>u", MAP_KEY_OPTS)
 MAP_KEY('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
 MAP_KEY('n', '<S-A-a>', '<cmd>!git add %<cr>', { silent = false })
 MAP_KEY('n', '<leader>kk', '<cmd>vertical Git<cr>', MAP_KEY_OPTS)
+MAP_KEY('n', '<C-l>', '<cmd>vertical Git<cr>', MAP_KEY_OPTS)
 MAP_KEY('n', '<leader>kq', '<cmd>Git difftool<cr>', MAP_KEY_OPTS)
 
 -- Moving lines
@@ -85,7 +86,7 @@ if ok then
     MAP_KEY("n", "<leader>fd", function() telescope.fd({ find_command = { 'fd', '-t', 'd', '--no-ignore' } }) end)
     MAP_KEY("n", "<A-e>", "<cmd>Telescope recent_files<cr>", MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>fr", telescope.resume, MAP_KEY_OPTS)
-    MAP_KEY("n", "<C-l>", telescope.git_status, MAP_KEY_OPTS)
+    -- MAP_KEY("n", "<C-l>", telescope.git_status, MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>ks", telescope.git_stash, MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>kb", telescope.git_branches, MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>fw", "<cmd>Telescope current_buffer_fuzzy_find fuzzy=false case_mode=ignore_case<cr>", MAP_KEY_OPTS)
@@ -101,7 +102,8 @@ MAP_KEY("n", "<A-n>", '<cmd>lua require("harpoon.mark").add_file()<cr>', MAP_KEY
 MAP_KEY("n", "<A-a>", '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', MAP_KEY_OPTS)
 MAP_KEY("n", "<A-s>", '<cmd>lua require("harpoon.ui").nav_file(2)<cr>', MAP_KEY_OPTS)
 MAP_KEY("n", "<A-d>", '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', MAP_KEY_OPTS)
-MAP_KEY("n", "<A-f>", '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', MAP_KEY_OPTS)
+-- MAP_KEY("n", "<A-f>", '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', MAP_KEY_OPTS)
+MAP_KEY("n", "<A-f>", '<cmd>silent! close<enter>', MAP_KEY_OPTS)
 MAP_KEY("n", "<A-g>", '<cmd>lua require("harpoon.ui").nav_file(5)<cr>', MAP_KEY_OPTS)
 MAP_KEY("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', MAP_KEY_OPTS)
 
@@ -109,7 +111,7 @@ MAP_KEY("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', MAP_KEY_
 MAP_KEY("n", "<C-A-d>", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<C-A-u>", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>kd", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<S-A-u>", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>ku", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<A-z>", "<cmd>Gitsigns reset_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ss", "<cmd>Gitsigns preview_hunk<cr>", MAP_KEY_OPTS)
 
@@ -174,5 +176,5 @@ MAP_KEY("n", "<C-A-Left>", "<cmd>vertical resize -5<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<C-A-Up>", "<cmd>horizontal resize +2<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<C-A-Down>", "<cmd>horizontal resize -2<cr>", MAP_KEY_OPTS)
 
-MAP_KEY("n", "<leader>ip", "<cmd>echo expand('%:P')<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<leader>iP", "<cmd>echo expand('%:p')<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>ip", "<cmd>echon expand('%:P')<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>iP", "<cmd>echon expand('%:p')<cr>", MAP_KEY_OPTS)

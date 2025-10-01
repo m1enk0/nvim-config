@@ -14,5 +14,10 @@ return {
                 listing_style = "list"
             }
         })
+
+        vim.cmd[[
+            hi DiffviewFilePanelTitle guifg=#A9B7C6
+            hi DiffviewFolderSign guifg=#A9B7C6
+        ]]
     end
 }

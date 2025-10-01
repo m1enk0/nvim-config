@@ -1,6 +1,5 @@
 local recent_files = require('recents')
 
--- Add to the top of your file
 local devicons_ok, devicons = pcall(require, 'nvim-web-devicons')
 if not devicons_ok then
   devicons = nil

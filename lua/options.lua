@@ -1,4 +1,47 @@
 vim.cmd([[
+
+    " set showcmdloc=statusline
+    " set cmdheight=0
+    " function! SearchStatus()
+    "     if !v:hlsearch || @/ == '' || mode() != 'n'
+    "         return ''
+    "     endif
+    "     
+    "     let result = searchcount({'maxcount': 0, 'timeout': 100})
+    "     if result.total > 0
+    "         let current = result.current > 0 ? result.current : 1
+    "         return printf('[%d/%d]', current, result.total)
+    "     endif
+    "     
+    "     return ''
+    " endfunction
+
+    " function! MyTabLine()
+    "   let s = ''
+    "   for i in range(tabpagenr('$'))
+    "     let tab = i + 1
+    "     let winnr = tabpagewinnr(tab)
+    "     let buflist = tabpagebuflist(tab)
+    "     let bufnr = buflist[winnr - 1]
+    "     let bufname = bufname(bufnr)
+    "     
+    "     " Get filename and truncate if too long
+    "     let filename = fnamemodify(bufname, ':t')
+    "     if strlen(filename) > 40
+    "       let filename = filename[0:14] . '..'
+    "     elseif filename == ''
+    "       let filename = '[No Name]'
+    "     endif
+    "     
+    "     let s .= '%' . tab . 'T'
+    "     let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+    "     let s .= ' ' . filename . ' '
+    "   endfor
+    "   let s .= '%#TabLineFill#%T'
+    "   return s
+    " endfunction
+    "
+    " set tabline=%!MyTabLine()
     " try
     set nofixeol
     set fillchars=diff:⠀

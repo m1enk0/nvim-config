@@ -3,7 +3,7 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(ctx)
         vim.api.nvim_buf_call(ctx.buf, function()
             vim.fn.matchadd("TelescopeParent", "\t\t.*$")
-            vim.api.nvim_set_hl(0, "TelescopeParent", { link = "Comment" })
+            vim.api.nvim_set_hl(0, "TelescopeParent", { fg = "#545454" })
         end)
     end,
 })
@@ -38,6 +38,7 @@ return {
     event = "VeryLazy",
     config = function()
         local builtin = require('telescope.builtin')
+        require("nvim-web-devicons").setup({ override = { java = { icon = "🅹", color = "#3E86A0", name = "java" } } })
         require("telescope").setup {
             defaults = {
                 sorting_strategy = "ascending",

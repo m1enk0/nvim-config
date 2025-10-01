@@ -17,6 +17,7 @@ vim.cmd([[
     hi NormalNC guibg=NONE ctermbg=NONE
 
     " hi StatusLineNC guifg=#566178
+    " hi StatusLine guibg=#3C3F41 guifg=#A9B7C6
     hi StatusLine guibg=#323232
 
     hi ColorColumn guibg=#2E2E2E
@@ -33,14 +34,29 @@ vim.cmd([[
     hi LineNr guibg=#313335 guifg=#606366
     hi CursorLineNr guibg=#313335 guifg=#A4A3A3
     hi SignColumn guibg=#313335
+    hi FoldColumn guibg=#313335
 
     hi clear CurSearch
     hi link CurSearch Search
 
     hi BlinkCmpLabelMatch guifg=#5490F5 gui=NONE
     hi PmenuKind guibg=NONE
+
+    hi TabLine guifg=#666666 guibg=#222222 gui=none
+    hi TabLineFill guifg=#999999 guibg=#1a1a1a gui=none
+    hi TabLineSel guifg=#ffffff guibg=#2B2B2B gui=bold
+
+    hi WinSeparator guifg=#252628 guibg=#313335
+    " hi WinSeparator guifg=#435465 guibg=#313335
+
+    hi DiffAdd guibg=#294436
+    hi DiffDelete guibg=#45302B
+
+    hi Folded guifg=#808080
 ]])
 
+vim.cmd([[let &t_Cs = "\e[4:3m"]])
+vim.cmd([[let &t_Ce = "\e[4:0m"]])
 -- Telescope
 local ok, telescope = pcall(require, "telescope")
 if ok then
@@ -61,7 +77,7 @@ end
 
 -- Treesitter
 local soft_grey = "#A9B7C6"
-local dim_yellow = "#BAB429"
+local dim_yellow = "#BBB529"
 local dark_green = "#6A8759"
 local carrot_red = "#CC7832"
 local purple = "#9876AA"
@@ -105,6 +121,7 @@ vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = error_red })
 -- language specific
 vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })
 vim.api.nvim_set_hl(0, "@boolean.yaml", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@punctuation.delimiter.yaml", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@lsp.type.operator.cpp", { fg = carrot_red })
 vim.api.nvim_set_hl(0, "@function.groovy", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@lsp.typemod.annotation.importDeclaration.java", { fg = dim_yellow })
