@@ -47,8 +47,9 @@ local function recent_files_picker(opts)
     -- Merge our defaults with user options
     local picker_opts = vim.tbl_deep_extend('force', {
         prompt_title = 'Recent Files',
-        cache_picker = false
-        -- default_selection_index = 2,
+        cache_picker = false,
+        selection_strategy = "closest",
+        default_selection_index = 2,
     }, dropdown, opts) -- Merge with dropdown theme
 
     local pickers = require('telescope.pickers')

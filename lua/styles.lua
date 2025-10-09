@@ -1,6 +1,6 @@
 vim.cmd([[ 
-    hi Pmenu guibg=#3B3D3F guifg=#BBBBBB ctermbg=NONE
-    " hi PmenuSel guibg=#085D96
+    hi Pmenu guibg=#272726 guifg=#BBBBBB ctermbg=NONE
+    " hi PmenuSel guibg=#ABE8B3
     hi PmenuSel guibg=#113A5C
     hi PmenuSbar guibg=#333333
     hi PmenuThumb guibg=#4A4A4A
@@ -35,12 +35,15 @@ vim.cmd([[
     hi CursorLineNr guibg=#313335 guifg=#A4A3A3
     hi SignColumn guibg=#313335
     hi FoldColumn guibg=#313335
+    " hi LineNr guifg=#606366
 
     hi clear CurSearch
     hi link CurSearch Search
 
     hi BlinkCmpLabelMatch guifg=#5490F5 gui=NONE
     hi PmenuKind guibg=NONE
+    hi PmenuKind guibg=NONE guifg=#72737A
+    hi PmenuExtra guifg=#72737A
 
     hi TabLine guifg=#666666 guibg=#222222 gui=none
     hi TabLineFill guifg=#999999 guibg=#1a1a1a gui=none
@@ -109,6 +112,7 @@ vim.api.nvim_set_hl(0, "@keyword.function", { link = "@keyword" })
 vim.api.nvim_set_hl(0, "@keyword.return", { link = "@keyword" })
 vim.api.nvim_set_hl(0, "@keyword.import", { link = "@keyword" })
 vim.api.nvim_set_hl(0, "@keyword.operator", { link = "@keyword" })
+vim.api.nvim_set_hl(0, "@keyword.exception", { link = "@keyword" })
 vim.api.nvim_set_hl(0, "@type", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@type.definition", { link = "@type" })
 vim.api.nvim_set_hl(0, "@operator", { fg = soft_grey })
@@ -116,7 +120,6 @@ vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@variable", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@number", { fg = dim_blue })
 vim.api.nvim_set_hl(0, "@comment", { fg = comment })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = error_red })
 
 -- language specific
 vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })

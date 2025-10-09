@@ -2,7 +2,7 @@ return {
     "romainl/vim-qf",
     event = "VeryLazy",
     keys = {
-        { "<A-o>", "<cmd>call ToggleQuickfix()<cr>" }
+        { "<A-S-o>", "<cmd>call ToggleQuickfix()<cr>" }
     },
     config = function()
         vim.cmd[[

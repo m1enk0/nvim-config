@@ -1,7 +1,10 @@
 return {
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
-    dependencies = { 'rafamadriz/friendly-snippets' },
+    dependencies = {
+        'rafamadriz/friendly-snippets',
+        'onsails/lspkind.nvim'
+    },
     event = "VeryLazy",
     version = '1.*',
     -- use a release tag to download pre-built binaries
@@ -11,6 +14,12 @@ return {
     -- build = 'nix run .#build-plugin',
 
     opts = {
+        snippets = {
+            expand = function(snippet, _)
+                vim.snippet.expand(snippet)
+                vim.snippet.stop()
+            end,
+        },
         -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
         -- 'super-tab' for mappings similar to vscode (tab to accept)
         -- 'enter' for enter to accept
@@ -27,6 +36,7 @@ return {
         keymap = { preset = 'enter' },
 
         appearance = {
+            -- use_nvim_cmp_as_default = true
             -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
             -- Adjusts spacing to ensure icons are aligned
             -- nerd_font_variant = 'mono'
@@ -34,6 +44,18 @@ return {
 
         -- (Default) Only show the documentation popup when manually triggered
         completion = {
+            menu = {
+                draw = {
+                    components = {
+                        kind_icon = {
+                            text = function(ctx)
+                                return require("lspkind").presets.codicons[ctx.kind] .. ctx.icon_gap
+                            end
+                        }
+                    }
+                }
+            },
+
             documentation = { auto_show = true, auto_show_delay_ms = 0 },
         -- menu = {
             --     -- Don't automatically show the completion menu
@@ -62,8 +84,7 @@ return {
         -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
         --
         -- See the fuzzy documentation for more information
-        fuzzy = { implementation = "prefer_rust" },
-        -- fuzzy = { implementation = "prefer_rust_with_warning" },
+        fuzzy = { implementation = "rust" },
 
         cmdline = {
             keymap = {
