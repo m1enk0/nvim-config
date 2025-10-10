@@ -1,6 +1,10 @@
 MAP_KEY = vim.keymap.set
 MAP_KEY_OPTS = { noremap = true, silent = true }
 
+local telescope_present, telescope = pcall(require, "telescope.builtin")
+local oil_present, oil = pcall(require, "oil")
+local haropoon_present, harpoon = pcall(require, "harpoon")
+
 local function getVisualSelection()
     vim.cmd('noau normal! "vy"')
     local text = vim.fn.getreg('v')
@@ -24,7 +28,7 @@ local function mapTelescopeNV(shortcut, telescopeFun)
 end
 
 local function current_dir()
-    local dir = require("oil").get_current_dir()
+    local dir = oil.get_current_dir()
     if dir == nil then return vim.fn.fnamemodify(vim.fn.bufname(), ":p:h") else return dir end
 end
 
@@ -78,8 +82,7 @@ MAP_KEY("n", "<leader>to", "<cmd>tabonly<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", MAP_KEY_OPTS)
 
 -- Telescope
-local ok, telescope = pcall(require, "telescope.builtin")
-if ok then
+if telescope_present then
     mapTelescopeNV("<leader>ff", telescope.find_files)
     mapTelescopeNV("<leader>fg", telescope.live_grep)
     mapTelescopeNV("<leader>fh", telescope.help_tags)
@@ -94,26 +97,30 @@ if ok then
 
     MAP_KEY("n", "<leader>FF", function() telescope.find_files({ cwd = current_dir() }) end, MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>FG", function() telescope.live_grep({ cwd = current_dir() }) end, MAP_KEY_OPTS)
-    MAP_KEY("n", "<leader>gd", function() require('telescope.builtin').live_grep({ default_text = vim.fn.expand("<cword>") .. [[.*\{]] }) end, MAP_KEY_OPTS)
+    MAP_KEY("n", "<leader>gd", function() telescope.live_grep({ default_text = vim.fn.expand("<cword>") .. [[.*\{]] }) end, MAP_KEY_OPTS)
+else
+    MAP_KEY("n", "<leader>ff", ":e **/**<Left>")
+    MAP_KEY("n", "<leader>fg", ":vimgrep // **<Left><Left><Left><Left>")
 end
 
--- Harpoon
-MAP_KEY("n", "<A-h>", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>', MAP_KEY_OPTS)
-MAP_KEY("n", "<A-n>", '<cmd>lua require("harpoon.mark").add_file()<cr>', MAP_KEY_OPTS)
-MAP_KEY("n", "<A-a>", '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', MAP_KEY_OPTS)
-MAP_KEY("n", "<A-s>", '<cmd>lua require("harpoon.ui").nav_file(2)<cr>', MAP_KEY_OPTS)
-MAP_KEY("n", "<A-d>", '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', MAP_KEY_OPTS)
--- MAP_KEY("n", "<A-f>", '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', MAP_KEY_OPTS)
+if haropoon_present then
+    MAP_KEY("n", "<A-h>", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>', MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-n>", '<cmd>lua require("harpoon.mark").add_file()<cr>', MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-a>", '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-s>", '<cmd>lua require("harpoon.ui").nav_file(2)<cr>', MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-d>", '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', MAP_KEY_OPTS)
+    -- MAP_KEY("n", "<A-f>", '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-g>", '<cmd>lua require("harpoon.ui").nav_file(5)<cr>', MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', MAP_KEY_OPTS)
+end
 MAP_KEY("n", "<A-f>", '<cmd>silent! close<enter>', MAP_KEY_OPTS)
-MAP_KEY("n", "<A-g>", '<cmd>lua require("harpoon.ui").nav_file(5)<cr>', MAP_KEY_OPTS)
-MAP_KEY("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', MAP_KEY_OPTS)
 
 -- Gitsings
 MAP_KEY("n", "<C-A-d>", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<C-A-u>", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>kd", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ku", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<A-z>", "<cmd>Gitsigns reset_hunk<cr>", MAP_KEY_OPTS)
+MAP_KEY({ "n", "v" }, "<A-z>", ":Gitsigns reset_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ss", "<cmd>Gitsigns preview_hunk<cr>", MAP_KEY_OPTS)
 
 -- Terminal
@@ -142,9 +149,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- LSP
-MAP_KEY("n", "grr", telescope.lsp_references, MAP_KEY_OPTS)
-MAP_KEY("n", "<A-p>", telescope.lsp_document_symbols, MAP_KEY_OPTS)
-MAP_KEY("n", "<leader>gi", telescope.lsp_implementations, MAP_KEY_OPTS)
+if telescope_present then
+    MAP_KEY("n", "grr", telescope.lsp_references, MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-p>", telescope.lsp_document_symbols, MAP_KEY_OPTS)
+    MAP_KEY("n", "<leader>gi", telescope.lsp_implementations, MAP_KEY_OPTS)
+else
+    MAP_KEY("n", "grr", vim.lsp.buf.references, MAP_KEY_OPTS)
+    MAP_KEY("n", "<A-p>", vim.lsp.buf.document_symbols, MAP_KEY_OPTS)
+    MAP_KEY("n", "<leader>gi", vim.lsp.buf.implementation, MAP_KEY_OPTS)
+end
 
 MAP_KEY("n", "gd", vim.lsp.buf.definition, MAP_KEY_OPTS)
 MAP_KEY("n", "]]", vim.diagnostic.goto_next, MAP_KEY_OPTS)
@@ -161,7 +174,12 @@ MAP_KEY("n", "<leader>ah", vim.lsp.buf.hover, MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ls", "<cmd>LspStart<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>lr", "<cmd>LspRestart<cr>", MAP_KEY_OPTS)
 
-MAP_KEY("n", "-", require("oil").open, MAP_KEY_OPTS)
+if oil_present then
+    MAP_KEY("n", "-", oil.open, MAP_KEY_OPTS)
+else
+    MAP_KEY("n", "-", "<cmd>Explore<cr>", MAP_KEY_OPTS)
+end
+
 MAP_KEY("v", "<leader>fj", "!jq<cr>", MAP_KEY_OPTS)
 
 -- Settings
