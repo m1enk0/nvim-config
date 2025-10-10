@@ -97,7 +97,6 @@ vim.opt.textwidth = 0
 -- vim.o.viminfo = "'25,\"50"
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
-vim.g.undotree_DiffCommand = "FC"
 vim.g.editorconfig = false
 
 function OpenInScratch(param)
