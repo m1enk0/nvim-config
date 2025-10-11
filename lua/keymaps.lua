@@ -97,6 +97,7 @@ if telescope_present then
 
     MAP_KEY("n", "<leader>FF", function() telescope.find_files({ cwd = current_dir() }) end, MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>FG", function() telescope.live_grep({ cwd = current_dir() }) end, MAP_KEY_OPTS)
+    MAP_KEY("n", "<leader>FD", function() telescope.fd({ cwd = current_dir(), find_command = { 'fd', '-t', 'd', '--no-ignore' } }) end, MAP_KEY_OPTS)
     MAP_KEY("n", "<leader>gd", function() telescope.live_grep({ default_text = vim.fn.expand("<cword>") .. [[.*\{]] }) end, MAP_KEY_OPTS)
 else
     MAP_KEY("n", "<leader>ff", ":e **/**<Left>")

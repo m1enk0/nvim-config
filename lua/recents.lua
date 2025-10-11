@@ -126,25 +126,32 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.api.nvim_create_autocmd('UIEnter', {
     pattern = '*',
     callback = function()
-        if vim.bo.buftype == 'nofile' or vim.fn.argc() > 0 then
+        if vim.fn.argc() > 0 then
+            return
+        end
+        
+        local bufname = vim.api.nvim_buf_get_name(0)
+        local buftype = vim.bo.buftype
+        local filetype = vim.bo.filetype
+        if buftype ~= '' or filetype ~= '' or bufname ~= '' then
             return
         end
         M.sync_files()
-        local most_recent = recent_files[1]
         if #recent_files > 0 then
-            vim.schedule(function() vim.cmd('edit ' .. vim.fn.fnameescape(most_recent.path)) end)
-            if #recent_files > 1 then
-                vim.schedule(function()
+            local most_recent = recent_files[1]
+            vim.schedule(function()
+                vim.cmd('edit ' .. vim.fn.fnameescape(most_recent.path))
+                if #recent_files > 1 then
                     local second_path = recent_files[2].path
                     if second_path and vim.fn.filereadable(second_path) == 1 then
                         vim.cmd('badd ' .. vim.fn.fnameescape(second_path))
                         vim.fn.setreg('#', second_path)
                     end
-                end)
-            end
+                end
+            end)
         end
     end,
-    nested = true
+    once = true
 })
 
 load_recent_files()

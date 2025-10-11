@@ -139,6 +139,10 @@ return {
                 },
                 current_buffer_fuzzy_find = {
                     previewer = false
+                },
+                fd = {
+                    wrap_results = true,
+                    path_display = "smart",
                 }
             },
             extensions = {
