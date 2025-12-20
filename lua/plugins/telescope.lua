@@ -33,14 +33,24 @@ return {
         'nvim-lua/plenary.nvim',
         'nvim-tree/nvim-web-devicons',
         'nvim-telescope/telescope-ui-select.nvim',
-        'natecraddock/telescope-zf-native.nvim'
+        'nvim-telescope/telescope-fzy-native.nvim'
     },
     event = "VeryLazy",
     config = function()
+        local file_ignore_patterns  = { "^.git\\", "target", "^build\\", "^bin\\", "%.exe" }
+        local settings = require("custom.project_settings").get_settings()
+        if settings and settings.telescope and settings.telescope.append_file_ignore_patterns then
+            for _, pattern in ipairs(settings.telescope.append_file_ignore_patterns) do
+                table.insert(file_ignore_patterns, pattern)
+            end
+        end
+
         local builtin = require('telescope.builtin')
         require("nvim-web-devicons").setup({ override = { java = { icon = "🅹", color = "#3E86A0", name = "java" } } })
         require("telescope").setup {
             defaults = {
+                file_sorter = dynamic_fzy_sorter,
+                -- file_entry_maker = default_file_entry,
                 scroll_strategy = "limit",
                 sorting_strategy = "ascending",
                 entry_prefix = " ",
@@ -70,7 +80,7 @@ return {
                     }
                 },
                 path_display = filenameFirst,
-                file_ignore_patterns = { "^.git\\", "target", "^build\\", "^bin\\", "%.exe" },
+                file_ignore_patterns = file_ignore_patterns,
             },
             pickers = {
                 find_files = {
