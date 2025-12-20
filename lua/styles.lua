@@ -31,17 +31,12 @@ vim.cmd([[
 
     hi SpellBad gui=underline cterm=underline
 
-    hi LineNr guibg=#313335 guifg=#606366
-    hi CursorLineNr guibg=#313335 guifg=#A4A3A3
-    hi SignColumn guibg=#313335
-    hi FoldColumn guibg=#313335
-    " hi LineNr guifg=#606366
+    hi LineNr guifg=#606366
 
     hi clear CurSearch
     hi link CurSearch Search
 
     hi BlinkCmpLabelMatch guifg=#5490F5 gui=NONE
-    hi PmenuKind guibg=NONE
     hi PmenuKind guibg=NONE guifg=#72737A
     hi PmenuExtra guifg=#72737A
 
@@ -50,7 +45,6 @@ vim.cmd([[
     hi TabLineSel guifg=#ffffff guibg=#2B2B2B gui=bold
 
     hi WinSeparator guifg=#252628 guibg=#313335
-    " hi WinSeparator guifg=#435465 guibg=#313335
 
     hi DiffAdd guibg=#294436
     hi DiffDelete guibg=#45302B
@@ -58,8 +52,6 @@ vim.cmd([[
     hi Folded guifg=#808080
 ]])
 
-vim.cmd([[let &t_Cs = "\e[4:3m"]])
-vim.cmd([[let &t_Ce = "\e[4:0m"]])
 -- Telescope
 local ok, telescope = pcall(require, "telescope")
 if ok then
@@ -120,6 +112,7 @@ vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@variable", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@number", { fg = dim_blue })
 vim.api.nvim_set_hl(0, "@comment", { fg = comment })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = error_red, bold = true })
 
 -- language specific
 vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })

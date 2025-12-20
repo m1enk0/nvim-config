@@ -32,8 +32,17 @@ return {
         -- C-k: Toggle signature help (if signature.enabled = true)
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-
-        keymap = { preset = 'enter' },
+        keymap = { 
+            preset = 'enter',
+            ['<C-n>'] = { 'show' },
+            ['<CR>'] = {   
+                function(cmp) 
+                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-g>u', true, true, true), 'n', true) -- breaks actions (for Undo)
+                    return cmp.accept() 
+                end, 
+                'fallback' 
+            },
+        },
 
         appearance = {
             -- use_nvim_cmp_as_default = true
@@ -46,17 +55,23 @@ return {
         completion = {
             menu = {
                 draw = {
+                    columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1} },
                     components = {
                         kind_icon = {
                             text = function(ctx)
                                 return require("lspkind").presets.codicons[ctx.kind] .. ctx.icon_gap
                             end
+                        },
+                        label = { width = { fill = false }, },
+                        label_description = {
+                            text = function (ctx) return ctx.item.detail end,
+                            width = { fill = true }
                         }
                     }
                 }
             },
 
-            documentation = { auto_show = true, auto_show_delay_ms = 0 },
+            documentation = { auto_show = false, auto_show_delay_ms = 0 },
         -- menu = {
             --     -- Don't automatically show the completion menu
             --     auto_show = true,
@@ -75,9 +90,7 @@ return {
 
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`
-        sources = {
-            default = { 'lsp', 'path', 'snippets', 'buffer' },
-        },
+        sources = { default = { 'lsp', 'path', 'buffer' }, },
 
         -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
         -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,

@@ -10,11 +10,22 @@ function ExecDependingOnOS(cmd)
     return output
 end
 
-function ExecuteToSplit()
-    local cmd = vim.fn.getreg('"'):gsub('[\r\n]', ' ')
+function ExecuteYankedToSplit() 
+    local cmd_lines = vim.split(vim.fn.getreg('"'), '[\r\n]')
+    local cleaned_lines = {}
+    for _, line in pairs(cmd_lines) do
+        if not line:match('^%s*#') then 
+            table.insert(cleaned_lines, line)
+        end
+    end
+    ExecuteToSplit(table.concat(cleaned_lines, ' '), 'json')
+end
+
+function ExecuteToSplit(cmd, filetype)
     local output = ExecDependingOnOS(cmd)
     local scratch_buf = vim.api.nvim_create_buf(false, true)
     local lines = vim.split(cmd .. "\n\n" .. output, '\n')
+    vim.api.nvim_buf_set_option(scratch_buf, 'filetype', filetype)
     vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, lines)
     vim.cmd('vsplit')
     vim.api.nvim_set_current_buf(scratch_buf)
@@ -31,7 +42,7 @@ function ReexecuteQuery()
 end
 
 vim.api.nvim_create_user_command('ReexecuteQuery', ReexecuteQuery, {})
-vim.api.nvim_create_user_command('ExecuteToSplit', ExecuteToSplit, {})
+vim.api.nvim_create_user_command('ExecuteYankedToSplit', ExecuteYankedToSplit, {})
 
-MAP_KEY('v', '<leader>ee', 'y:ExecuteToSplit<CR>', MAP_KEY_OPTS)
-MAP_KEY('n', '<leader>ee', 'vipy:ExecuteToSplit<CR>', MAP_KEY_OPTS)
+MAP_KEY('v', '<leader>ee', 'y:ExecuteYankedToSplit<CR>', MAP_KEY_OPTS)
+MAP_KEY('n', '<leader>ee', 'vipy:ExecuteYankedToSplit<CR>', MAP_KEY_OPTS)

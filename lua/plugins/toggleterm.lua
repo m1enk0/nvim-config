@@ -1,7 +1,9 @@
 return {
     'akinsho/toggleterm.nvim',
     keys = {
-        { "<A-y>", "<cmd>ToggleTerm<cr>" },
+        { "<A-y>", "<cmd>ToggleTerm 1<cr>" },
+        { "<C-y>", "<cmd>ToggleTerm 2<cr>" },
+        { "<C-u>", "<cmd>ToggleTerm 3<cr>" },
     },
     cmd = { "TermNew" },
     config = function()

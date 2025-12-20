@@ -1,53 +1,9 @@
 vim.cmd([[
-
-    " set showcmdloc=statusline
-    " set cmdheight=0
-    " function! SearchStatus()
-    "     if !v:hlsearch || @/ == '' || mode() != 'n'
-    "         return ''
-    "     endif
-    "     
-    "     let result = searchcount({'maxcount': 0, 'timeout': 100})
-    "     if result.total > 0
-    "         let current = result.current > 0 ? result.current : 1
-    "         return printf('[%d/%d]', current, result.total)
-    "     endif
-    "     
-    "     return ''
-    " endfunction
-
-    " function! MyTabLine()
-    "   let s = ''
-    "   for i in range(tabpagenr('$'))
-    "     let tab = i + 1
-    "     let winnr = tabpagewinnr(tab)
-    "     let buflist = tabpagebuflist(tab)
-    "     let bufnr = buflist[winnr - 1]
-    "     let bufname = bufname(bufnr)
-    "     
-    "     " Get filename and truncate if too long
-    "     let filename = fnamemodify(bufname, ':t')
-    "     if strlen(filename) > 40
-    "       let filename = filename[0:14] . '..'
-    "     elseif filename == ''
-    "       let filename = '[No Name]'
-    "     endif
-    "     
-    "     let s .= '%' . tab . 'T'
-    "     let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-    "     let s .= ' ' . filename . ' '
-    "   endfor
-    "   let s .= '%#TabLineFill#%T'
-    "   return s
-    " endfunction
-    "
-    " set tabline=%!MyTabLine()
     " try
     set nofixeol
     set fillchars=diff:⠀
     set shm+=I
     set shada=!,'10000,<50,s10,h,f1
-    " set shada=!,'100,<50,s10,h
     " try
 
     set pumheight=10
@@ -58,27 +14,31 @@ vim.cmd([[
 
     au TextYankPost * silent! lua vim.highlight.on_yank { higroup="VisualMode", timeout=250 }
 
-    set autoread
     autocmd FocusGained, BufEnter * checktime
 
     hi WordUnderCursor guibg=#355655
-    nnoremap <leader>3 <CMD>exec 'match WordUnderCursor /\V\<' . expand('<cword>') . '\>/'<cr>
-    nnoremap <Esc> <Esc><cmd>exec 'match none'<cr>
 
-    function! s:ZoomToggle() abort
-        if exists('t:zoomed') && t:zoomed
-            execute t:zoom_winrestcmd
-            let t:zoomed = 0
-        else
-            let t:zoom_winrestcmd = winrestcmd()
-            resize
-            vertical resize
-            let t:zoomed = 1
-        endif
+    inoremap <expr> ) CheckPair('(', ')')
+    inoremap <expr> ' CheckPair("'", "'")
+    inoremap <expr> " CheckPair('"', '"')
+    inoremap <expr> ] CheckPair('[', ']')
+    inoremap <expr> } CheckPair('{', '}')
+    inoremap <expr> > CheckPair('<', '>')
+    inoremap <expr> <cr> SmartNewLine('{', '}')
+
+    function! SmartNewLine(opening, closing) 
+        let line = getline('.')
+        let col = col('.')
+        let prev_char = col > 1 ? line[col - 2] : ''
+        let next_char = col <= len(line) ? line[col - 1] : ''
+        return prev_char ==# a:opening && next_char ==# a:closing ? "\<cr>\<Esc>O" : "\<cr>"
     endfunction
 
-    command! ZoomToggle call s:ZoomToggle()
-    nnoremap <silent> <leader><BS> :ZoomToggle<CR>
+    function! CheckPair(opening, closing)
+        let line = getline('.')
+        let prev_char = line[col('.')-2]
+        return prev_char ==# a:opening ? a:closing . "\<Left>" : a:closing
+    endfunction
 
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o "disable auto comment next line
 

@@ -9,6 +9,10 @@ return {
                 number = false,
                 relativenumber = false
             },
+            -- columns = {
+            --     'icon',
+            --     'size',
+            -- },
             -- view_options = {
             --     show_hidden = true,
             -- }

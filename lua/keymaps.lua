@@ -3,7 +3,7 @@ MAP_KEY_OPTS = { noremap = true, silent = true }
 
 local telescope_present, telescope = pcall(require, "telescope.builtin")
 local oil_present, oil = pcall(require, "oil")
-local haropoon_present, harpoon = pcall(require, "harpoon")
+local harpoon_present, harpoon = pcall(require, "harpoon")
 
 local function getVisualSelection()
     vim.cmd('noau normal! "vy"')
@@ -44,6 +44,7 @@ MAP_KEY('n', '<S-A-a>', '<cmd>!git add %<cr>', { silent = false })
 MAP_KEY('n', '<leader>kk', '<cmd>vertical Git<cr>', MAP_KEY_OPTS)
 MAP_KEY('n', '<C-l>', '<cmd>vertical Git<cr>', MAP_KEY_OPTS)
 MAP_KEY('n', '<leader>kq', '<cmd>Git difftool<cr>', MAP_KEY_OPTS)
+MAP_KEY('n', '<leader>ka', '<cmd>Git blame<cr>', MAP_KEY_OPTS)
 
 -- Moving lines
 MAP_KEY("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", MAP_KEY_OPTS)
@@ -53,7 +54,8 @@ MAP_KEY("v", "<S-A-k>", ":<C-u>silent! '<,'>m '<-2<CR>gv", MAP_KEY_OPTS)
 
 -- Duplicate lines
 MAP_KEY("n", "<S-A-d>", "<cmd>t.<cr>", MAP_KEY_OPTS)
-MAP_KEY("v", '<S-A-d>', "y'>p'[V']", MAP_KEY_OPTS)
+-- MAP_KEY("v", '<S-A-d>', "y'>p'[V']", MAP_KEY_OPTS)
+MAP_KEY("v", '<S-A-d>', "y'>pgv", MAP_KEY_OPTS)
 
 -- Lazy
 MAP_KEY("n", "<leader>L", "<cmd>Lazy<cr>", MAP_KEY_OPTS)
@@ -69,7 +71,7 @@ MAP_KEY("n", "<A-C-e>", "<cmd>horizontal resize +2<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<A-C-w>", "<cmd>horizontal resize -2<cr>", MAP_KEY_OPTS)
 
 -- Qf nav
-MAP_KEY("n", "<S-A-o>", "<cmd>cnext<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<S-A-p>", "<cmd>cnext<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<S-A-u>", "<cmd>cprev<cr>", MAP_KEY_OPTS)
 
 -- Tab nav 
@@ -80,6 +82,7 @@ MAP_KEY("n", "<leader>tn", "<cmd>tab split<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>tN", "<C-w>T", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>to", "<cmd>tabonly<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>tS", "<cmd>vs | Scratch %<cr><C-w>T", MAP_KEY_OPTS)
 
 -- Telescope
 if telescope_present then
@@ -104,7 +107,7 @@ else
     MAP_KEY("n", "<leader>fg", ":vimgrep // **<Left><Left><Left><Left>")
 end
 
-if haropoon_present then
+if harpoon_present then
     MAP_KEY("n", "<A-h>", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>', MAP_KEY_OPTS)
     MAP_KEY("n", "<A-n>", '<cmd>lua require("harpoon.mark").add_file()<cr>', MAP_KEY_OPTS)
     MAP_KEY("n", "<A-a>", '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', MAP_KEY_OPTS)
@@ -117,10 +120,12 @@ end
 MAP_KEY("n", "<A-f>", '<cmd>silent! close<enter>', MAP_KEY_OPTS)
 
 -- Gitsings
-MAP_KEY("n", "<C-A-d>", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<C-A-u>", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<leader>kd", "<cmd>Gitsigns next_hunk<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<leader>ku", "<cmd>Gitsigns prev_hunk<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<C-A-d>", "<cmd>Gitsigns nav_hunk next<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<C-A-u>", "<cmd>Gitsigns nav_hunk prev<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>kd", "<cmd>Gitsigns nav_hunk next<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>ku", "<cmd>Gitsigns nav_hunk prev<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<A-d>", "<cmd>Gitsigns nav_hunk next<cr>", MAP_KEY_OPTS)
+MAP_KEY("n", "<A-u>", "<cmd>Gitsigns nav_hunk prev<cr>", MAP_KEY_OPTS)
 MAP_KEY({ "n", "v" }, "<A-z>", ":Gitsigns reset_hunk<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ss", "<cmd>Gitsigns preview_hunk<cr>", MAP_KEY_OPTS)
 
@@ -160,7 +165,12 @@ else
     MAP_KEY("n", "<leader>gi", vim.lsp.buf.implementation, MAP_KEY_OPTS)
 end
 
-MAP_KEY("n", "gd", vim.lsp.buf.definition, MAP_KEY_OPTS)
+MAP_KEY("n", "gd", "<C-]>", MAP_KEY_OPTS)
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function()
+        MAP_KEY("n", "gd", vim.lsp.buf.definition, MAP_KEY_OPTS)
+    end,
+})
 MAP_KEY("n", "]]", vim.diagnostic.goto_next, MAP_KEY_OPTS)
 MAP_KEY("n", "[[", vim.diagnostic.goto_prev, MAP_KEY_OPTS)
 MAP_KEY("n", "<A-CR>", vim.lsp.buf.code_action, MAP_KEY_OPTS)
@@ -181,7 +191,7 @@ else
     MAP_KEY("n", "-", "<cmd>Explore<cr>", MAP_KEY_OPTS)
 end
 
-MAP_KEY("v", "<leader>fj", "!jq<cr>", MAP_KEY_OPTS)
+MAP_KEY("v", "<leader>fj", ":!jq .<cr>", MAP_KEY_OPTS)
 
 -- Settings
 MAP_KEY("n", "<leader>sw", "<cmd>set wrap!<cr>", MAP_KEY_OPTS)
@@ -199,3 +209,41 @@ MAP_KEY("n", "<C-A-Down>", "<cmd>horizontal resize -2<cr>", MAP_KEY_OPTS)
 
 MAP_KEY("n", "<leader>ip", "<cmd>echon expand('%:P')<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>iP", "<cmd>echon expand('%:p')<cr>", MAP_KEY_OPTS)
+
+
+MAP_KEY("v", "<leader>kc", 'y:G checkout <C-r>\"', { noremap = true })
+MAP_KEY("n", "<leader>kl", function () 
+    ExecuteToSplit("git for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD)%(refname:short) - %(contents:subject)'", 'git') 
+end)
+
+if telescope_present then 
+    MAP_KEY("n", "<S-Del>", function ()
+        local toggleterm_present, toggleterm = pcall(require, "toggleterm")
+        if not toggleterm_present then 
+            return
+        end
+        local actions = require('telescope.actions')
+        local action_state = require('telescope.actions.state')
+        telescope.find_files({ 
+            prompt_title = "Execute",
+            cwd = vim.fn.getcwd() .. "/build-scripts",
+            attach_mappings = function(prompt_bufnr, map)
+                map('i', '<CR>', function()
+                    local selection = action_state.get_selected_entry()
+                    actions.close(prompt_bufnr)
+                    if selection then
+                        local ok, content = pcall(vim.fn.readfile, selection.path)
+                        if not ok then
+                            vim.notify("Failed to read " .. selection.path, vim.log.levels.ERROR)
+                            return
+                        end
+                        toggleterm.exec(table.concat(content, " "), 0, 0, nil, nil, nil, false)
+                    else
+                        vim.notify('No file selected', vim.log.levels.WARN)
+                    end
+                end)
+                return true
+            end,
+        })
+    end, MAP_KEY_OPTS)
+end
