@@ -12,7 +12,6 @@ return {
         vim.api.nvim_create_autocmd("FileType", {
             pattern = "*", 
             callback = function()
-                -- Use vim.defer_fn to ensure it runs slightly after the file is fully loaded
                 vim.defer_fn(function()
                     vim.cmd(":TSBufEnable highlight")
                 end, 0)
