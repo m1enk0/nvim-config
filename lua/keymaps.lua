@@ -155,15 +155,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- LSP
-if telescope_present then
-    MAP_KEY("n", "grr", telescope.lsp_references, MAP_KEY_OPTS)
-    MAP_KEY("n", "<A-p>", telescope.lsp_document_symbols, MAP_KEY_OPTS)
-    MAP_KEY("n", "<leader>gi", telescope.lsp_implementations, MAP_KEY_OPTS)
-else
-    MAP_KEY("n", "grr", vim.lsp.buf.references, MAP_KEY_OPTS)
-    MAP_KEY("n", "<A-p>", vim.lsp.buf.document_symbols, MAP_KEY_OPTS)
-    MAP_KEY("n", "<leader>gi", vim.lsp.buf.implementation, MAP_KEY_OPTS)
-end
+-- if telescope_present then
+--     MAP_KEY("n", "grr", telescope.lsp_references, MAP_KEY_OPTS)
+--     MAP_KEY("n", "<A-p>", telescope.lsp_document_symbols, MAP_KEY_OPTS)
+--     MAP_KEY("n", "<leader>gi", telescope.lsp_implementations, MAP_KEY_OPTS)
+-- else
+--     MAP_KEY("n", "grr", vim.lsp.buf.references, MAP_KEY_OPTS)
+--     MAP_KEY("n", "<A-p>", vim.lsp.buf.document_symbols, MAP_KEY_OPTS)
+--     MAP_KEY("n", "<leader>gi", vim.lsp.buf.implementation, MAP_KEY_OPTS)
+-- end
 
 MAP_KEY("n", "gd", "<C-]>", MAP_KEY_OPTS)
 vim.api.nvim_create_autocmd('LspAttach', {

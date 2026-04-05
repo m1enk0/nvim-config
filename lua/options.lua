@@ -93,14 +93,3 @@ vim.api.nvim_create_autocmd({"VimEnter", "DirChanged"}, {
     callback = SetProjectViminfo,
     group = vim.api.nvim_create_augroup("ProjectViminfo", {clear = true})
 })
-
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "DirChanged" }, {
-    pattern = "oil://*",
-    callback = function()
-        local oil = require("oil")
-        local cwd = oil.get_current_dir()
-        if cwd then
-            vim.wo.winbar = "Oil: " .. cwd -- show only folder name
-        end
-    end,
-})
