@@ -119,10 +119,10 @@ return {
     },
     event = "VeryLazy",
     config = function()
-        local file_ignore_patterns  = { "^.git\\", "target", "^build\\", "^bin\\", "%.exe" }
+        local file_ignore_patterns  = { "^.git\\", "^target", "^build\\", "^bin\\", "%.exe" }
         local settings = require("custom.project_settings").get_settings()
-        if settings and settings.telescope and settings.telescope.append_file_ignore_patterns then
-            for _, pattern in ipairs(settings.telescope.append_file_ignore_patterns) do
+        if settings.telescope then
+            for _, pattern in ipairs(settings.telescope.append_file_ignore_patterns or {}) do
                 table.insert(file_ignore_patterns, pattern)
             end
         end

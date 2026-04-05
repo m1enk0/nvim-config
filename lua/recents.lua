@@ -2,9 +2,11 @@ local M = {}
 
 -- Configuration defaults
 local config = {
-  session_file = vim.fn.stdpath('data') .. '/recent_files/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t') .. "_" .. vim.fn.sha256(vim.fn.getcwd()),
-  max_entries = 150,
-  excludes = { "COMMIT_EDITMSG" }
+    session_file = vim.fn.stdpath('data') .. '/recent_files/' 
+        .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+        .. "_" .. vim.fn.sha256(vim.fn.getcwd()),
+    max_entries = 150,
+    excludes = { "COMMIT_EDITMSG", "fugitiveblame" }
 }
 
 -- Setup function to override defaults

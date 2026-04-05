@@ -212,9 +212,7 @@ MAP_KEY("n", "<leader>iP", "<cmd>echon expand('%:p')<cr>", MAP_KEY_OPTS)
 
 
 MAP_KEY("v", "<leader>kc", 'y:G checkout <C-r>\"', { noremap = true })
-MAP_KEY("n", "<leader>kl", function () 
-    ExecuteToSplit("git for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD)%(refname:short) - %(contents:subject)'", 'git') 
-end)
+MAP_KEY("n", "<leader>kl", "<cmd>:G log --all --pretty=oneline -1000<cr>", { noremap = true })
 
 if telescope_present then 
     MAP_KEY("n", "<S-Del>", function ()

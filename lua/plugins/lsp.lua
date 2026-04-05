@@ -48,18 +48,19 @@ return {
                         }
                     }
                 },
-                -- yamlls = {},
-                -- jsonls = {}
+                yamlls = {},
+                jsonls = {},
             }
 
+            local disabled = { lua_ls = true, yamlls = true, jsonls = true, }
             local settings = require("custom.project_settings").get_settings()
-            local disabled = {}
-            if settings and settings.lsp and settings.lsp.disable then
-                disabled = settings.lsp.disable
+            if settings.lsp then
+                vim.iter(settings.lsp.disable or {}):each(function(key, _) disabled[key] = true end)
+                vim.iter(settings.lsp.enable or {}):each(function(key, _) disabled[key] = nil end)
             end
 
             vim.iter(config_setup_map)
-                :filter(function(key, _) return not vim.list_contains(disabled, key) end)
+                :filter(function(key, _) return not disabled[key] end)
                 :each(function(key, value) lspconfig[key].setup(value) end)
         end
     }
