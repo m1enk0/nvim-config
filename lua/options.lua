@@ -53,10 +53,7 @@ vim.opt.smartindent = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.opt.textwidth = 0
--- vim.o.viminfo = "'1000,<10000,s1000"
--- vim.o.viminfo = "'25,\"50"
 vim.opt.title = true
-vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
 vim.g.editorconfig = false
 
 function OpenInScratch(param)

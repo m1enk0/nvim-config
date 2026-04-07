@@ -105,6 +105,7 @@ if telescope_present then
 else
     MAP_KEY("n", "<leader>ff", ":e **/**<Left>")
     MAP_KEY("n", "<leader>fg", ":vimgrep // **<Left><Left><Left><Left>")
+    MAP_KEY("n", "<A-e>", "<cmd>buffers<cr>:buffer ")
 end
 
 if harpoon_present then
@@ -154,41 +155,21 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
--- LSP
--- if telescope_present then
---     MAP_KEY("n", "grr", telescope.lsp_references, MAP_KEY_OPTS)
---     MAP_KEY("n", "<A-p>", telescope.lsp_document_symbols, MAP_KEY_OPTS)
---     MAP_KEY("n", "<leader>gi", telescope.lsp_implementations, MAP_KEY_OPTS)
--- else
---     MAP_KEY("n", "grr", vim.lsp.buf.references, MAP_KEY_OPTS)
---     MAP_KEY("n", "<A-p>", vim.lsp.buf.document_symbols, MAP_KEY_OPTS)
---     MAP_KEY("n", "<leader>gi", vim.lsp.buf.implementation, MAP_KEY_OPTS)
--- end
-
-MAP_KEY("n", "gd", "<C-]>", MAP_KEY_OPTS)
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function()
-        MAP_KEY("n", "gd", vim.lsp.buf.definition, MAP_KEY_OPTS)
-    end,
-})
-MAP_KEY("n", "]]", vim.diagnostic.goto_next, MAP_KEY_OPTS)
-MAP_KEY("n", "[[", vim.diagnostic.goto_prev, MAP_KEY_OPTS)
-MAP_KEY("n", "<A-CR>", vim.lsp.buf.code_action, MAP_KEY_OPTS)
-MAP_KEY("n", "<A-o>", vim.diagnostic.open_float, MAP_KEY_OPTS)
-MAP_KEY("v", "<A-CR>", vim.lsp.buf.code_action, MAP_KEY_OPTS)
-MAP_KEY("n", "<S-A-f>", vim.lsp.buf.format, MAP_KEY_OPTS)
-MAP_KEY("v", "<S-A-f>", vim.lsp.buf.format, MAP_KEY_OPTS)
-MAP_KEY("n", "<C-p>", vim.lsp.buf.signature_help, MAP_KEY_OPTS)
-MAP_KEY("i", "<C-p>", vim.lsp.buf.signature_help, MAP_KEY_OPTS)
-MAP_KEY("n", "<A-r>", vim.lsp.buf.rename, MAP_KEY_OPTS)
-MAP_KEY("n", "<leader>ah", vim.lsp.buf.hover, MAP_KEY_OPTS)
-MAP_KEY("n", "<leader>ls", "<cmd>LspStart<cr>", MAP_KEY_OPTS)
-MAP_KEY("n", "<leader>lr", "<cmd>LspRestart<cr>", MAP_KEY_OPTS)
-
 if oil_present then
     MAP_KEY("n", "-", oil.open, MAP_KEY_OPTS)
 else
-    MAP_KEY("n", "-", "<cmd>Explore<cr>", MAP_KEY_OPTS)
+    MAP_KEY("n", "-", function()
+        local filename = vim.fn.expand('%:t')
+        vim.cmd('Explore')
+        vim.fn.search('^\\V' .. filename)
+        vim.cmd('noh')
+    end, MAP_KEY_OPTS)
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "netrw",
+        callback = function()
+            MAP_KEY("n", "<C-c>", "<cmd>bd<cr>", { buffer = true })
+        end
+    })
 end
 
 MAP_KEY("v", "<leader>fj", ":!jq .<cr>", MAP_KEY_OPTS)
@@ -213,35 +194,3 @@ MAP_KEY("n", "<leader>iP", "<cmd>echon expand('%:p')<cr>", MAP_KEY_OPTS)
 
 MAP_KEY("v", "<leader>kc", 'y:G checkout <C-r>\"', { noremap = true })
 MAP_KEY("n", "<leader>kl", "<cmd>:G log --all --pretty=oneline -1000<cr>", { noremap = true })
-
-if telescope_present then 
-    MAP_KEY("n", "<S-Del>", function ()
-        local toggleterm_present, toggleterm = pcall(require, "toggleterm")
-        if not toggleterm_present then 
-            return
-        end
-        local actions = require('telescope.actions')
-        local action_state = require('telescope.actions.state')
-        telescope.find_files({ 
-            prompt_title = "Execute",
-            cwd = vim.fn.getcwd() .. "/build-scripts",
-            attach_mappings = function(prompt_bufnr, map)
-                map('i', '<CR>', function()
-                    local selection = action_state.get_selected_entry()
-                    actions.close(prompt_bufnr)
-                    if selection then
-                        local ok, content = pcall(vim.fn.readfile, selection.path)
-                        if not ok then
-                            vim.notify("Failed to read " .. selection.path, vim.log.levels.ERROR)
-                            return
-                        end
-                        toggleterm.exec(table.concat(content, " "), 0, 0, nil, nil, nil, false)
-                    else
-                        vim.notify('No file selected', vim.log.levels.WARN)
-                    end
-                end)
-                return true
-            end,
-        })
-    end, MAP_KEY_OPTS)
-end

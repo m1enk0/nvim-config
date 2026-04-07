@@ -52,24 +52,6 @@ vim.cmd([[
     hi Folded guifg=#808080
 ]])
 
--- Telescope
-local ok, telescope = pcall(require, "telescope")
-if ok then
-    local telescope_bg = "#2E2E2E"
-    vim.api.nvim_set_hl(0, "Directory", { link = "Comment" })
-
-    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#424242", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#424242", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopeSelection", { fg = "white", bg = "#353B49" })
-    vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
-    vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
-end
-
 -- Treesitter
 local soft_grey = "#A9B7C6"
 local dim_yellow = "#BBB529"
