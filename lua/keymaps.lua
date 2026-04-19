@@ -54,11 +54,28 @@ if recents_present then
     MAP_KEY("n", "<A-e>", function()
         local files = recents.get_recent_files_with_timestamps()
 
-        vim.ui.select(files, {
-            prompt = "Select file:",
-            format_item = function(item) return item.path end,
-        }, function(choice)
-            if choice then vim.cmd("edit " .. choice.path) end
+        vim.ui.input({ prompt = "Filter: " }, function(input)
+            if input == nil then return end
+
+            local filtered = vim.tbl_filter(function(item)
+                return item.path:lower():find(input:lower(), 1, true)
+            end, files)
+
+            if #filtered == 1 then
+                vim.cmd("edit " .. filtered[1].path)
+                return
+            end
+
+            vim.ui.select(filtered, {
+                prompt = "Select file:",
+                format_item = function(item)
+                    return vim.fn.fnamemodify(item.path, ':.')
+                end,
+            }, function(choice)
+                if choice then
+                    vim.cmd("edit " .. choice.path)
+                end
+            end)
         end)
     end, MAP_KEY_OPTS)
 else
