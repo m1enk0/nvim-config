@@ -12,6 +12,7 @@ MAP_KEY("i", "<Space>", "<Space><C-g>u", MAP_KEY_OPTS)
 -- Git
 MAP_KEY('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
 MAP_KEY('n', '<S-A-a>', '<cmd>!git add %<cr>', { silent = false })
+MAP_KEY('n', '<C-l>', '<cmd>!git status<cr>', MAP_KEY_OPTS)
 
 -- Moving lines
 MAP_KEY("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", MAP_KEY_OPTS)
@@ -105,7 +106,6 @@ end, MAP_KEY_OPTS)
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "netrw",
     callback = function()
-        MAP_KEY("n", "<C-c>", "<cmd>bd<cr>", { buffer = true })
     end
 })
 
@@ -130,3 +130,4 @@ MAP_KEY("n", "<leader>iP", "<cmd>echon expand('%:p')<cr>", MAP_KEY_OPTS)
 
 MAP_KEY("n", "<S-A-o>", "<cmd>copen<cr>", MAP_KEY_OPTS)
 
+MAP_KEY("n", "<A-y>", "<cmd>split | terminal<cr>", MAP_KEY_OPTS)
