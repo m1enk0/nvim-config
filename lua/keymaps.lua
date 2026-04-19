@@ -1,6 +1,8 @@
 MAP_KEY = vim.keymap.set
 MAP_KEY_OPTS = { noremap = true, silent = true }
 
+local recents_present, recents = pcall(require, "recents")
+
 MAP_KEY("n", "<A-BS>", "<cmd>on<cr>", MAP_KEY_OPTS)
 
 -- Split actions for undo
@@ -48,7 +50,20 @@ MAP_KEY("n", "<leader>tS", "<cmd>vs | Scratch %<cr><C-w>T", MAP_KEY_OPTS)
 
 MAP_KEY("n", "<leader>ff", ":e **/**<Left>")
 MAP_KEY("n", "<leader>fg", ":vimgrep // **<Left><Left><Left><Left>")
-MAP_KEY("n", "<A-e>", "<cmd>buffers<cr>:buffer ")
+if recents_present then
+    MAP_KEY("n", "<A-e>", function()
+        local files = recents.get_recent_files_with_timestamps()
+
+        vim.ui.select(files, {
+            prompt = "Select file:",
+            format_item = function(item) return item.path end,
+        }, function(choice)
+            if choice then vim.cmd("edit " .. choice.path) end
+        end)
+    end, MAP_KEY_OPTS)
+else
+    MAP_KEY("n", "<A-e>", "<cmd>buffers<cr>:buffer ")
+end
 
 MAP_KEY("n", "<A-f>", '<cmd>silent! close<enter>', MAP_KEY_OPTS)
 
@@ -97,3 +112,4 @@ MAP_KEY("n", "<leader>ip", "<cmd>echon expand('%:P')<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>iP", "<cmd>echon expand('%:p')<cr>", MAP_KEY_OPTS)
 
 MAP_KEY("n", "<S-A-o>", "<cmd>copen<cr>", MAP_KEY_OPTS)
+
