@@ -12,14 +12,11 @@ local function open_runterm(name)
         if not t.tab or not vim.api.nvim_tabpage_is_valid(t.tab) then
             vim.cmd("tab split")
             vim.cmd("buffer " .. t.buf)
-            vim.cmd("startinsert")
-
             terminals[name].tab = vim.api.nvim_get_current_tabpage()
             return
         end
         vim.api.nvim_set_current_tabpage(t.tab)
         vim.api.nvim_set_current_buf(t.buf)
-        vim.cmd("startinsert")
         return
     end
     vim.cmd("tab split | term")
