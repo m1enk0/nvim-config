@@ -5,17 +5,45 @@ local telescope_present, telescope = pcall(require, "telescope.builtin")
 local oil_present, oil = pcall(require, "oil")
 local harpoon_present, harpoon = pcall(require, "harpoon")
 
-local function getVisualSelection()
+local terminals = {}
+
+local function open_runterm(name)
+    local t = terminals[name]
+
+    if t and vim.api.nvim_buf_is_valid(t.buf) then
+        if not t.tab or not vim.api.nvim_tabpage_is_valid(t.tab) then
+            vim.cmd("tab split")
+            vim.cmd("buffer " .. t.buf)
+            vim.cmd("startinsert")
+
+            terminals[name].tab = vim.api.nvim_get_current_tabpage()
+            return
+        end
+        vim.api.nvim_set_current_tabpage(t.tab)
+        vim.api.nvim_set_current_buf(t.buf)
+        vim.cmd("startinsert")
+        return
+    end
+    vim.cmd("tab split | term")
+    vim.api.nvim_buf_set_name(0, name)
+    vim.cmd("startinsert")
+    terminals[name] = {
+        buf = vim.api.nvim_get_current_buf(),
+        tab = vim.api.nvim_get_current_tabpage(),
+    }
+end
+
+local function get_visual_selection()
     vim.cmd('noau normal! "vy"')
     local text = vim.fn.getreg('v')
     text = string.gsub(text, "\n", "")
     if #text > 0 then return text else return '' end
 end
 
-local function mapTelescopeNV(shortcut, telescopeFun)
+local function map_telescope_nv(shortcut, telescopeFun)
     local actions = require("telescope.actions")
     MAP_KEY("v", shortcut, function() telescopeFun({
-        default_text = getVisualSelection(),
+        default_text = get_visual_selection(),
         attach_mappings  = function(_)
             actions.close:replace(function(prompt_bufnr)
                 vim.api.nvim_buf_delete(prompt_bufnr, { force = true })
@@ -83,12 +111,14 @@ MAP_KEY("n", "<leader>tN", "<C-w>T", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>to", "<cmd>tabonly<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>tS", "<cmd>vs | Scratch %<cr><C-w>T", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>ty", function() open_runterm('runterm_one') end, MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>tu", function() open_runterm('runterm_two') end, MAP_KEY_OPTS)
 
 -- Telescope
 if telescope_present then
-    mapTelescopeNV("<leader>ff", telescope.find_files)
-    mapTelescopeNV("<leader>fg", telescope.live_grep)
-    mapTelescopeNV("<leader>fh", telescope.help_tags)
+    map_telescope_nv("<leader>ff", telescope.find_files)
+    map_telescope_nv("<leader>fg", telescope.live_grep)
+    map_telescope_nv("<leader>fh", telescope.help_tags)
     MAP_KEY("n", "<leader>fp", telescope.pickers)
     MAP_KEY("n", "<leader>fd", function() telescope.fd({ find_command = { 'fd', '-t', 'd', '--no-ignore' } }) end)
     MAP_KEY("n", "<A-e>", "<cmd>Telescope recent_files<cr>", MAP_KEY_OPTS)

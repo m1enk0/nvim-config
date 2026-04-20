@@ -4,6 +4,9 @@ vim.cmd([[
     set fillchars=diff:⠀
     set shm+=I
     set shada=!,'10000,<50,s10,h,f1
+    set shell=pwsh\ --nologo
+    set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command\ [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
+    set shellquote= shellxquote=
     " try
 
     set pumheight=10
