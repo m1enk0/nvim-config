@@ -3,6 +3,34 @@ MAP_KEY_OPTS = { noremap = true, silent = true }
 
 local recents_present, recents = pcall(require, "recents")
 
+local terminals = {}
+
+local function open_runterm(name)
+    local t = terminals[name]
+
+    if t and vim.api.nvim_buf_is_valid(t.buf) then
+        if not t.tab or not vim.api.nvim_tabpage_is_valid(t.tab) then
+            vim.cmd("tab split")
+            vim.cmd("buffer " .. t.buf)
+            vim.cmd("startinsert")
+
+            terminals[name].tab = vim.api.nvim_get_current_tabpage()
+            return
+        end
+        vim.api.nvim_set_current_tabpage(t.tab)
+        vim.api.nvim_set_current_buf(t.buf)
+        vim.cmd("startinsert")
+        return
+    end
+    vim.cmd("tab split | term")
+    vim.api.nvim_buf_set_name(0, name)
+    vim.cmd("startinsert")
+    terminals[name] = {
+        buf = vim.api.nvim_get_current_buf(),
+        tab = vim.api.nvim_get_current_tabpage(),
+    }
+end
+
 MAP_KEY("n", "<A-BS>", "<cmd>on<cr>", MAP_KEY_OPTS)
 
 -- Split actions for undo
@@ -48,6 +76,8 @@ MAP_KEY("n", "<leader>tN", "<C-w>T", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>to", "<cmd>tabonly<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", MAP_KEY_OPTS)
 MAP_KEY("n", "<leader>tS", "<cmd>vs | Scratch %<cr><C-w>T", MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>ty", function() open_runterm('runterm_one') end, MAP_KEY_OPTS)
+MAP_KEY("n", "<leader>tu", function() open_runterm('runterm_two') end, MAP_KEY_OPTS)
 
 MAP_KEY("n", "<leader>ff", ":e **/**<Left>")
 MAP_KEY("n", "<leader>fg", ":vimgrep // **<Left><Left><Left><Left>")
