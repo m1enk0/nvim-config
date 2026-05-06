@@ -12,4 +12,4 @@ end
 
 vim.api.nvim_create_user_command('CompareClip', CompareWithClipboard, {})
 
-MAP_KEY('v', '<leader>lc', 'y:CompareClip<CR>', MAP_KEY_OPTS)
+global.map_key('v', '<leader>lc', 'y:CompareClip<CR>', global.map_key_opts)

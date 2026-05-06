@@ -112,3 +112,10 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "DirChanged" }, {
         end
     end,
 })
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+      vim.g.main_tab = vim.api.nvim_get_current_tabpage()
+      vim.g.main_win = vim.api.nvim_get_current_win()
+  end,
+})

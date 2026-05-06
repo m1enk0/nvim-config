@@ -9,7 +9,7 @@ function MongoReplaceDoc()
 
     local replace_query = string.format('db["%s"].replaceOne({_id: %s}, %s)', vim.b.collection_name, doc_id, doc)
     local cmd = string.format(vim.b.executed_query_format, replace_query)
-    local output = ExecDependingOnOS(cmd)
+    local output = global.exec_depending_on_os(cmd)
     vim.notify("Replacing doc with id = " .. doc_id .. "; collection name = " .. vim.b.collection_name .. "\n" .. output)
 end
 
@@ -21,4 +21,4 @@ end
 
 vim.api.nvim_create_user_command('MongoReplaceDoc', MongoReplaceDoc, {})
 
-MAP_KEY('v', '<leader>mr', 'y:MongoReplaceDoc<CR>', MAP_KEY_OPTS)
+global.map_key('v', '<leader>mr', 'y:MongoReplaceDoc<CR>', global.map_key_opts)

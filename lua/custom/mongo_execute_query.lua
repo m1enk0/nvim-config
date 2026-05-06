@@ -10,7 +10,7 @@ function MongoExecuteQuery()
     local collection_name = param:match([[db[%s]*%.%s*([%w$_-]+)]]) or param:match([[db[%s]*%[%s*['"]([^'"]+)['"]%s*]])
 
     local cmd = string.format(main_query,  param)
-    local output = ExecDependingOnOS(cmd)
+    local output = global.exec_depending_on_os(cmd)
     local output_lines = vim.split(cmd .. "\n\n" .. output, '\n')
     local scratch_buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_option(scratch_buf, 'filetype', 'javascript')
@@ -20,8 +20,8 @@ function MongoExecuteQuery()
     vim.b.executed_query_format = main_query
     vim.b.executed_query = cmd
     vim.b.collection_name = collection_name
-    MAP_KEY('n', '<leader>rr', '<cmd>ReexecuteQuery<cr>', { buffer = true })
-    MAP_KEY('n', '<leader>w', function ()
+    global.map_key('n', '<leader>rr', '<cmd>ReexecuteQuery<cr>', { buffer = true })
+    global.map_key('n', '<leader>w', function ()
         MongoYankDocToReplace()
         MongoReplaceDoc()
     end, { buffer = true })
@@ -29,5 +29,5 @@ end
 
 vim.api.nvim_create_user_command('MongoExecuteQuery', MongoExecuteQuery, {})
 
-MAP_KEY('v', '<leader>mq', 'y:MongoExecuteQuery<CR>', MAP_KEY_OPTS)
-MAP_KEY('n', '<leader>mq', 'vipy:MongoExecuteQuery<CR>', MAP_KEY_OPTS)
+global.map_key('v', '<leader>mq', 'y:MongoExecuteQuery<CR>', global.map_key_opts)
+global.map_key('n', '<leader>mq', 'vipy:MongoExecuteQuery<CR>', global.map_key_opts)

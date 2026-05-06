@@ -7,8 +7,8 @@ return {
         },
         cmd = { 'DapContinue', 'DapToggleBreakpoint' },
         config = function()
-            MAP_KEY("n", "<C-_>", "<cmd>DapToggleBreakpoint<cr>", MAP_KEY_OPTS)
-            MAP_KEY("n", "<C-n>", "<cmd>DapContinue<cr>", MAP_KEY_OPTS)
+            global.map_key("n", "<C-_>", "<cmd>DapToggleBreakpoint<cr>", global.map_key_opts)
+            global.map_key("n", "<C-n>", "<cmd>DapContinue<cr>", global.map_key_opts)
         end
     },
     {
@@ -37,8 +37,8 @@ return {
             dap.listeners.before.event_exited['dapui_config'] = function()
                 dapui.close()
             end
-            MAP_KEY("n", "<C-u>", "<cmd>lua require('dapui').toggle()<cr>", MAP_KEY_OPTS)
-            MAP_KEY("n", "<A-/>", "<cmd>lua require('dapui').eval()<cr>", MAP_KEY_OPTS)
+            global.map_key("n", "<C-u>", "<cmd>lua require('dapui').toggle()<cr>", global.map_key_opts)
+            global.map_key("n", "<A-/>", "<cmd>lua require('dapui').eval()<cr>", global.map_key_opts)
         end
     },
     {
