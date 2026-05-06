@@ -37,6 +37,7 @@ vim.cmd([[
     hi link CurSearch Search
 
     hi BlinkCmpLabelMatch guifg=#5490F5 gui=NONE
+    " hi BlinkCmpLabelDescription guifg=white " return type
     hi PmenuKind guibg=NONE guifg=#72737A
     hi PmenuExtra guifg=#72737A
 
@@ -65,9 +66,10 @@ if ok then
     vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = telescope_bg })
     vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = telescope_bg })
     vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopeSelection", { fg = "white", bg = "#353B49" })
+    vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
-    vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
+    -- vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
+    vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
 end
 
 -- Treesitter
@@ -80,7 +82,7 @@ local topaz_yellow = "#FFC66D"
 local dim_blue = "#6897BB"
 local comment = "#808080"
 local bright_green = "#629755"
-local error_red = "#BF616A"
+local error_red = "#BC3F3C"
 vim.api.nvim_set_hl(0, "@attribute", { fg = dim_yellow })
 vim.api.nvim_set_hl(0, "@function", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@module", { fg = topaz_yellow })
@@ -112,7 +114,7 @@ vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@variable", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@number", { fg = dim_blue })
 vim.api.nvim_set_hl(0, "@comment", { fg = comment })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = error_red, bold = true })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = error_red })
 
 -- language specific
 vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })
@@ -120,10 +122,17 @@ vim.api.nvim_set_hl(0, "@boolean.yaml", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@punctuation.delimiter.yaml", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@lsp.type.operator.cpp", { fg = carrot_red })
 vim.api.nvim_set_hl(0, "@function.groovy", { fg = soft_grey })
-vim.api.nvim_set_hl(0, "@lsp.typemod.annotation.importDeclaration.java", { fg = dim_yellow })
-vim.api.nvim_set_hl(0, "@lsp.type.method.java", { fg = soft_grey })
-vim.api.nvim_set_hl(0, "@lsp.type.namespace.java", { fg = soft_grey })
-vim.api.nvim_set_hl(0, "@lsp.typemod.method.static.java", { italic = true })
-vim.api.nvim_set_hl(0, "@comment.documentation.java", { fg = bright_green, italic = true })
-vim.api.nvim_set_hl(0, "@lsp.typemod.method.declaration.java", { fg = topaz_yellow, italic = false })
-vim.api.nvim_set_hl(0, "@lsp.type.modifier.java", { link = "@keyword" })
+vim.api.nvim_set_hl(0, "@lsp.typemod.annotation.importDeclaration", { fg = dim_yellow })
+vim.api.nvim_set_hl(0, "@lsp.type.method", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.type.namespace", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.typemod.method.static", { italic = true })
+vim.api.nvim_set_hl(0, "@comment.documentation", { fg = bright_green, italic = true })
+vim.api.nvim_set_hl(0, "@lsp.typemod.method.declaration", { fg = topaz_yellow, italic = false })
+vim.api.nvim_set_hl(0, "@lsp.type.modifier", { link = "@keyword" })
+vim.api.nvim_set_hl(0, "@lsp.typemod.keyword.documentation", { fg = bright_green, bold = true })
+vim.api.nvim_set_hl(0, "@lsp.typemod.parameter.documentation", { fg = "#8A653B" })
+vim.api.nvim_set_hl(0, "@lsp.typemod.typeParameter.declaration", { fg = "#507874" })
+vim.api.nvim_set_hl(0, "@lsp.type.typeParameter", { fg = "#507874" })
+vim.api.nvim_set_hl(0, "@lsp.typemod.annotationMember.declaration", { fg = topaz_yellow})
+vim.api.nvim_set_hl(0, "@keyword.conditional.ternary", { fg = soft_grey})
+vim.api.nvim_set_hl(0, "@lsp.type.annotation.java", { fg = dim_yellow})
