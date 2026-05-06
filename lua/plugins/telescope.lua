@@ -3,7 +3,7 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(ctx)
         vim.api.nvim_buf_call(ctx.buf, function()
             vim.fn.matchadd("TelescopeParent", "\t\t.*$")
-            vim.api.nvim_set_hl(0, "TelescopeParent", { link = "Comment" })
+            vim.api.nvim_set_hl(0, "TelescopeParent", { fg = "#5B5E6B" })
         end)
     end,
 })
@@ -110,7 +110,6 @@ end
 
 return {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.8',
     dependencies = {
         'nvim-lua/plenary.nvim',
         'nvim-tree/nvim-web-devicons',
