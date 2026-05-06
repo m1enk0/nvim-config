@@ -34,7 +34,8 @@ return {
         -- See :h blink-cmp-config-keymap for defining your own keymap
         keymap = { 
             preset = 'enter',
-            ['<C-n>'] = { 'show' },
+            ['<C-n>'] = { 'show', 'hide' },
+            ['<A-h>'] = { 'show_documentation', 'hide_documentation' },
             ['<CR>'] = {   
                 function(cmp) 
                     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-g>u', true, true, true), 'n', true) -- breaks actions (for Undo)
@@ -62,11 +63,11 @@ return {
                                 return require("lspkind").presets.codicons[ctx.kind] .. ctx.icon_gap
                             end
                         },
-                        label = { width = { fill = false }, },
-                        label_description = {
-                            text = function (ctx) return ctx.item.detail end,
-                            width = { fill = true }
-                        }
+                        -- label = { width = { fill = false }, },
+                        -- label_description = {
+                        --     text = function (ctx) return ctx.item.detail end,
+                        --     width = { fill = true }
+                        -- }
                     }
                 }
             },
@@ -107,7 +108,8 @@ return {
                 preset = 'super-tab',
                 ['<C-Right>'] = { 'accept', 'fallback' },
                 ['<A-Enter>'] = { 'accept_and_enter', 'fallback' },
-                ['<C-c>'] = { 'hide', 'fallback' }
+                ['<C-c>'] = { 'hide', 'fallback' },
+                ['<C-n>'] = { 'show', 'hide' },
             },
             completion = {
                 menu = { auto_show = true },
