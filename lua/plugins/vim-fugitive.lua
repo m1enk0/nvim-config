@@ -6,7 +6,7 @@ return {
             function! FugitiveStatusContent()
                 return matchstr(fugitive#statusline(), '(\zs.\{-}\ze)')
             endfunction
-            set statusline=\ %<%t\ %h%m%r%=%-14.(\\ %{FugitiveStatusContent()}\ \ %l,%c%V%)\ %p%%
+            set statusline=%{%v:lua.statusline_hl()%}\ %<%t\ %h%m%r%=%-14.(\\ %{FugitiveStatusContent()}\ \ %l,%c%V%)\ %p%%
 
             " set statusline=\ %<%t\ %h%m%r             " Left section
             " set statusline+=%=                        " Center align

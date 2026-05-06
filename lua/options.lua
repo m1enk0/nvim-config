@@ -119,3 +119,12 @@ vim.api.nvim_create_autocmd("VimEnter", {
       vim.g.main_win = vim.api.nvim_get_current_win()
   end,
 })
+
+_G.statusline_hl = function()
+	if vim.api.nvim_buf_get_name(0):match("^jdt://") then
+		return "%#StatusLineLSP#"
+	end
+	return "%#StatusLine#"
+end
+
+vim.api.nvim_set_hl(0, "StatusLineLSP", { fg = "#000000", bg = "#ffffff" })
