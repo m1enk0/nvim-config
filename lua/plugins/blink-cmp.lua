@@ -63,11 +63,14 @@ return {
                                 return require("lspkind").presets.codicons[ctx.kind] .. ctx.icon_gap
                             end
                         },
-                        -- label = { width = { fill = false }, },
-                        -- label_description = {
-                        --     text = function (ctx) return ctx.item.detail end,
-                        --     width = { fill = true }
-                        -- }
+                        label_description = {
+                            text = function (ctx) 
+                                if ctx.item and ctx.item.client_name == 'gopls' then
+                                    return ctx.item.detail 
+                                end
+                                return ctx.label_description
+                            end,
+                        }
                     }
                 }
             },

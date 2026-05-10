@@ -193,7 +193,6 @@ else
     global.map_key("n", "<leader>gi", vim.lsp.buf.implementation, global.map_key_opts)
 end
 
-global.map_key("n", "gd", "<C-]>", global.map_key_opts)
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function()
         global.map_key("n", "gd", vim.lsp.buf.definition, global.map_key_opts)

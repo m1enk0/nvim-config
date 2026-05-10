@@ -26,7 +26,8 @@ return {
             "-Dlog.level=ALL",
             '-javaagent:' .. jdtls_path .. '\\lombok.jar',
 
-            "-Xms4g",
+            "-Xms1g",
+            "-Xmx4g",
             "--add-modules=ALL-SYSTEM",
             "--add-opens", "java.base/java.util=ALL-UNNAMED",
             "--add-opens", "java.base/java.lang=ALL-UNNAMED",
@@ -41,6 +42,9 @@ return {
             root_dir = require("jdtls.setup").find_root({ "pom.xml", "build.gradle", ".git", "mvnw", "gradlew" }),
             capabilities = capabilities,
             init_options = {
+                bundles = {
+                    vim.fn.glob(vim.fn.stdpath("data") .. "\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-*.jar")
+                },
                 shouldLanguageServerExitOnShutdown = true,
                 settings = {
                     java = {

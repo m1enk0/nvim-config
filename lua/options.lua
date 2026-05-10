@@ -16,8 +16,6 @@ vim.cmd([[
 
     autocmd FocusGained, BufEnter * checktime
 
-    hi WordUnderCursor guibg=#355655
-
     inoremap <expr> ) CheckPair('(', ')')
     inoremap <expr> ' CheckPair("'", "'")
     inoremap <expr> " CheckPair('"', '"')
@@ -66,6 +64,12 @@ vim.opt.textwidth = 0
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
 vim.g.editorconfig = false
+vim.diagnostic.config({
+    virtual_text = true,
+    signs = false,
+    update_in_insert = false,
+    severity_sort = true,
+})
 
 function OpenInScratch(param)
     local scratch_buf = vim.api.nvim_create_buf(false, true)
@@ -126,5 +130,46 @@ _G.statusline_hl = function()
 	end
 	return "%#StatusLine#"
 end
+vim.api.nvim_set_hl(0, "StatusLineLSP", { bg = "#424242" })
 
-vim.api.nvim_set_hl(0, "StatusLineLSP", { fg = "#000000", bg = "#ffffff" })
+vim.api.nvim_create_user_command('StartLuaDebug', function() require("osv").launch({ port = 8086 }) end, {})
+vim.api.nvim_create_user_command('StopLuaDebug', function() require("osv").stop() end, {})
+
+vim.o.showtabline = 1
+
+vim.o.tabline = '%!v:lua.MyTabLine()'
+function _G.MyTabLine()
+    local s = ''
+    for i = 1, vim.fn.tabpagenr('$') do
+        local winnr = vim.fn.tabpagewinnr(i)
+        local buflist = vim.fn.tabpagebuflist(i)
+        local bufnr = buflist[winnr]
+        local name = vim.fn.fnamemodify(vim.fn.bufname(bufnr), ':t')
+        if name == '' then
+            name = '[No Name]'
+        end
+        if i == vim.fn.tabpagenr() then
+            s = s .. '%#TabLineSel#'
+        else
+            s = s .. '%#TabLine#'
+        end
+        s = s .. ' ' .. name .. ' '
+    end
+    s = s .. '%#TabLineFill#'
+    return s
+end
+
+if vim.fn.has("mac") == 1 then
+    system_os = "mac"
+elseif vim.fn.has("unix") == 1 then
+    system_os = "linux"
+elseif vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+    system_os = "win"
+    vim.opt.shellslash = false -- Enable shellslash for Windows compatibility
+    vim.defer_fn(function()
+        vim.opt.shellslash = false
+    end, 5000)
+else
+    print("OS not found, defaulting to 'linux'")
+    system_os = "linux"
+end
