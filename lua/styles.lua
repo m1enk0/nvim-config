@@ -1,57 +1,53 @@
-vim.cmd([[ 
-    hi Pmenu guibg=#272726 guifg=#BBBBBB ctermbg=NONE
-    " hi PmenuSel guibg=#ABE8B3
-    hi PmenuSel guibg=#113A5C
-    hi PmenuSbar guibg=#333333
-    hi PmenuThumb guibg=#4A4A4A
+vim.api.nvim_set_hl(0, 'Pmenu', { bg = "#272726", fg = "#BBBBBB", ctermbg = "NONE" })
+vim.api.nvim_set_hl(0, 'PmenuSel', { bg = "#113A5C" })
+vim.api.nvim_set_hl(0, 'PmenuSbar', { bg = "#333333" })
+vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = "#4A4A4A" })
 
-    hi CmpItemAbbrMatch guifg=#5490F5 gui=NONE
-    hi CmpItemAbbrMatchFuzzy guifg=#5490F5 gui=NONE
-    " hi CmpItemAbbr guifg=#8697BA
-    hi CmpItemMenu guifg=#72737A
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = "#5490F5", bold = false })
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { fg = "#5490F5", bold = false })
+vim.api.nvim_set_hl(0, 'CmpItemMenu', { fg = "#72737A" })
 
-    hi Visual guibg=#214283 gui=NONE
-    hi Search guibg=#3B4252 guifg=NONE gui=NONE
+vim.api.nvim_set_hl(0, 'Visual', { bg = "#214283", bold = false })
+vim.api.nvim_set_hl(0, 'Search', { bg = "#3B4252", fg = "NONE", bold = false })
 
-    hi Normal guibg=NONE ctermbg=NONE
-    hi NormalNC guibg=NONE ctermbg=NONE
+vim.api.nvim_set_hl(0, 'Normal', { bg = "NONE", ctermbg = "NONE" })
+vim.api.nvim_set_hl(0, 'NormalNC', { bg = "NONE", ctermbg = "NONE" })
 
-    " hi StatusLineNC guifg=#566178
-    " hi StatusLine guibg=#3C3F41 guifg=#A9B7C6
-    hi StatusLine guibg=#323232
+vim.api.nvim_set_hl(0, 'StatusLine', { bg = "#323232" })
+vim.api.nvim_set_hl(0, 'ColorColumn', { bg = "#2E2E2E" })
 
-    hi ColorColumn guibg=#2E2E2E
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = "#292929" })
+vim.api.nvim_set_hl(0, 'FloatBorder', { fg = "#42424a", bg = "#2B2B2B" })
 
-    hi NormalFloat guibg=#292929
-    hi FloatBorder guifg=#42424a guibg=#2B2B2B
+vim.api.nvim_set_hl(0, 'TabLineSel', { fg = "white" })
 
-    hi TabLineSel guifg=white
+vim.api.nvim_set_hl(0, 'CursorLine', { bg = "#323232" })
 
-    hi CursorLine guibg=#323232
+vim.api.nvim_set_hl(0, 'SpellBad', { underline = true })
 
-    hi SpellBad gui=underline cterm=underline
+vim.api.nvim_set_hl(0, 'LineNr', { fg = "#606366" })
 
-    hi LineNr guifg=#606366
+vim.api.nvim_set_hl(0, 'BlinkCmpLabelMatch', { fg = "#5490F5", bold = false })
+vim.api.nvim_set_hl(0, 'PmenuKind', { bg = "NONE", fg = "#72737A" })
+vim.api.nvim_set_hl(0, 'PmenuExtra', { fg = "#72737A" })
 
-    hi clear CurSearch
-    hi link CurSearch Search
+vim.api.nvim_set_hl(0, 'TabLine', { fg = "#666666", bg = "#222222", italic = false })
+vim.api.nvim_set_hl(0, 'TabLineFill', { fg = "#999999", bg = "#1a1a1a", italic = false })
+vim.api.nvim_set_hl(0, 'TabLineSel', { fg = "#ffffff", bg = "#2B2B2B", bold = true })
 
-    hi BlinkCmpLabelMatch guifg=#5490F5 gui=NONE
-    " hi BlinkCmpLabelDescription guifg=white " return type
-    hi PmenuKind guibg=NONE guifg=#72737A
-    hi PmenuExtra guifg=#72737A
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = "#252628", bg = "#313335" })
 
-    hi TabLine guifg=#666666 guibg=#222222 gui=none
-    hi TabLineFill guifg=#999999 guibg=#1a1a1a gui=none
-    hi TabLineSel guifg=#ffffff guibg=#2B2B2B gui=bold
+vim.api.nvim_set_hl(0, 'DiffAdd', { bg = "#294436" })
+vim.api.nvim_set_hl(0, 'DiffDelete', { bg = "#45302B" })
 
-    hi WinSeparator guifg=#252628 guibg=#313335
+vim.api.nvim_set_hl(0, 'Folded', { fg = "#808080" })
 
-    hi DiffAdd guibg=#294436
-    hi DiffDelete guibg=#45302B
+-- vim.api.nvim_set_hl(0, "CurSearch", {})
+vim.api.nvim_set_hl(0, "CurSearch", { link = "Search" })
 
-    hi Folded guifg=#808080
-]])
+vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "ErrorMsg", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { linehl = "DapStoppedLine" })
+vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#3A2323" })
 
 -- Telescope
 local ok, telescope = pcall(require, "telescope")
@@ -69,7 +65,7 @@ if ok then
     vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
     -- vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
-    vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
+    vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true  })
 end
 
 -- Treesitter
