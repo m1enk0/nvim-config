@@ -16,18 +16,19 @@ vim.api.nvim_set_hl(0, 'NormalNC', { bg = "NONE", ctermbg = "NONE" })
 vim.api.nvim_set_hl(0, 'StatusLine', { bg = "#323232" })
 vim.api.nvim_set_hl(0, 'ColorColumn', { bg = "#2E2E2E" })
 
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = "#292929" })
-vim.api.nvim_set_hl(0, 'FloatBorder', { fg = "#42424a", bg = "#2B2B2B" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#292929" })
+vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#ffffff", bg = "#292929" })
 
 vim.api.nvim_set_hl(0, 'TabLineSel', { fg = "white" })
 
 vim.api.nvim_set_hl(0, 'CursorLine', { bg = "#323232" })
 
-vim.api.nvim_set_hl(0, 'SpellBad', { underline = true })
+vim.api.nvim_set_hl(0, 'SpellBad', { underline = true, italic = false })
 
 vim.api.nvim_set_hl(0, 'LineNr', { fg = "#606366" })
 
-vim.api.nvim_set_hl(0, 'BlinkCmpLabelMatch', { fg = "#5490F5", bold = false })
+-- vim.api.nvim_set_hl(0, 'BlinkCmpLabelMatch', { fg = "#5490F5", bold = false })
+vim.api.nvim_set_hl(0, 'BlinkCmpLabelMatch', { bold = true })
 vim.api.nvim_set_hl(0, 'PmenuKind', { bg = "NONE", fg = "#72737A" })
 vim.api.nvim_set_hl(0, 'PmenuExtra', { fg = "#72737A" })
 
@@ -65,7 +66,7 @@ if ok then
     vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
     -- vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
-    vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true  })
+    vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
 end
 
 -- Treesitter
@@ -111,13 +112,6 @@ vim.api.nvim_set_hl(0, "@variable", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@number", { fg = dim_blue })
 vim.api.nvim_set_hl(0, "@comment", { fg = comment })
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = error_red })
-
--- language specific
-vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })
-vim.api.nvim_set_hl(0, "@boolean.yaml", { fg = soft_grey })
-vim.api.nvim_set_hl(0, "@punctuation.delimiter.yaml", { fg = soft_grey })
-vim.api.nvim_set_hl(0, "@lsp.type.operator.cpp", { fg = carrot_red })
-vim.api.nvim_set_hl(0, "@function.groovy", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@lsp.typemod.annotation.importDeclaration", { fg = dim_yellow })
 vim.api.nvim_set_hl(0, "@lsp.type.method", { fg = soft_grey })
 vim.api.nvim_set_hl(0, "@lsp.type.namespace", { fg = soft_grey })
@@ -129,6 +123,13 @@ vim.api.nvim_set_hl(0, "@lsp.typemod.keyword.documentation", { fg = bright_green
 vim.api.nvim_set_hl(0, "@lsp.typemod.parameter.documentation", { fg = "#8A653B" })
 vim.api.nvim_set_hl(0, "@lsp.typemod.typeParameter.declaration", { fg = "#507874" })
 vim.api.nvim_set_hl(0, "@lsp.type.typeParameter", { fg = "#507874" })
-vim.api.nvim_set_hl(0, "@lsp.typemod.annotationMember.declaration", { fg = topaz_yellow})
-vim.api.nvim_set_hl(0, "@keyword.conditional.ternary", { fg = soft_grey})
-vim.api.nvim_set_hl(0, "@lsp.type.annotation.java", { fg = dim_yellow})
+vim.api.nvim_set_hl(0, "@lsp.typemod.annotationMember.declaration", { fg = topaz_yellow })
+vim.api.nvim_set_hl(0, "@keyword.conditional.ternary", { fg = soft_grey })
+
+-- language specific
+vim.api.nvim_set_hl(0, "@property.yaml", { fg = carrot_red })
+vim.api.nvim_set_hl(0, "@boolean.yaml", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@punctuation.delimiter.yaml", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.type.operator.cpp", { fg = carrot_red })
+vim.api.nvim_set_hl(0, "@function.groovy", { fg = soft_grey })
+vim.api.nvim_set_hl(0, "@lsp.type.annotation.java", { fg = dim_yellow })
