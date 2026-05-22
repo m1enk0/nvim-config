@@ -66,7 +66,7 @@ return {
                         },
                         label_description = {
                             text = function (ctx) 
-                                if ctx.item and ctx.item.client_name == 'gopls' then
+                                if ctx.item and (ctx.item.client_name == 'gopls' or ctx.item.client_name == 'clangd') then
                                     return ctx.item.detail 
                                 end
                                 return ctx.label_description

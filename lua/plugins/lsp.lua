@@ -49,6 +49,28 @@ return {
                 },
                 yamlls = {},
                 jsonls = {},
+                clangd = {
+                    cmd = {
+                        'clangd',
+                        '--background-index',
+                        '--header-insertion=iwyu',
+                        '--completion-style=detailed',
+                        '--function-arg-placeholders=0',
+                        '--header-insertion=iwyu',
+                        '--all-scopes-completion'
+                    },
+                },
+                rust_analyzer = {
+                    settings = {
+                        ['rust-analyzer'] = {
+                            cargo = { 
+                                autoreload = true,
+                                allFeatures = true
+                            },
+                            files = { watcher = "client" },
+                        },
+                    },
+                }
             }
             vim.iter(config_setup_map)
                 :each(function(key, value) 
