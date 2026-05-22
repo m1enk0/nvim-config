@@ -3,7 +3,6 @@ return {
         'mfussenegger/nvim-dap',
         dependencies = {
             'rcarriga/nvim-dap-ui',
-            'jay-babu/mason-nvim-dap.nvim',
             'jbyuki/one-small-step-for-vimkind',
         },
         cmd = { 'DapContinue', 'DapToggleBreakpoint' },
@@ -31,6 +30,15 @@ return {
                     hostName = "127.0.0.1",
                     port = 5005,
                 },
+                {
+                    type = "java",
+                    request = "launch",
+                    name = "Spring Boot (Debug)",
+                    mainClass = "ru.alfabank.corp.api.onboarding.Application",
+                    vmArgs = "-Dspring.profiles.active=local-mock",
+                    -- Better reliability for large Spring apps
+                    shortenCommandLine = "argfile",
+                }
             }
 
             global.map_key("n", "<C-m>", "<cmd>DapStepOver<cr>", global.map_key_opts)
@@ -42,6 +50,9 @@ return {
     },
     {
         'rcarriga/nvim-dap-ui',
+        dependencies = {
+            'nvim-neotest/nvim-nio'
+        },
         config = function()
             local dapui = require('dapui')
             local dap = require('dap')
@@ -50,11 +61,18 @@ return {
                     {
                         elements = {
                             { id = "stacks", size = 0.5 },
-                            { id = "scopes",  size = 0.5 },
+                            { id = "scopes", size = 0.5 },
                         },
                         position = "bottom",
                         size = 15
                     },
+                    {
+                        elements = {
+                            { id = "console", size = 1 },
+                        },
+                        position = "bottom",
+                        size = 15
+                    }
                 }
             })
             dap.listeners.after.event_initialized['dapui_config'] = function()
@@ -67,19 +85,10 @@ return {
                 dapui.close()
             end
 
-            global.map_key("n", "<C-u>", "<cmd>lua require('dapui').toggle()<cr>", global.map_key_opts)
+            global.map_key("n", "<C-u>", "<cmd>lua require('dapui').toggle(1)<cr>", global.map_key_opts)
             global.map_key("n", "<A-/>", "<cmd>lua require('dapui').eval()<cr>", global.map_key_opts)
             global.map_key("n", "<leader>fb", "<cmd>lua require('dapui').float_element('breakpoints', { enter = true })<cr>", global.map_key_opts)
+            global.map_key("n", "<leader><C-u>", "<cmd>lua require('dapui').toggle(2)<cr>", global.map_key_opts)
         end
-    },
-    {
-        'jay-babu/mason-nvim-dap.nvim',
-        dependencies = {
-            'williamboman/mason.nvim',
-            'nvim-neotest/nvim-nio'
-        },
-        opts = {
-            handlers = {}
-        },
     }
 }
