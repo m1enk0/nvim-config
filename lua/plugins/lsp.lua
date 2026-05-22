@@ -51,8 +51,13 @@ return {
                 jsonls = {},
             }
             vim.iter(config_setup_map)
-                :filter(function(key, _) return project_settings.lsp[key] and project_settings.lsp[key].enabled end)
-                :each(function(key, value) vim.lsp.config(key, value) end)
+                :each(function(key, value) 
+                    if project_settings.lsp[key] and project_settings.lsp[key].enabled then
+                        vim.lsp.config(key, value) 
+                    else 
+                        vim.lsp.enable(key, false)
+                    end
+                end)
         end
     }
 }
