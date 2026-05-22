@@ -30,8 +30,7 @@ return {
                 lua_ls = {},
                 gopls = {
                     cmd = { "gopls" },
-                    filetypes = { "go", "gomod", "gowork", "gotmpl" },
-                    root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+                    filetypes = { "go", "gomod", "gowork" },
                     settings = {
                         gopls = {
                             usePlaceholders = false,
@@ -53,7 +52,7 @@ return {
             }
             vim.iter(config_setup_map)
                 :filter(function(key, _) return project_settings.lsp[key] and project_settings.lsp[key].enabled end)
-                :each(function(key, value) lspconfig[key].setup(value) end)
+                :each(function(key, value) vim.lsp.config(key, value) end)
         end
     }
 }
