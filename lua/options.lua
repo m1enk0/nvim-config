@@ -44,11 +44,12 @@ vim.cmd([[
 ]])
 
 if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
-    vim.cmd([[
-        let &shell = 'pwsh --nologo'
-        let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-        set shellquote= shellxquote=
-    ]])
+    vim.o.shell = "pwsh --nologo"
+    vim.o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+    vim.o.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+    vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+    vim.o.shellquote = ""
+    vim.o.shellxquote = ""
 end
 
 vim.opt.tabstop = 4
@@ -59,8 +60,6 @@ vim.opt.smartindent = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.opt.textwidth = 0
--- vim.o.viminfo = "'1000,<10000,s1000"
--- vim.o.viminfo = "'25,\"50"
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')} – %t]]
 vim.g.editorconfig = false
@@ -70,6 +69,7 @@ vim.diagnostic.config({
     update_in_insert = false,
     severity_sort = true,
 })
+vim.o.winblend = 15
 
 function OpenInScratch(param)
     local scratch_buf = vim.api.nvim_create_buf(false, true)
@@ -173,3 +173,4 @@ else
     print("OS not found, defaulting to 'linux'")
     system_os = "linux"
 end
+
