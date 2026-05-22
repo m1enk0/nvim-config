@@ -55,6 +55,7 @@ return {
         -- (Default) Only show the documentation popup when manually triggered
         completion = {
             menu = {
+                winblend = 15,
                 draw = {
                     columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1} },
                     components = {
