@@ -12,7 +12,9 @@ return {
         "williamboman/mason-lspconfig.nvim",
         event = "VeryLazy",
         config = function()
-            require("mason-lspconfig").setup({})
+            require("mason-lspconfig").setup({
+                automatic_enable = false
+            })
         end
     },
     {
@@ -76,8 +78,7 @@ return {
                 :each(function(key, value) 
                     if project_settings.lsp[key] and project_settings.lsp[key].enabled then
                         vim.lsp.config(key, value) 
-                    else 
-                        vim.lsp.enable(key, false)
+                        vim.lsp.enable(key)
                     end
                 end)
         end
