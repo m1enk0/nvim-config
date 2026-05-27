@@ -100,14 +100,19 @@ local function recent_files_picker(opts)
 
             map('i', '<Del>', function()
                 local selection = action_state.get_selected_entry()
-                if selection then
-                    recent_files.delete_entry(selection.value)
-                    local picker = action_state.get_current_picker(prompt_bufnr)
-                    picker:refresh(finders.new_table({
-                        results = recent_files.get_recent_files_with_timestamps(),
-                        entry_maker = entry_maker
-                    }))
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                local multi_selected = picker:get_multi_selection()
+                if vim.tbl_count(multi_selected) > 0 then
+                    recent_files.delete_entries(vim.tbl_map(function(item) return item.value end, multi_selected))
+                elseif selection then
+                    recent_files.delete_entries({ selection.value })
+                else
+                    return
                 end
+                picker:refresh(finders.new_table({
+                    results = recent_files.get_recent_files_with_timestamps(),
+                    entry_maker = entry_maker
+                }))
             end)
             return true
         end,

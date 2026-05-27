@@ -119,6 +119,7 @@ return {
     event = "VeryLazy",
     config = function()
         local file_ignore_patterns  = { "^.git\\", "^target", "^build\\", "^bin\\", "%.exe" }
+        local telescope_actions = require("telescope.actions")
         for _, pattern in ipairs(project_settings.telescope.append_file_ignore_patterns) do
             table.insert(file_ignore_patterns, pattern)
         end
@@ -141,18 +142,26 @@ return {
                 },
                 mappings = {
                     i = {
+                        ["<S-Down>"] = function(prompt_bufnr)
+                            telescope_actions.toggle_selection(prompt_bufnr)
+                            telescope_actions.move_selection_next(prompt_bufnr)
+                        end,
+                        ["<S-Up>"] = function(prompt_bufnr)
+                            telescope_actions.toggle_selection(prompt_bufnr)
+                            telescope_actions.move_selection_previous(prompt_bufnr)
+                        end,
                         ["<esc>"] = "close",
                         ["<C-f>"] = "to_fuzzy_refine",
                         ["<C-Down>"] = "cycle_history_next",
                         ["<C-Up>"] = "cycle_history_prev",
                         ["<A-e>"] = function(prompt_bufnr)
                             local text = get_current_picker_prompt(prompt_bufnr)
-                            require("telescope.actions").close(prompt_bufnr)
+                            telescope_actions.close(prompt_bufnr)
                             builtin.find_files { default_text = text }
                         end,
                         ["<A-l>"] = function(prompt_bufnr)
                             local text = get_current_picker_prompt(prompt_bufnr)
-                            require("telescope.actions").close(prompt_bufnr)
+                            telescope_actions.close(prompt_bufnr)
                             builtin.live_grep { default_text = text }
                         end
                     }
@@ -230,6 +239,7 @@ return {
                 fd = {
                     wrap_results = true,
                     path_display = "smart",
+                    sorter = require('telescope').extensions.fzy_native.native_fzy_sorter({})
                 }
             },
             extensions = {

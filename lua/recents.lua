@@ -100,11 +100,11 @@ function M.sync_files()
     save_recent_files()
 end
 
-function M.delete_entry(filepath)
-    if not filepath or filepath == '' then return false end
+function M.delete_entries(filepaths)
+    if not filepaths or vim.tbl_isempty(filepaths) then return false end
     local found = false
     recent_files = vim.tbl_filter(function(entry)
-        if entry.path == filepath then
+        if vim.tbl_contains(filepaths, entry.path) then
             found = true
             return false
         end
