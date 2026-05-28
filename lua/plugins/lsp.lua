@@ -9,32 +9,21 @@ return {
         end
     },
     {
-        "williamboman/mason-lspconfig.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("mason-lspconfig").setup({
-                automatic_enable = false
-            })
-        end
-    },
-    {
         "neovim/nvim-lspconfig",
         event = "VeryLazy",
         config = function()
-            local lspconfig = require('lspconfig')
-
             local capabilities = require('blink.cmp').get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
-            lspconfig.util.default_config = vim.tbl_deep_extend("force", lspconfig.util.default_config, {
-                capabilities = capabilities,
-            })
-
             local config_setup_map = {
                 lua_ls = {},
                 gopls = {
+                    root_dir = vim.fs.root(0, { "go.work", "go.mod", ".git" }) or vim.fn.getcwd(),
                     cmd = { "gopls" },
                     filetypes = { "go", "gomod", "gowork" },
                     settings = {
                         gopls = {
+                            codelenses = {
+                                gc_details = true,
+                            },
                             usePlaceholders = false,
                             staticcheck = true,
                             completeUnimported = true,
@@ -74,6 +63,9 @@ return {
                     },
                 }
             }
+            -- Apply common capabilities to all servers
+            for _, config in pairs(config_setup_map) do config.capabilities = capabilities end
+
             vim.iter(config_setup_map)
                 :each(function(key, value) 
                     if project_settings.lsp[key] and project_settings.lsp[key].enabled then
