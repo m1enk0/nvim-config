@@ -4,9 +4,10 @@ return {
     config = function()
         vim.cmd[[
             function! FugitiveStatusContent()
-                return matchstr(fugitive#statusline(), '(\zs.\{-}\ze)')
+                let branch = matchstr(fugitive#statusline(), '(\zs.\{-}\ze)')
+                return empty(branch) ? '' : ' ' . branch
             endfunction
-            set statusline=%{%v:lua.statusline_hl()%}\ %<%t\ %h%m%r%=%-14.(\\ %{FugitiveStatusContent()}\ \ %l,%c%V%)\ %p%%
+            set statusline=%{%v:lua.statusline_hl()%}\ %<%t\ %h%m%r%=%-14.(%{FugitiveStatusContent()}\ \ %l,%c%V%)\ %p%%
 
             " set statusline=\ %<%t\ %h%m%r             " Left section
             " set statusline+=%=                        " Center align

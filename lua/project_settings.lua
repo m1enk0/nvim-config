@@ -16,6 +16,8 @@ project_settings = {
         },
         yamlls = {},
         jsonls = {},
+        clangd = {},
+        rust_analyzer = {},
     }
 }
 
