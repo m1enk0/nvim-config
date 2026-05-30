@@ -90,5 +90,16 @@ return {
             global.map_key("n", "<leader>fb", "<cmd>lua require('dapui').float_element('breakpoints', { enter = true })<cr>", global.map_key_opts)
             global.map_key("n", "<leader><C-u>", "<cmd>lua require('dapui').toggle(2)<cr>", global.map_key_opts)
         end
+    },
+    {
+        'leoluz/nvim-dap-go',
+        ft = { 'go' },
+        config = function() 
+            require('dap-go').setup({
+                delve = {
+                    path = vim.fn.stdpath("data") .. "\\mason\\packages\\delve\\dlv"
+                }
+            }) 
+        end
     }
 }

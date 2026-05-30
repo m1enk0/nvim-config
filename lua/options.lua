@@ -125,12 +125,12 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 _G.statusline_hl = function()
-	if vim.api.nvim_buf_get_name(0):match("^jdt://") then
+	if vim.api.nvim_buf_get_name(0):match("^jdt://") or vim.api.nvim_buf_get_name(0):match("go.pkg.mod") then
 		return "%#StatusLineLSP#"
 	end
 	return "%#StatusLine#"
 end
-vim.api.nvim_set_hl(0, "StatusLineLSP", { bg = "#424242" })
+vim.api.nvim_set_hl(0, "StatusLineLSP", { bg = "#3B4252" })
 
 vim.api.nvim_create_user_command('StartLuaDebug', function() require("osv").launch({ port = 8086 }) end, {})
 vim.api.nvim_create_user_command('StopLuaDebug', function() require("osv").stop() end, {})

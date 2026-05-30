@@ -34,6 +34,7 @@ return {
                                 unusedwrite = true,
                                 useany = true,
                                 shadow = true,
+                                ST1000 = false, -- package comment requirement
                             }
                         }
                     }

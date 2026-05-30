@@ -36,7 +36,7 @@ vim.api.nvim_set_hl(0, 'TabLine', { fg = "#666666", bg = "#222222", italic = fal
 vim.api.nvim_set_hl(0, 'TabLineFill', { fg = "#999999", bg = "#1a1a1a", italic = false })
 vim.api.nvim_set_hl(0, 'TabLineSel', { fg = "#ffffff", bg = "#2B2B2B", bold = true })
 
-vim.api.nvim_set_hl(0, 'WinSeparator', { fg = "#252628", bg = "#313335" })
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = "#313335", --[[ bg = "#313335"  ]]})
 
 vim.api.nvim_set_hl(0, 'DiffAdd', { bg = "#294436" })
 vim.api.nvim_set_hl(0, 'DiffDelete', { bg = "#45302B" })
