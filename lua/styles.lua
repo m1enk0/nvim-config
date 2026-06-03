@@ -36,7 +36,7 @@ vim.api.nvim_set_hl(0, 'TabLine', { fg = "#666666", bg = "#222222", italic = fal
 vim.api.nvim_set_hl(0, 'TabLineFill', { fg = "#999999", bg = "#1a1a1a", italic = false })
 vim.api.nvim_set_hl(0, 'TabLineSel', { fg = "#ffffff", bg = "#2B2B2B", bold = true })
 
-vim.api.nvim_set_hl(0, 'WinSeparator', { fg = "#313335", --[[ bg = "#313335"  ]]})
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = "black" })
 
 vim.api.nvim_set_hl(0, 'DiffAdd', { bg = "#294436" })
 vim.api.nvim_set_hl(0, 'DiffDelete', { bg = "#45302B" })
@@ -65,7 +65,6 @@ if ok then
     vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = telescope_bg })
     vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
-    -- vim.api.nvim_set_hl(0, "TelescopeMatching", { bg = "#434D5E", bold = false })
     vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
 end
 

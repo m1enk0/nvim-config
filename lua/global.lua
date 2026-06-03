@@ -1,3 +1,5 @@
+local terminals = {}
+
 global = {
     map_key = vim.keymap.set,
     map_key_opts = { noremap = true, silent = true },
@@ -49,4 +51,34 @@ global = {
             vim.api.nvim_set_current_win(vim.g.main_win)
         end
     end,
+    open_term_tab = function(name, tab)
+        local t = terminals[name]
+
+        if t and vim.api.nvim_buf_is_valid(t.buf) then
+            if not t.tab or not vim.api.nvim_tabpage_is_valid(t.tab) then
+                if tab then
+                    vim.cmd("tab split")
+                end
+                vim.cmd("buffer " .. t.buf)
+                terminals[name].tab = vim.api.nvim_get_current_tabpage()
+                return
+            end
+            vim.api.nvim_set_current_tabpage(t.tab)
+            vim.api.nvim_set_current_buf(t.buf)
+            return
+        end
+        vim.cmd("tab split | term")
+        vim.api.nvim_buf_set_name(0, name)
+        -- vim.cmd("startinsert")
+        terminals[name] = {
+            buf = vim.api.nvim_get_current_buf(),
+            tab = vim.api.nvim_get_current_tabpage(),
+        }
+    end,
+    get_visual_selection = function()
+        vim.cmd('noau normal! "vy"')
+        local text = vim.fn.getreg('v')
+        text = string.gsub(text, "\n", "")
+        if #text > 0 then return text else return '' end
+    end
 }

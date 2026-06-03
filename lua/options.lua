@@ -117,6 +117,14 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "DirChanged" }, {
     end,
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        vim.schedule(function()
+            vim.cmd("normal! zz")
+        end)
+    end,
+})
+
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
       vim.g.main_tab = vim.api.nvim_get_current_tabpage()
@@ -174,3 +182,28 @@ else
     system_os = "linux"
 end
 
+vim.api.nvim_del_augroup_by_name("nvim.popupmenu") -- 'nvim.popupmenu' messes up with amenu causes errors if menu is changed manually
+vim.cmd([[
+    aunmenu PopUp
+
+    vnoremenu 1.007 PopUp.Copy "+y
+    vnoremenu 1.008 PopUp.Paste "+p
+    vnoremenu 1.009 PopUp.Highlight *``<Esc>
+
+    nmenu 1.010 PopUp.Back <C-o>
+    nmenu 1.020 PopUp.Forward <C-i>
+    nmenu 1.030 PopUp.-sep_move- <NOP>
+    nmenu 1.070 PopUp.Recent\ files <cmd>Telescope recent_files<cr>
+    nmenu 1.080 PopUp.-sep_recents- <NOP>
+    nmenu 1.090 PopUp.Close <A-f>
+]])
+
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function()
+        vim.cmd[[
+            nmenu 1.040 PopUp.Go\ to\ definition <cmd>lua vim.lsp.buf.definition()<cr>
+            nmenu 1.050 PopUp.Go\ to\ references <cmd>Telescope lsp_references<cr>
+            nmenu 1.060 PopUp.-sep_lsp- <NOP>
+        ]]
+    end,
+})

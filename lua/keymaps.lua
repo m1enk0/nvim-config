@@ -2,42 +2,10 @@ local telescope_present, telescope = pcall(require, "telescope.builtin")
 local oil_present, oil = pcall(require, "oil")
 local harpoon_present, harpoon = pcall(require, "harpoon")
 
-local terminals = {}
-
-local function open_runterm(name)
-    local t = terminals[name]
-
-    if t and vim.api.nvim_buf_is_valid(t.buf) then
-        if not t.tab or not vim.api.nvim_tabpage_is_valid(t.tab) then
-            vim.cmd("tab split")
-            vim.cmd("buffer " .. t.buf)
-            terminals[name].tab = vim.api.nvim_get_current_tabpage()
-            return
-        end
-        vim.api.nvim_set_current_tabpage(t.tab)
-        vim.api.nvim_set_current_buf(t.buf)
-        return
-    end
-    vim.cmd("tab split | term")
-    vim.api.nvim_buf_set_name(0, name)
-    vim.cmd("startinsert")
-    terminals[name] = {
-        buf = vim.api.nvim_get_current_buf(),
-        tab = vim.api.nvim_get_current_tabpage(),
-    }
-end
-
-local function get_visual_selection()
-    vim.cmd('noau normal! "vy"')
-    local text = vim.fn.getreg('v')
-    text = string.gsub(text, "\n", "")
-    if #text > 0 then return text else return '' end
-end
-
 local function map_telescope_nv(shortcut, telescopeFun)
     local actions = require("telescope.actions")
     global.map_key("v", shortcut, function() 
-        local default_text = get_visual_selection()
+        local default_text = global.get_visual_selection()
         global.jump_to_main()
         telescopeFun({
             default_text = default_text,
@@ -109,8 +77,8 @@ global.map_key("n", "<leader>tN", "<C-w>T", global.map_key_opts)
 global.map_key("n", "<leader>to", "<cmd>tabonly<cr>", global.map_key_opts)
 global.map_key("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", global.map_key_opts)
 global.map_key("n", "<leader>tS", "<cmd>vs | Scratch %<cr><C-w>T", global.map_key_opts)
-global.map_key("n", "<leader>ty", function() open_runterm('runterm_one') end, global.map_key_opts)
-global.map_key("n", "<leader>tu", function() open_runterm('runterm_two') end, global.map_key_opts)
+global.map_key("n", "<leader>ty", function() global.open_term_tab('Terminal 1', true) end, global.map_key_opts)
+global.map_key("n", "<leader>tu", function() global.open_term_tab('Terminal 2', true) end, global.map_key_opts)
 
 -- Telescope
 if telescope_present then
