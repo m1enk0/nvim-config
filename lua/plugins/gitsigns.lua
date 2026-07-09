@@ -7,7 +7,8 @@ return {
                 internal = false
             },
             on_attach = function(bufnr)
-                vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = '#447152', bg = 'NONE' })
+                vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = '#385538', bg = 'NONE' })
+                vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = '#374861', bg = 'NONE' })
             end
         })
     end

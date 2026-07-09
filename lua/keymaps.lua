@@ -1,6 +1,7 @@
 local telescope_present, telescope = pcall(require, "telescope.builtin")
 local oil_present, oil = pcall(require, "oil")
 local harpoon_present, harpoon = pcall(require, "harpoon")
+local terminal = require("custom.terminal")
 
 local function map_telescope_nv(shortcut, telescopeFun)
     local actions = require("telescope.actions")
@@ -38,7 +39,7 @@ global.map_key('n', '<S-A-a>', '<cmd>!git add %<cr>', { silent = false })
 global.map_key('n', '<leader>kk', '<cmd>vertical Git<cr>', global.map_key_opts)
 global.map_key('n', '<C-l>', '<cmd>vertical Git<cr>', global.map_key_opts)
 global.map_key('n', '<leader>kq', '<cmd>Git difftool<cr>', global.map_key_opts)
-global.map_key('n', '<leader>ka', '<cmd>Git blame<cr>', global.map_key_opts)
+global.map_key('n', '<leader>ka', '<cmd>Gitsigns blame<cr>', global.map_key_opts)
 
 -- Moving lines
 global.map_key("n", "<S-A-j>", "<cmd>silent! m .+1<CR>==", global.map_key_opts)
@@ -77,8 +78,8 @@ global.map_key("n", "<leader>tN", "<C-w>T", global.map_key_opts)
 global.map_key("n", "<leader>to", "<cmd>tabonly<cr>", global.map_key_opts)
 global.map_key("n", "<leader>ts", "<cmd>vs | Scratch %<cr>", global.map_key_opts)
 global.map_key("n", "<leader>tS", "<cmd>vs | Scratch %<cr><C-w>T", global.map_key_opts)
-global.map_key("n", "<leader>ty", function() global.open_term_tab('Terminal 1', true) end, global.map_key_opts)
-global.map_key("n", "<leader>tu", function() global.open_term_tab('Terminal 2', true) end, global.map_key_opts)
+global.map_key("n", "<leader>ty", function() terminal.open_tabterm(1, true) end, global.map_key_opts)
+global.map_key("n", "<leader>tu", function() terminal.open_tabterm(2, true) end, global.map_key_opts)
 
 -- Telescope
 if telescope_present then
@@ -99,6 +100,10 @@ if telescope_present then
     global.map_key("n", "<leader>FG", function() telescope.live_grep({ cwd = current_dir() }) end, global.map_key_opts)
     global.map_key("n", "<leader>FD", function() telescope.fd({ cwd = current_dir(), find_command = { 'fd', '-t', 'd', '--no-ignore' } }) end, global.map_key_opts)
     global.map_key("n", "<leader>gd", function() telescope.live_grep({ default_text = vim.fn.expand("<cword>") .. [[.*\{]] }) end, global.map_key_opts)
+    global.map_key("n", "<leader>gr", function() telescope.live_grep({ default_text = "\\." .. vim.fn.expand("<cword>") }) end, global.map_key_opts)
+    global.map_key("n", "<leader>gf", function() telescope.find_files({ default_text = vim.fn.expand("<cword>") }) end, global.map_key_opts)
+
+    global.map_key("n", "<leader>f=", telescope.spell_suggest, global.map_key_opts)
 else
     global.map_key("n", "<leader>ff", ":e **/**<Left>")
     global.map_key("n", "<leader>fg", ":vimgrep // **<Left><Left><Left><Left>")
@@ -109,10 +114,10 @@ if harpoon_present then
     global.map_key("n", "<A-n>", '<cmd>lua require("harpoon.mark").add_file()<cr>', global.map_key_opts)
     global.map_key("n", "<A-a>", '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', global.map_key_opts)
     global.map_key("n", "<A-s>", '<cmd>lua require("harpoon.ui").nav_file(2)<cr>', global.map_key_opts)
-    global.map_key("n", "<A-d>", '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', global.map_key_opts)
+    -- global.map_key("n", "<A-d>", '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', global.map_key_opts)
     -- MAP_KEY("n", "<A-f>", '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', MAP_KEY_OPTS)
-    global.map_key("n", "<A-g>", '<cmd>lua require("harpoon.ui").nav_file(5)<cr>', global.map_key_opts)
-    global.map_key("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', global.map_key_opts)
+    global.map_key("n", "<A-g>", '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', global.map_key_opts)
+    global.map_key("n", "<A-t>", '<cmd>lua require("harpoon.ui").nav_file(5)<cr>', global.map_key_opts)
 end
 global.map_key("n", "<A-f>", function() if vim.api.nvim_get_current_win() ~= vim.g.main_win then vim.cmd('silent! close') end end, global.map_key_opts)
 
@@ -123,12 +128,17 @@ global.map_key("n", "<leader>kd", "<cmd>Gitsigns nav_hunk next<cr>", global.map_
 global.map_key("n", "<leader>ku", "<cmd>Gitsigns nav_hunk prev<cr>", global.map_key_opts)
 global.map_key("n", "<A-d>", "<cmd>Gitsigns nav_hunk next<cr>", global.map_key_opts)
 global.map_key("n", "<A-u>", "<cmd>Gitsigns nav_hunk prev<cr>", global.map_key_opts)
-global.map_key({ "n", "v" }, "<A-z>", ":Gitsigns reset_hunk<cr>", global.map_key_opts)
+global.map_key("n", "<A-z>", ":Gitsigns select_hunk<cr>:Gitsigns reset_hunk<cr>", global.map_key_opts)
+global.map_key("v", "<A-z>", ":Gitsigns reset_hunk<cr>", global.map_key_opts)
 global.map_key("n", "<leader>ss", "<cmd>Gitsigns preview_hunk<cr>", global.map_key_opts)
 
 -- Terminal
 global.map_key("t", "<Esc>", "<C-\\><C-n>", global.map_key_opts)
 global.map_key("t", "<A-y>", "<C-\\><C-n><cmd>ToggleTerm<cr>", global.map_key_opts)
+
+global.map_key("t", "<A-y>", function() terminal.toggle_splitterm(1) end, global.map_key_opts)
+global.map_key("n", "<A-y>", function() terminal.toggle_splitterm(1) end, global.map_key_opts)
+global.map_key("n", "<leader>td", function() terminal.detach_splitterm_from_win() end, global.map_key_opts)
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "json",
@@ -153,11 +163,11 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- LSP
 if telescope_present then
-    global.map_key("n", "grr", telescope.lsp_references, global.map_key_opts)
+    global.map_key("n", "gr", telescope.lsp_references, { nowait = true })
     global.map_key("n", "<A-p>", telescope.lsp_document_symbols, global.map_key_opts)
     global.map_key("n", "<leader>gi", telescope.lsp_implementations, global.map_key_opts)
 else
-    global.map_key("n", "grr", vim.lsp.buf.references, global.map_key_opts)
+    global.map_key("n", "gr", vim.lsp.buf.references, { nowait = true })
     global.map_key("n", "<A-p>", vim.lsp.buf.document_symbols, global.map_key_opts)
     global.map_key("n", "<leader>gi", vim.lsp.buf.implementation, global.map_key_opts)
 end
@@ -177,7 +187,7 @@ global.map_key("v", "<S-A-f>", vim.lsp.buf.format, global.map_key_opts)
 global.map_key("n", "<C-p>", vim.lsp.buf.signature_help, global.map_key_opts)
 global.map_key("i", "<C-p>", vim.lsp.buf.signature_help, global.map_key_opts)
 global.map_key("n", "<A-r>", vim.lsp.buf.rename, global.map_key_opts)
-global.map_key("n", "<A-h>", vim.lsp.buf.hover, global.map_key_opts)
+-- global.map_key("n", "<A-h>", vim.lsp.buf.hover, global.map_key_opts)
 global.map_key("n", "<leader>ls", "<cmd>LspStart<cr>", global.map_key_opts)
 global.map_key("n", "<leader>lr", "<cmd>LspRestart<cr>", global.map_key_opts)
 
@@ -191,7 +201,7 @@ global.map_key("v", "<leader>fj", ":!jq .<cr>", global.map_key_opts)
 
 -- Settings
 global.map_key("n", "<leader>sw", "<cmd>set wrap!<cr>", global.map_key_opts)
-global.map_key("n", "<leader>sp", "<cmd>silent! setlocal spell! spelloptions=camel spelllang=ru_yo,en_us<cr>", global.map_key_opts)
+global.map_key("n", "<leader>sp", "<cmd>set spell!<cr>", global.map_key_opts)
 
 -- Alacritty specific mappings
 global.map_key("n", "<C-Left>", "<C-w>h", global.map_key_opts)

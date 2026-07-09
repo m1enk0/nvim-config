@@ -12,7 +12,7 @@ function filenameFirst(_, path)
     local tail = vim.fs.basename(path)
     local parent = vim.fs.dirname(path)
     if parent == "." then return tail end
-    local lim = 71  -- current result window size const
+    local lim = 71 -- current result window size const
     if string.len(parent) + string.len(tail) > lim then
         if string.len(tail) > lim then
             return ".." .. string.sub(tail, -lim)
@@ -69,13 +69,13 @@ local function dynamic_fzy_sorter()
 
         -- Multiple words: split display into path and filename
         local sep = display:find(vim.pesc(vim.fs.basename(display)) .. "$")
-        local path_part = display:sub(1, sep and sep - 2 or 0)  -- exclude trailing path separator if present
+        local path_part = display:sub(1, sep and sep - 2 or 0) -- exclude trailing path separator if present
         local filename_part = vim.fs.basename(display)
 
         -- Highlight filename matches for first word
         local filename_pos = fzy.positions(words[1], filename_part)
         if filename_pos then
-            local offset = #path_part + (#path_part > 0 and 1 or 0)  -- account for path separator
+            local offset = #path_part + (#path_part > 0 and 1 or 0) -- account for path separator
             for _, p in ipairs(filename_pos) do
                 table.insert(highlights, p + offset)
             end
@@ -118,14 +118,22 @@ return {
     },
     event = "VeryLazy",
     config = function()
-        local file_ignore_patterns  = { "^.git\\", "^target", "^build\\", "^bin\\", "%.exe" }
-        local telescope_actions = require("telescope.actions")
+        local file_ignore_patterns = { "^.git\\", "^target", "^build\\", "^bin\\", "%.exe" }
+        local telescope_actions    = require("telescope.actions")
         for _, pattern in ipairs(project_settings.telescope.append_file_ignore_patterns) do
             table.insert(file_ignore_patterns, pattern)
         end
 
         local builtin = require('telescope.builtin')
-        require("nvim-web-devicons").setup({ override = { java = { icon = "🅹", color = "#3E86A0", name = "java" } } })
+        require("nvim-web-devicons").setup({
+            override = {
+                java = { icon = "󰬑", color = "#3E86A0", name = "java" },
+                yml = { icon = "󰬠", color = "#A67DC8", name = "yml" },
+                yaml = { icon = "󰬠", color = "#A67DC8", name = "yaml" },
+                groovy = { icon = "󰬎", color = "#538642", name = "groovy" },
+                js = { icon = "", color = "#D9D926", name = "js" },
+            }
+        })
         require("telescope").setup {
             defaults = {
                 file_sorter = dynamic_fzy_sorter,

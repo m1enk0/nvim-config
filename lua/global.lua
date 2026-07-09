@@ -1,5 +1,3 @@
-local terminals = {}
-
 global = {
     map_key = vim.keymap.set,
     map_key_opts = { noremap = true, silent = true },
@@ -15,11 +13,11 @@ global = {
         vim.b.executed_query = cmd
         global.map_key('n', '<leader>rr', '<cmd>ReexecuteQuery<cr>', { buffer = true })
     end,
-    execute_yanked_to_split = function () 
+    execute_yanked_to_split = function()
         local cmd_lines = vim.split(vim.fn.getreg('"'), '[\r\n]')
         local cleaned_lines = {}
         for _, line in pairs(cmd_lines) do
-            if not line:match('^%s*#') then 
+            if not line:match('^%s*#') then
                 table.insert(cleaned_lines, line)
             end
         end
@@ -50,30 +48,6 @@ global = {
         if vim.g.main_win and vim.api.nvim_win_is_valid(vim.g.main_win) then
             vim.api.nvim_set_current_win(vim.g.main_win)
         end
-    end,
-    open_term_tab = function(name, tab)
-        local t = terminals[name]
-
-        if t and vim.api.nvim_buf_is_valid(t.buf) then
-            if not t.tab or not vim.api.nvim_tabpage_is_valid(t.tab) then
-                if tab then
-                    vim.cmd("tab split")
-                end
-                vim.cmd("buffer " .. t.buf)
-                terminals[name].tab = vim.api.nvim_get_current_tabpage()
-                return
-            end
-            vim.api.nvim_set_current_tabpage(t.tab)
-            vim.api.nvim_set_current_buf(t.buf)
-            return
-        end
-        vim.cmd("tab split | term")
-        vim.api.nvim_buf_set_name(0, name)
-        -- vim.cmd("startinsert")
-        terminals[name] = {
-            buf = vim.api.nvim_get_current_buf(),
-            tab = vim.api.nvim_get_current_tabpage(),
-        }
     end,
     get_visual_selection = function()
         vim.cmd('noau normal! "vy"')

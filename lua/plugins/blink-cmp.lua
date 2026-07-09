@@ -16,7 +16,9 @@ return {
     opts = {
         snippets = {
             expand = function(snippet, _)
-                vim.snippet.expand(snippet)
+                -- replace snippet placeholders with nothing and put cursor to first spot 
+                local cleaned = snippet:gsub("${(%d+):[^}]*}", "$%1"):gsub("${(%d+)}", "$%1") 
+                vim.snippet.expand(cleaned)
                 vim.snippet.stop()
             end,
         },
@@ -55,7 +57,7 @@ return {
         -- (Default) Only show the documentation popup when manually triggered
         completion = {
             menu = {
-                winblend = 15,
+                -- winblend = 15,
                 draw = {
                     columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1} },
                     components = {

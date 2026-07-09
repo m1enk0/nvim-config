@@ -41,6 +41,7 @@ vim.cmd([[
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o "disable auto comment next line
 
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "autojump to last position in the file
+    au FileType gitcommit setlocal spell
 ]])
 
 if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
@@ -69,7 +70,9 @@ vim.diagnostic.config({
     update_in_insert = false,
     severity_sort = true,
 })
-vim.o.winblend = 15
+vim.opt.spelllang = { "en_us", "ru_yo" }
+vim.opt.spelloptions = "camel"
+vim.opt.spellcapcheck = "" -- disable first letter of sentence is capital check
 
 function OpenInScratch(param)
     local scratch_buf = vim.api.nvim_create_buf(false, true)
@@ -114,14 +117,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "DirChanged" }, {
         if cwd then
             vim.wo.winbar = "Oil: " .. cwd -- show only folder name
         end
-    end,
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function()
-        vim.schedule(function()
-            vim.cmd("normal! zz")
-        end)
     end,
 })
 
@@ -207,3 +202,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
         ]]
     end,
 })
+
+vim.keymap.set("n", "<LeftMouse>", function() vim.opt.scrolloff = 0 return "<LeftMouse>" end, { expr = true })
+vim.keymap.set("n", "<RightMouse>", function() vim.opt.scrolloff = 0 return "<RightMouse>" end, { expr = true })
+
+vim.keymap.set("n", "zz", function() vim.opt.scrolloff = 999 return "zz" end, { expr = true })
+vim.keymap.set("n", "<Enter>", "zz:set scrolloff=999<cr>", global.map_key_opts)
+
+vim.g.diffs = { 
+    view = {
+        prefix = false,
+    },
+    integrations = { 
+        fugitive = true, 
+        gitsigns = true 
+    } 
+}
