@@ -9,15 +9,10 @@ project_settings = {
         append_file_ignore_patterns = {}
     },
     lsp = {
-        lua_ls = {},
-        gopls = {},
+        enable = {},
         jdtls = {
             offline = false
         },
-        yamlls = {},
-        jsonls = {},
-        clangd = {},
-        rust_analyzer = {},
     }
 }
 

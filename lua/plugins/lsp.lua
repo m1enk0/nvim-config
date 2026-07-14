@@ -67,12 +67,10 @@ return {
             -- Apply common capabilities to all servers
             for _, config in pairs(config_setup_map) do config.capabilities = capabilities end
 
-            vim.iter(config_setup_map)
-                :each(function(key, value) 
-                    if project_settings.lsp[key] and project_settings.lsp[key].enabled then
-                        vim.lsp.config(key, value) 
-                        vim.lsp.enable(key)
-                    end
+            vim.iter(project_settings.lsp.enable)
+                :each(function(val)
+                    vim.lsp.config(val, config_setup_map[val] or {})
+                    vim.lsp.enable(val)
                 end)
         end
     }
