@@ -29,34 +29,26 @@ function M.open_tabterm(id, in_tab)
 end
 
 function M.toggle_splitterm(id)
-    local term = splitterms[id]
-    local curr_win = vim.api.nvim_get_current_win()
-    if term and vim.api.nvim_win_is_valid(term.win) then
-        if curr_win == term.win then
-            vim.api.nvim_win_close(splitterms[id].win, false)
-        else
-            vim.api.nvim_set_current_win(splitterms[id].win)
-        end 
+    local term = splitterms[id] or {}
+    local curr_tab = vim.api.nvim_get_current_tabpage()
+    local win = (term.tabs or {})[curr_tab]
+
+    if win and vim.api.nvim_win_is_valid(win) and #vim.api.nvim_tabpage_list_wins(curr_tab) > 1 then
+        if win == vim.api.nvim_get_current_win() then vim.api.nvim_win_close(win, false) else vim.api.nvim_set_current_win(win) end
         return
     end
+
+    if not term.tabs then term.tabs = {} end
     vim.cmd("botright split")
-    if term then
-        if term.buf and vim.api.nvim_buf_is_valid(term.buf) then
-            vim.api.nvim_set_current_buf(term.buf)
-        else
-            vim.cmd("term")
-            vim.cmd("startinsert")
-            splitterms[id].buf = vim.api.nvim_get_current_buf()
-        end
-        term.win = vim.api.nvim_get_current_win()
-        return
+    if term.buf and vim.api.nvim_buf_is_valid(term.buf) then
+        vim.api.nvim_set_current_buf(term.buf)
+    else
+        vim.cmd("term")
+        vim.cmd("startinsert")
+        term.buf = vim.api.nvim_get_current_buf()
     end
-    vim.cmd("term")
-    vim.cmd("startinsert")
-    splitterms[id] = {
-        buf = vim.api.nvim_get_current_buf(),
-        win = vim.api.nvim_get_current_win()
-    }
+    term.tabs[curr_tab] = vim.api.nvim_get_current_win()
+    splitterms[id] = term
 end
 
 function M.detach_splitterm_from_win()
