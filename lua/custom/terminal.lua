@@ -44,7 +44,6 @@ function M.toggle_splitterm(id)
         vim.api.nvim_set_current_buf(term.buf)
     else
         vim.cmd("term")
-        vim.cmd("startinsert")
         term.buf = vim.api.nvim_get_current_buf()
     end
     term.tabs[curr_tab] = vim.api.nvim_get_current_win()
