@@ -34,7 +34,12 @@ function M.toggle_splitterm(id)
     local win = (term.tabs or {})[curr_tab]
 
     if win and vim.api.nvim_win_is_valid(win) and #vim.api.nvim_tabpage_list_wins(curr_tab) > 1 then
-        if win == vim.api.nvim_get_current_win() then vim.api.nvim_win_close(win, false) else vim.api.nvim_set_current_win(win) end
+        if win == vim.api.nvim_get_current_win() then 
+            vim.api.nvim_win_close(win, false) 
+        else 
+            vim.api.nvim_set_current_win(win) 
+            if vim.api.nvim_get_current_buf() ~= term.buf then vim.api.nvim_set_current_buf(term.buf) end
+        end
         return
     end
 
@@ -58,6 +63,12 @@ function M.detach_splitterm_from_win()
         vim.cmd("term")
         found.buf = vim.api.nvim_get_current_buf()
     end
+end
+
+function M.bind_term_buffer_to_splitterm(id)
+    local term = splitterms[id]
+    if not term then return end
+    term.buf = vim.api.nvim_get_current_buf()
 end
 
 return M

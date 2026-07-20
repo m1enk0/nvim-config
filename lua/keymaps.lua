@@ -138,7 +138,11 @@ global.map_key("t", "<A-y>", "<C-\\><C-n><cmd>ToggleTerm<cr>", global.map_key_op
 
 global.map_key("t", "<A-y>", function() terminal.toggle_splitterm(1) end, global.map_key_opts)
 global.map_key("n", "<A-y>", function() terminal.toggle_splitterm(1) end, global.map_key_opts)
-global.map_key("n", "<leader>td", function() terminal.detach_splitterm_from_win() end, global.map_key_opts)
+global.map_key("n", "<leader>td", terminal.detach_splitterm_from_win, global.map_key_opts)
+global.map_key("n", "<leader>tb", function() 
+    terminal.bind_term_buffer_to_splitterm(1) 
+    print("Bound buffer to splitterm (1)")
+end, global.map_key_opts)
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "json",
