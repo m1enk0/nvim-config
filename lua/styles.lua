@@ -50,6 +50,10 @@ vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "ErrorMsg", linehl 
 vim.fn.sign_define("DapStopped", { linehl = "DapStoppedLine" })
 vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#3A2323" })
 
+vim.api.nvim_set_hl(0, "Function", { fg = "#9AA5BC" })
+vim.api.nvim_set_hl(0, "Include", { fg = "#9AA5BC" })
+vim.api.nvim_set_hl(0, "@markup.heading", { fg = "#9AA5BC" })
+
 -- Telescope
 local ok, telescope = pcall(require, "telescope")
 if ok then
@@ -58,11 +62,11 @@ if ok then
 
     vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = telescope_bg })
     vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#424242", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#424242", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#424242", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#A1A1A1", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#A1A1A1", bg = telescope_bg })
-    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#A1A1A1", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = telescope_bg, bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = telescope_bg, bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { fg = "#AFB1B3", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { fg = "#AFB1B3", bg = telescope_bg })
+    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { fg = "#AFB1B3", bg = telescope_bg })
     vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { fg = "#353B49", bg = "#353B49" })
     vim.api.nvim_set_hl(0, "TelescopeMatching", { bold = true })
@@ -75,11 +79,31 @@ local dark_green = "#6A8759"
 local carrot_red = "#CC7832"
 local purple = "#9876AA"
 local topaz_yellow = "#FFC66D"
-local dim_blue = "#6897BB"
+local dim_blue = "#7695AD"
 local comment = "#808080"
 local bright_green = "#629755"
 local error_red = "#BC3F3C"
 local dim_topaz_yellow = "#E8BF6A"
+
+-- vim.api.nvim_set_hl(0, "Keyword", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Conditional", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Statement", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Repeat", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Constant", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Include", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Structure", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "StorageClass", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Operator", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Type", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Boolean", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "Typedef", { fg = carrot_red })
+-- vim.api.nvim_set_hl(0, "PreProc", { fg = dim_yellow })
+-- vim.api.nvim_set_hl(0, "Number", { fg = dim_blue })
+-- vim.api.nvim_set_hl(0, "Float", { fg = dim_blue })
+-- vim.api.nvim_set_hl(0, "Normal", { fg = soft_grey })
+-- vim.api.nvim_set_hl(0, "Comment", { fg = comment })
+-- vim.api.nvim_set_hl(0, "hsDelimiter", { fg = dim_blue })
+
 vim.api.nvim_set_hl(0, "@attribute", { fg = dim_yellow })
 vim.api.nvim_set_hl(0, "@function", { fg = topaz_yellow })
 vim.api.nvim_set_hl(0, "@module", { fg = topaz_yellow })

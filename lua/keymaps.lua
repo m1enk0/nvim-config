@@ -37,7 +37,7 @@ global.map_key("i", "<Space>", "<Space><C-g>u", global.map_key_opts)
 global.map_key('n', '<A-C-a>', '<cmd>!git add %<cr>', { silent = false })
 global.map_key('n', '<S-A-a>', '<cmd>!git add %<cr>', { silent = false })
 global.map_key('n', '<leader>kk', '<cmd>vertical Git<cr>', global.map_key_opts)
-global.map_key('n', '<C-l>', '<cmd>vertical Git<cr>', global.map_key_opts)
+-- global.map_key('n', '<C-l>', '<cmd>vertical Git<cr>', global.map_key_opts)
 global.map_key('n', '<leader>kq', '<cmd>Git difftool<cr>', global.map_key_opts)
 global.map_key('n', '<leader>ka', '<cmd>Gitsigns blame<cr>', global.map_key_opts)
 
@@ -70,8 +70,8 @@ global.map_key("n", "<S-A-p>", "<cmd>cnext<cr>", global.map_key_opts)
 global.map_key("n", "<S-A-u>", "<cmd>cprev<cr>", global.map_key_opts)
 
 -- Tab nav 
-global.map_key("n", "<S-A-h>", "<cmd>tabprev<cr>", global.map_key_opts)
-global.map_key("n", "<S-A-l>", "<cmd>tabnext<cr>", global.map_key_opts)
+global.map_key({ "n", "i", "t" }, "<S-A-h>", "<cmd>tabprev<cr>", global.map_key_opts)
+global.map_key({ "n", "i", "t" }, "<S-A-l>", "<cmd>tabnext<cr>", global.map_key_opts)
 global.map_key("n", "<leader>tq", "<cmd>tabclose<cr>", global.map_key_opts)
 global.map_key("n", "<leader>tn", "<cmd>tab split<cr>", global.map_key_opts)
 global.map_key("n", "<leader>tN", "<C-w>T", global.map_key_opts)
@@ -90,7 +90,7 @@ if telescope_present then
     global.map_key("n", "<leader>fd", function() telescope.fd({ find_command = { 'fd', '-t', 'd', '--no-ignore' } }) end)
     global.map_key("n", "<A-e>", "<cmd>Telescope recent_files<cr>", global.map_key_opts)
     global.map_key("n", "<leader>fr", telescope.resume, global.map_key_opts)
-    -- global.map_key("n", "<C-l>", telescope.git_status, global.map_key_opts)
+    global.map_key("n", "<C-l>", function () telescope.git_status({ default_selection_index = vim.g.git_status_picker_last_index or 1 }) end, global.map_key_opts)
     global.map_key("n", "<leader>ks", telescope.git_stash, global.map_key_opts)
     global.map_key("n", "<leader>kb", telescope.git_branches, global.map_key_opts)
     global.map_key("n", "<leader>fo", telescope.buffers, global.map_key_opts)
@@ -131,6 +131,7 @@ global.map_key("n", "<A-u>", "<cmd>Gitsigns nav_hunk prev<cr>", global.map_key_o
 global.map_key("n", "<A-z>", ":Gitsigns select_hunk<cr>:Gitsigns reset_hunk<cr>", global.map_key_opts)
 global.map_key("v", "<A-z>", ":Gitsigns reset_hunk<cr>", global.map_key_opts)
 global.map_key("n", "<leader>ss", "<cmd>Gitsigns preview_hunk<cr>", global.map_key_opts)
+global.map_key("n", "<A-s>", "<cmd>Gitsigns preview_hunk<cr>", global.map_key_opts)
 
 -- Terminal
 global.map_key("t", "<Esc>", "<C-\\><C-n>", global.map_key_opts)
@@ -255,3 +256,30 @@ if telescope_present then
         })
     end, global.map_key_opts)
 end
+
+local function smart_newline(opening, closing)
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.fn.col(".")
+    local prev_char = col > 1 and line:sub(col - 1, col - 1) or ""
+    local next_char = col <= #line and line:sub(col, col) or ""
+    if prev_char == opening and next_char == closing then return "\r<Esc>O" end
+    return "\r"
+end 
+
+global.map_key("i", "<CR>", function() return smart_newline("{", "}") end, { expr = true, replace_keycodes = true })
+
+local function check_pair(opening, closing)
+    local col = vim.fn.col(".")
+    local prev_char = col > 1 and vim.api.nvim_get_current_line():sub(col - 1, col - 1) or ""
+    if prev_char == opening then return closing .. "<Left>" end
+    return closing
+end 
+
+global.map_key("i", ")", function() return check_pair("(", ")") end, { expr = true, replace_keycodes = true })
+global.map_key("i", "'", function() return check_pair("'", "'") end, { expr = true, replace_keycodes = true })
+global.map_key("i", '"', function() return check_pair('"', '"') end, { expr = true, replace_keycodes = true })
+global.map_key("i", "]", function() return check_pair("[", "]") end, { expr = true, replace_keycodes = true })
+global.map_key("i", "}", function() return check_pair("{", "}") end, { expr = true, replace_keycodes = true })
+global.map_key("i", ">", function() return check_pair("<", ">") end, { expr = true, replace_keycodes = true })
+
+global.map_key("i", "<C-l>", "<C-x><C-s>", { noremap = true })

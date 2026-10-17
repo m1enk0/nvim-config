@@ -66,9 +66,8 @@ function M.detach_splitterm_from_win()
 end
 
 function M.bind_term_buffer_to_splitterm(id)
-    local term = splitterms[id]
-    if not term then return end
-    term.buf = vim.api.nvim_get_current_buf()
+    if not splitterms[id] then splitterms[id] = {} end
+    splitterms[id].buf = vim.api.nvim_get_current_buf()
 end
 
 return M
